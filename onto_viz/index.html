@@ -1,0 +1,1180 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>XML Visualizer Pro</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <style>
+      :root {
+        --pico-font-size: 14px;
+        --sidebar-width: 360px;
+        --pico-primary: #2c5282;
+      }
+      body { min-height: 100vh; display: flex; flex-direction: column; background-color: #f7fafc; margin: 0; }
+
+      /* ── Input Screen ── */
+      #inputScreen { padding-top: 10vh; }
+      .start-card { max-width: 680px; margin: 0 auto; padding: 2.5rem; border-radius: 14px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); background: white; }
+      .start-card h1 { margin-bottom: 0.3rem; }
+      .start-card > p { color: #718096; margin-bottom: 1.5rem; }
+
+      /* Tabs */
+      .tabs { display: flex; border-bottom: 2px solid #e2e8f0; margin-bottom: 1.5rem; }
+      .tab-btn { background: none; border: none; padding: 0.5rem 1.2rem; font-size: 0.9rem; font-weight: 600; color: #718096; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: 0.2s; }
+      .tab-btn.active { color: #2c5282; border-bottom-color: #2c5282; }
+
+      /* Server file list */
+      #serverFileList { min-height: 120px; }
+      .server-file-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.8rem; }
+      .server-file-card { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 10px; padding: 1rem 0.8rem; text-align: center; cursor: pointer; transition: 0.2s; }
+      .server-file-card:hover { border-color: #2c5282; background: #ebf4ff; transform: translateY(-2px); }
+      .server-file-card .file-icon { font-size: 2.2rem; display: block; margin-bottom: 0.5rem; }
+      .server-file-card .file-name { font-size: 0.78rem; font-weight: 700; color: #2d3748; word-break: break-all; }
+      .empty-state { text-align: center; color: #a0aec0; padding: 2rem; font-size: 0.9rem; }
+
+      /* Divider */
+      .or-divider { text-align: center; color: #a0aec0; font-size: 0.8rem; margin: 1.2rem 0; position: relative; }
+      .or-divider::before, .or-divider::after { content: ""; position: absolute; top: 50%; width: 44%; height: 1px; background: #e2e8f0; }
+      .or-divider::before { left: 0; }
+      .or-divider::after { right: 0; }
+
+      /* ── Navbar ── */
+      .navbar { background: #fff; border-bottom: 1px solid #dfe3e8; position: sticky; top: 0; z-index: 1000; height: 65px; display: flex; align-items: center; padding: 0 1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+      .nav-container { display: flex; width: 100%; align-items: center; gap: 0.8rem; }
+      .nav-links { display: flex; gap: 0.5rem; overflow-x: auto; scrollbar-width: none; flex-grow: 1; }
+      .nav-item { padding: 4px 12px; background: #5d6d8a; color: white !important; border-radius: 4px; cursor: pointer; white-space: nowrap; font-size: 0.8rem; text-decoration: none; font-weight: 600; border: none; transition: 0.2s; }
+      .nav-item:hover { background: #44597a; }
+      .filter-nav-btn { background: #2c5282 !important; border: none; padding: 4px 12px; font-size: 0.8rem; font-weight: bold; }
+
+      /* ── Breadcrumbs ── */
+      .breadcrumb { margin: 1rem; padding: 0.6rem 1.2rem; background: white; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 0.85rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+      .breadcrumb-item { color: #2b6cb0 !important; cursor: pointer; text-decoration: underline !important; }
+      .breadcrumb-current { color: #4a5568; font-weight: 600; }
+
+      /* ── Sidebar ── */
+      .filter-sidebar { width: var(--sidebar-width); background: white; border-right: 1px solid #e2e8f0; height: 100vh; position: fixed; top: 0; left: -380px; z-index: 2000; transition: left 0.3s ease; display: flex; flex-direction: column; box-shadow: 5px 0 20px rgba(0,0,0,0.1); }
+      .filter-sidebar.active { left: 0; }
+      .sidebar-header { padding: 1.2rem; border-bottom: 1px solid #edf2f7; display: flex; justify-content: space-between; align-items: center; background: #f8fafc; flex-shrink: 0; }
+      .sidebar-content { flex-grow: 1; overflow-y: auto; padding: 1rem; }
+      .sidebar-footer { padding: 1rem; border-top: 1px solid #edf2f7; display: flex; gap: 0.5rem; background: #fff; flex-shrink: 0; }
+      .sidebar-footer button { flex: 1; margin: 0; padding: 8px; font-size: 0.85rem; font-weight: bold; }
+
+      /* ── Filters ── */
+      details.f-group-l1 { margin-bottom: 0.5rem; border-bottom: 1px solid #f0f4f8; }
+      details.f-group-l1 > summary { font-weight: 800; color: #2c5282; cursor: pointer; padding: 0.5rem 0; list-style: none; font-size: 0.9rem; text-transform: uppercase; }
+      details.f-group-l1 > summary::after { content: '▾'; float: right; opacity: 0.5; }
+      details.f-group-l2 { margin-left: 0.8rem; margin-bottom: 0.3rem; border: 1px solid #edf2f7; border-radius: 4px; }
+      details.f-group-l2 > summary { font-weight: 600; color: #4a5568; cursor: pointer; padding: 0.4rem 0.6rem; list-style: none; font-size: 0.85rem; background: #f8fafc; }
+      details.f-group-l2 > summary::after { content: '+'; float: right; }
+      .range-box { padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+      .range-box label { font-size: 11px; margin: 0; color: #718096; }
+      .range-box input { margin: 0; height: 32px; font-size: 0.8rem; }
+      .filter-opt { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; padding: 2px 10px; cursor: pointer; }
+
+      /* ── Date filter row ── */
+      .date-input-row {
+        display: grid;
+        grid-template-columns: 1fr 34px auto;
+        align-items: center;
+        gap: 4px;
+        width: 100%;
+        position: relative;
+      }
+      .date-text-in {
+        min-width: 0;
+        height: 32px !important;
+        font-size: 0.8rem !important;
+        margin: 0 !important;
+        padding: 0 6px !important;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .date-cal-btn {
+        flex-shrink: 0;
+        height: 32px;
+        width: 34px;
+        padding: 0;
+        border: 1px solid #cbd5e0;
+        border-radius: 6px;
+        background: #edf2f7;
+        cursor: pointer;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        transition: background 0.15s;
+        margin: 0;
+        user-select: none;
+        text-align: center;
+      }
+      .date-cal-btn:hover { background: #bee3f8; border-color: #2c5282; }
+      .date-today-btn {
+        flex-shrink: 0;
+        height: 32px;
+        padding: 0 7px;
+        border: 1px solid #9ae6b4;
+        border-radius: 6px;
+        background: #f0fff4;
+        color: #276749;
+        cursor: pointer;
+        font-size: 0.7rem;
+        font-weight: 700;
+        white-space: nowrap;
+        transition: background 0.15s;
+        margin: 0;
+      }
+      .date-today-btn:hover { background: #c6f6d5; border-color: #276749; }
+
+      /* ── Main ── */
+      main { flex-grow: 1; width: 100%; max-width: 1450px; margin: 0 auto; padding: 1rem; }
+      .header-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+      .back-btn { background: #e2e8f0; color: #2d3748; border: none; padding: 6px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: 0.2s; }
+      .back-btn:hover { background: #cbd5e0; }
+      .content-header { background: #1a365d; color: white; padding: 1.2rem; border-radius: 8px; text-align: center; margin-bottom: 1.5rem; }
+      .content-header h2 { margin: 0; font-size: 1.4rem; font-weight: 700; text-transform: uppercase; color: white !important; }
+
+      /* ── Media section (image above carousel) ── */
+      .media-section { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; align-items: center; }
+      .media-section.no-media { gap: 0; margin-bottom: 0.5rem; }
+      .node-image-wrap { max-width: 600px; width: 100%; }
+      .node-primary-image { display: block; width: 100%; max-height: 70vh; object-fit: contain; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
+
+      /* ── Carousel ── */
+      .carousel-wrap { width: 100%; max-width: 600px; position: relative; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; background: #f8fafc; display: flex; flex-direction: column; }
+      .carousel-track { overflow: hidden; padding: 6px; }
+      .carousel-slide { display: none; align-items: center; justify-content: center; padding: 4px; }
+      .carousel-slide.active { display: flex; }
+      .carousel-media { max-width: 100%; max-height: 150px; object-fit: contain; border-radius: 4px; }
+      .carousel-media-video { max-width: 100%; max-height: 150px; border-radius: 4px; }
+      .carousel-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.4); color: white; border: none; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; z-index: 10; padding: 0; line-height: 1; transition: background 0.2s; display: flex; align-items: center; justify-content: center; }
+      .carousel-nav:hover { background: rgba(0,0,0,0.7); }
+      .carousel-prev { left: 8px; }
+      .carousel-next { right: 8px; }
+      .carousel-indicators { display: flex; justify-content: center; gap: 6px; padding: 8px; background: rgba(255,255,255,0.9); flex-shrink: 0; }
+      .carousel-dot { width: 10px; height: 10px; border-radius: 50%; background: #cbd5e0; border: none; cursor: pointer; padding: 0; transition: background 0.2s; }
+      .carousel-dot.active { background: #3182ce; }
+
+      /* ── Data fields grid ── */
+      .data-fields-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 0.75rem; margin-bottom: 1rem; align-items: stretch; }
+      .data-card-inline { background: white; border: 1px solid #edf2f7; border-radius: 6px; padding: 0.8rem; box-sizing: border-box; box-shadow: 0 2px 4px rgba(0,0,0,0.02); min-width: 0; display: flex; flex-direction: column; }
+      .data-card-inline.expanded { grid-column: 1 / -1; }
+      .data-label { font-size: 0.91rem; font-weight: 800; color: #3182ce; text-transform: uppercase; margin-bottom: 0.3rem; border-bottom: 1px solid #f7fafc; padding-bottom: 2px; }
+      .data-content { font-size: 1.1rem; color: #2d3748; line-height: 1.5; word-break: break-word; flex: 1; }
+      .data-content-clamp { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; }
+      .read-more-btn { background: none; border: none; color: #3182ce; font-size: 1.01rem; cursor: pointer; padding: 4px 0 0; font-weight: 600; display: block; text-align: left; width: 100%; flex-shrink: 0; }
+      .read-more-btn:hover { text-decoration: underline; }
+      .children-section-title { clear: both; text-align: center; margin: 3rem 0 1.5rem; opacity: 0.6; font-size: 1.1rem; font-weight: bold; border-top: 2px solid #e2e8f0; padding-top: 2rem; }
+      .children-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem; padding-bottom: 4rem; }
+      .child-card { background: white; border: 1px solid #edf2f7; border-radius: 12px; padding: 1.5rem; text-align: center; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+      .child-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); border-color: #3182ce; }
+      .child-thumb-wrap { width: 85px; height: 85px; border-radius: 50%; overflow: hidden; margin: 0 auto 1rem; border: 4px solid #f7fafc; background: #edf2f7; }
+      .child-thumb { width: 100%; height: 100%; object-fit: cover; }
+      .child-card h4 { font-size: 0.92rem; margin: 0; color: #2d3748; font-weight: 700; line-height: 1.3; }
+      /* ── Grouped data fields ── */
+      .data-card-grouped { background: #f0f7ff; border: 1px solid #bee3f8; }
+      .data-group-values { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.3rem; }
+      .data-group-chip { display: inline-block; background: white; border: 1px solid #cbd5e0; border-radius: 6px; padding: 0.3rem 0.7rem; font-size: 0.95rem; color: #2d3748; font-weight: 500; line-height: 1.4; }
+
+      .search-container input { border-radius: 50px; padding-left: 1.5rem; max-width: 550px; margin: 1rem auto 2.5rem; display: block; border: 2px solid #e2e8f0; }
+      .hidden { display: none !important; }
+
+      /* ── Share button ── */
+      .share-btn { background: #38a169; color: white !important; border: none; padding: 4px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.2s; }
+      .share-btn:hover { background: #2f855a; }
+      .ext-home-link { background: #553c9a; color: white !important; border: none; padding: 4px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; text-decoration: none !important; white-space: nowrap; transition: 0.2s; }
+      .ext-home-link:hover { background: #44337a; }
+      .share-toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: #2d3748; color: white; padding: 0.7rem 1.5rem; border-radius: 8px; font-size: 0.85rem; z-index: 9999; box-shadow: 0 8px 20px rgba(0,0,0,0.2); animation: toastIn 0.3s ease, toastOut 0.3s ease 1.7s forwards; }
+      @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+      @keyframes toastOut { from { opacity: 1; } to { opacity: 0; } }
+    </style>
+  </head>
+  <body>
+
+    <!-- ── INPUT SCREEN ── -->
+    <div id="inputScreen" class="container">
+      <article class="start-card">
+        <h1>📂 XML Visualizer Pro</h1>
+        <p>Оберіть XML-файл із сервера або завантажте локальний</p>
+
+        <div class="tabs">
+          <button class="tab-btn active" onclick="switchTab('server', this)">🗂 З сервера</button>
+          <button class="tab-btn" onclick="switchTab('local', this)">📤 Локальний файл</button>
+          <button class="tab-btn" onclick="switchTab('api', this)">🌐 Polyhedron API</button>
+        </div>
+
+        <!-- Server tab -->
+        <div id="tab-server">
+          <div id="serverFileList"><p class="empty-state">⏳ Завантаження списку файлів...</p></div>
+          <div style="margin-top:1rem; text-align:right;">
+            <button class="outline" style="font-size:0.8rem; padding:4px 12px;" onclick="loadServerFileList()">🔄 Оновити</button>
+          </div>
+        </div>
+
+        <!-- Local tab -->
+        <div id="tab-local" class="hidden">
+          <p style="color:#718096; font-size:0.9rem;">Виберіть .xml файл з вашого комп'ютера</p>
+          <input type="file" id="fileInput" accept=".xml" />
+        </div>
+
+        <!-- Polyhedron API tab -->
+        <div id="tab-api" class="hidden">
+          <p style="color:#718096; font-size:0.9rem; margin-bottom:1rem;">
+            Вставте посилання на онтологію або введіть ідентифікатор вручну
+          </p>
+          <div style="display:flex; gap:0.5rem;">
+            <input type="text" id="polyIdInput"
+              placeholder="URL або ідентифікатор — напр. anatomiya-lyudini"
+              style="flex:1;"
+              onkeydown="if(event.key==='Enter') loadFromPolyhedronUI()"
+              oninput="previewPolyParsed(this.value)" />
+            <button onclick="loadFromPolyhedronUI()" style="white-space:nowrap;">Завантажити</button>
+          </div>
+          <div id="polyParsedPreview" style="color:#2c7a4b; font-size:0.8rem; margin-top:0.4rem; display:none;"></div>
+          <p style="color:#a0aec0; font-size:0.78rem; margin-top:0.5rem;">
+            Підтримувані формати посилань:<br>
+            <code>https://polyhedron.ulif.org.ua/?fname=anatomiya-lyudini</code><br>
+            <code>https://e-devel.ulif.org.ua/?sharedgraph=6980a7263e215&amp;view=graphedit</code><br>
+            <code>https://manlab.ulif.org.ua/?fname=normativni-dokumenti-v1</code>
+          </p>
+          <div id="polyError" style="color:#e53e3e; font-size:0.85rem; margin-top:0.5rem; display:none;"></div>
+        </div>
+      </article>
+    </div>
+
+    <!-- ── APP CONTAINER ── -->
+    <div id="appContainer" class="hidden">
+      <nav class="navbar">
+        <div class="nav-container">
+          <a href="#" id="homeBtn" style="font-weight:800; color:#2b6cb0; text-decoration:none;">🏠 ГОЛОВНА</a>
+          <button class="filter-nav-btn" onclick="toggleSidebar()">⚙ ФІЛЬТРИ</button>
+          <div class="nav-links" id="topNav"></div>
+          <button id="shareBtn" class="share-btn hidden" onclick="copyShareLink()">📋 Копіювати посилання</button>
+          <button class="secondary outline" onclick="goHome()" style="padding:4px 10px; font-size:0.7rem; border-radius:4px; margin-left:auto;">Новий файл</button>
+          <a href="https://ontonew.snman.science/ontoviz/index.html#" class="ext-home-link" target="_blank" rel="noopener">🌐 Головна</a>
+        </div>
+      </nav>
+
+      <div style="display:flex; position:relative;">
+        <aside id="sidebar" class="filter-sidebar">
+          <div class="sidebar-header">
+            <strong>⚙ ФІЛЬТРАЦІЯ</strong>
+            <span style="cursor:pointer; font-size:2rem; line-height:1;" onclick="toggleSidebar()">&times;</span>
+          </div>
+          <div id="filtersContent" class="sidebar-content"></div>
+          <div class="sidebar-footer">
+            <button onclick="applyFilters()">Застосувати</button>
+            <button class="contrast outline" onclick="resetFilters()">Скинути</button>
+          </div>
+        </aside>
+
+        <main>
+          <div id="breadcrumb" class="breadcrumb"></div>
+          <div class="search-container">
+            <input type="search" id="globalSearch" placeholder="🔍 Пошук за назвою або характеристикою..." oninput="handleSearch(this.value)">
+          </div>
+          <div id="mainDisplay"></div>
+        </main>
+      </div>
+    </div>
+
+    <script>
+      let allNodes = new Map();
+      let rootNode = null;
+      let currentNode = null;
+      let activeFilters = { categorical: {}, numerical: {}, chronological: {} };
+      let searchTerm = "";
+      let isDetailedMode = false;
+      let currentServerFile = null;
+      let currentApiSource = null;
+      // Matches DD.MM.YYYY or DD.MM (partial dates without year)
+      const dateRegex     = /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/;
+      const dateRegexShort = /^(\d{1,2})\.(\d{1,2})$/;
+
+      // ── FIX: validate day/month ranges so plain numbers aren't misread as dates ──
+      function isDateValue(v) {
+        if (dateRegex.test(v)) {
+          const [d, m] = v.split('.');
+          return +m >= 1 && +m <= 12 && +d >= 1 && +d <= 31;
+        }
+        if (dateRegexShort.test(v)) {
+          const [d, m] = v.split('.');
+          return +m >= 1 && +m <= 12 && +d >= 1 && +d <= 31;
+        }
+        return false;
+      }
+
+      function parseDateValue(v) {
+        if (dateRegex.test(v)) {
+          const [d,m,y] = v.split('.'); return new Date(+y, +m-1, +d);
+        }
+        if (dateRegexShort.test(v)) {
+          const [d,m] = v.split('.'); return new Date(new Date().getFullYear(), +m-1, +d);
+        }
+        return null;
+      }
+
+      // ── TAB SWITCHING ──
+      function switchTab(tab, btn) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('tab-server').classList.toggle('hidden', tab !== 'server');
+        document.getElementById('tab-local').classList.toggle('hidden', tab !== 'local');
+        document.getElementById('tab-api').classList.toggle('hidden', tab !== 'api');
+      }
+
+      // ── SERVER FILE LIST ──
+      let hasPHP = false;
+
+      async function loadServerFileList() {
+        const container = document.getElementById('serverFileList');
+        container.innerHTML = '<p class="empty-state">⏳ Завантаження...</p>';
+        try {
+          const res = await fetch('api.php?action=list');
+          if (!res.ok) throw new Error('No PHP');
+          const files = await res.json();
+          hasPHP = true;
+          renderFileList(container, files.filter(f => f.toLowerCase().endsWith('.xml')));
+        } catch {
+          try {
+            const res2 = await fetch('xml/index.json');
+            if (!res2.ok) throw new Error('No index');
+            const files = await res2.json();
+            renderFileList(container, files);
+          } catch {
+            container.innerHTML = '<p class="empty-state">📭 Немає доступних XML-файлів на сервері.<br>Завантажте локальний файл через другу вкладку.</p>';
+          }
+        }
+      }
+
+      function renderFileList(container, xmlFiles) {
+        if (xmlFiles.length === 0) {
+          container.innerHTML = '<p class="empty-state">📭 Папка <code>xml/</code> порожня.</p>';
+          return;
+        }
+        const grid = document.createElement('div');
+        grid.className = "server-file-grid";
+        xmlFiles.forEach(filename => {
+          const card = document.createElement('div');
+          card.className = "server-file-card";
+          card.innerHTML = `<span class="file-icon">📄</span><span class="file-name">${filename}</span>`;
+          card.onclick = () => loadServerFile(filename);
+          grid.appendChild(card);
+        });
+        container.innerHTML = '';
+        container.appendChild(grid);
+      }
+
+      async function loadServerFile(filename, targetNodeGuid) {
+        try {
+          const url = hasPHP
+            ? `api.php?action=get&file=${encodeURIComponent(filename)}`
+            : `xml/${encodeURIComponent(filename)}`;
+          const res = await fetch(url);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const text = await res.text();
+          currentServerFile = filename;
+          document.getElementById('inputScreen').classList.add('hidden');
+          document.getElementById('appContainer').classList.remove('hidden');
+          document.getElementById('shareBtn').classList.remove('hidden');
+          parseXML(text, targetNodeGuid);
+          updateURL();
+        } catch (err) {
+          alert(`Помилка завантаження файлу: ${err.message}`);
+        }
+      }
+
+      // ── POLYHEDRON API ──
+      function parsePolyhedronInput(raw) {
+        const s = raw.trim();
+        if (!s) return null;
+        try {
+          const u = new URL(s);
+          for (const key of ['fname', 'sharedgraph']) {
+            const val = u.searchParams.get(key);
+            if (val && /^[\w\-]+$/.test(val)) return { type: key, id: val };
+          }
+        } catch {}
+        if (/^[\w\-]+$/.test(s)) return { type: 'fname', id: s };
+        return null;
+      }
+
+      function previewPolyParsed(raw) {
+        const preview = document.getElementById('polyParsedPreview');
+        const parsed = parsePolyhedronInput(raw);
+        if (parsed && raw.trim().includes('://')) {
+          preview.textContent = `✔ Розпізнано: ${parsed.type} = "${parsed.id}"`;
+          preview.style.display = '';
+        } else {
+          preview.style.display = 'none';
+        }
+      }
+
+      function loadFromPolyhedronUI() {
+        const raw = document.getElementById('polyIdInput').value;
+        const errEl = document.getElementById('polyError');
+        const parsed = parsePolyhedronInput(raw);
+        if (!parsed) {
+          errEl.textContent = 'Введіть коректне посилання або ідентифікатор (літери, цифри, - та _).';
+          errEl.style.display = '';
+          return;
+        }
+        errEl.style.display = 'none';
+        document.getElementById('polyParsedPreview').style.display = 'none';
+        loadFromPolyhedron(parsed.type, parsed.id);
+      }
+
+      async function loadFromPolyhedron(type, id, targetNodeGuid) {
+        const errEl = document.getElementById('polyError');
+        if (errEl) errEl.style.display = 'none';
+        let text;
+        try {
+          const proxyUrl = `api.php?action=proxy&type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`;
+          let res = await fetch(proxyUrl);
+          if (!res.ok) {
+            const directUrl = `https://polyhedron.ulif.org.ua/?ajaxAction=rawXml&${encodeURIComponent(type)}=${encodeURIComponent(id)}`;
+            res = await fetch(directUrl);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          }
+          text = await res.text();
+        } catch (err) {
+          const msg = `Помилка: ${err.message}. Переконайтеся, що сервер з api.php доступний або онтологія публічна.`;
+          if (errEl) { errEl.textContent = msg; errEl.style.display = ''; }
+          else alert(msg);
+          return;
+        }
+        if (!text.trim().startsWith('<')) {
+          const msg = 'Отримана відповідь не є XML. Перевірте ідентифікатор онтології.';
+          if (errEl) { errEl.textContent = msg; errEl.style.display = ''; }
+          else alert(msg);
+          return;
+        }
+        currentServerFile = null;
+        currentApiSource = { type, id };
+        document.getElementById('inputScreen').classList.add('hidden');
+        document.getElementById('appContainer').classList.remove('hidden');
+        document.getElementById('shareBtn').classList.remove('hidden');
+        parseXML(text, targetNodeGuid);
+        updateURL();
+      }
+
+      // ── LOCAL FILE ──
+      document.getElementById('fileInput').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          currentServerFile = null;
+          document.getElementById('inputScreen').classList.add('hidden');
+          document.getElementById('appContainer').classList.remove('hidden');
+          document.getElementById('shareBtn').classList.add('hidden');
+          history.replaceState(null, '', location.pathname);
+          parseXML(event.target.result);
+        };
+        reader.readAsText(file);
+      });
+
+      // ── PARSE XML ──
+      function parseXML(text, targetNodeGuid) {
+        const xml = new DOMParser().parseFromString(text, "application/xml");
+        const nodes = xml.querySelectorAll("Node");
+        const edges = xml.querySelectorAll("Edge");
+        const nameToGuid = new Map();
+        allNodes.clear();
+
+        nodes.forEach(el => {
+          const guid = el.getAttribute("guid");
+          const obj = {
+            guid,
+            name: el.getAttribute("nodeName"),
+            nclass: el.getAttribute("nclass") || "Інше",
+            data: [...el.querySelectorAll("data")].map(d => ({
+              label: d.getAttribute("tclass") || "Інфо",
+              value: d.textContent.trim(),
+              link: d.getAttribute("link")
+            })),
+            children: [],
+            parent: null
+          };
+          allNodes.set(guid, obj);
+          nameToGuid.set(obj.name, guid);
+        });
+
+        edges.forEach(edge => {
+          const pG = nameToGuid.get(edge.getAttribute("node2"));
+          const cG = nameToGuid.get(edge.getAttribute("node1"));
+          if (pG && cG) {
+            const p = allNodes.get(pG);
+            const c = allNodes.get(cG);
+            if (p && c) { p.children.push(c); c.parent = p; }
+          }
+        });
+
+        rootNode = [...allNodes.values()].find(n => !n.parent) || [...allNodes.values()][0];
+        renderTopNav();
+        generateSmartFilters();
+        const target = targetNodeGuid ? allNodes.get(targetNodeGuid) : null;
+        navigateTo(target || rootNode);
+      }
+
+      // ── NAVIGATION ──
+      function navigateTo(node) {
+        if (!node) return;
+        currentNode = node;
+        isDetailedMode = true;
+        updateBreadcrumbs();
+        renderMainDisplay();
+        updateURL();
+        window.scrollTo(0, 0);
+      }
+
+      function forceNavigate(node) {
+        currentNode = node;
+        isDetailedMode = true;
+        updateBreadcrumbs();
+        renderMainDisplay();
+        updateURL();
+        window.scrollTo(0, 0);
+      }
+
+      function backToResults() {
+        isDetailedMode = false;
+        renderMainDisplay();
+      }
+
+      function updateBreadcrumbs() {
+        const container = document.getElementById('breadcrumb');
+        container.innerHTML = "";
+        let path = [];
+        let temp = currentNode;
+        while (temp) { path.unshift(temp); temp = temp.parent; }
+        path.forEach((node, idx) => {
+          if (idx > 0) {
+            const sep = document.createElement('span');
+            sep.style.opacity = '0.3';
+            sep.textContent = ' / ';
+            container.appendChild(sep);
+          }
+          const a = document.createElement('span');
+          if (idx === path.length - 1) {
+            a.className = "breadcrumb-current";
+          } else {
+            a.className = "breadcrumb-item";
+            a.onclick = () => {
+              searchTerm = "";
+              activeFilters = { categorical: {}, numerical: {}, chronological: {} };
+              isDetailedMode = true;
+              navigateTo(node);
+            };
+          }
+          a.textContent = node.name;
+          container.appendChild(a);
+        });
+      }
+
+      function renderTopNav() {
+        const nav = document.getElementById('topNav');
+        nav.innerHTML = "";
+        rootNode.children.forEach(child => {
+          const btn = document.createElement('button');
+          btn.className = "nav-item";
+          btn.textContent = child.name;
+          btn.onclick = () => {
+            searchTerm = "";
+            activeFilters = { categorical: {}, numerical: {}, chronological: {} };
+            navigateTo(child);
+          };
+          nav.appendChild(btn);
+        });
+        document.getElementById('homeBtn').onclick = (e) => { e.preventDefault(); navigateTo(rootNode); };
+      }
+
+      // ── HELPERS ──
+      function todayDMY() {
+        const now = new Date();
+        const d = String(now.getDate()).padStart(2, '0');
+        const m = String(now.getMonth() + 1).padStart(2, '0');
+        const y = now.getFullYear();
+        return `${d}.${m}.${y}`;
+      }
+
+      function dmyToISO(dmy) {
+        const p = dmy.split('.');
+        return `${p[2]}-${p[1]}-${p[0]}`;
+      }
+
+      function isoToDMY(iso) {
+        const [y, m, d] = iso.split('-');
+        return `${d}.${m}.${y}`;
+      }
+
+      // ── FILTERS ──
+      function generateSmartFilters() {
+        const cont = document.getElementById('filtersContent');
+        cont.innerHTML = "";
+        const structure = {};
+        allNodes.forEach(node => {
+          const cls = node.nclass;
+          if (!structure[cls]) structure[cls] = {};
+          node.data.forEach(d => {
+            if (!d.value || isImg(d)) return;
+            if (!structure[cls][d.label]) structure[cls][d.label] = [];
+            structure[cls][d.label].push(d.value);
+          });
+        });
+
+        for (const [cls, fields] of Object.entries(structure)) {
+          const l1 = document.createElement('details');
+          l1.className = "f-group-l1";
+          l1.innerHTML = `<summary>${cls}</summary>`;
+
+          for (const [field, rawValues] of Object.entries(fields)) {
+            const uniqueValues = [...new Set(rawValues)];
+            if (uniqueValues.length < 2) continue;
+            const l2 = document.createElement('details');
+            l2.className = "f-group-l2";
+            l2.innerHTML = `<summary>${field}</summary>`;
+            const isNumeric = uniqueValues.every(v => !isNaN(parseFloat(v)) && !isDateValue(v));
+            // Require full DD.MM.YYYY to classify as date — short DD.MM alone is too ambiguous
+            const isDate = uniqueValues.every(v => dateRegex.test(v) && isDateValue(v));
+            const inner = document.createElement('div');
+
+            if (isNumeric) {
+              const nums = uniqueValues.map(parseFloat);
+              inner.className = "range-box";
+              inner.innerHTML = `
+                <label>Від:</label><input type="number" step="any" placeholder="${Math.min(...nums)}" class="num-in" data-cls="${cls}" data-field="${field}" data-type="min">
+                <label>До:</label><input type="number" step="any" placeholder="${Math.max(...nums)}" class="num-in" data-cls="${cls}" data-field="${field}" data-type="max">`;
+
+            } else if (isDate) {
+              inner.className = "range-box";
+
+              ['start', 'end'].forEach(type => {
+                const lbl = document.createElement('label');
+                lbl.textContent = type === 'start' ? 'Початок:' : 'Кінець:';
+                inner.appendChild(lbl);
+
+                const row = document.createElement('div');
+                row.className = 'date-input-row';
+
+                const textIn = document.createElement('input');
+                textIn.type = 'text';
+                textIn.placeholder = 'ДД.ММ.РРРР';
+                textIn.className = 'date-text-in';
+                textIn.dataset.cls = cls;
+                textIn.dataset.field = field;
+                textIn.dataset.type = type;
+                textIn.maxLength = 10;
+
+                textIn.addEventListener('input', function() {
+                  let v = this.value.replace(/[^\d]/g, '');
+                  if (v.length > 2) v = v.slice(0,2) + '.' + v.slice(2);
+                  if (v.length > 5) v = v.slice(0,5) + '.' + v.slice(5);
+                  this.value = v.slice(0, 10);
+                });
+
+                const calWrap = document.createElement('div');
+                calWrap.style.cssText = 'position:relative;width:34px;height:32px;flex-shrink:0;';
+
+                const calIcon = document.createElement('span');
+                calIcon.textContent = '📅';
+                calIcon.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:15px;pointer-events:none;border:1px solid #cbd5e0;border-radius:6px;background:#edf2f7;cursor:pointer;box-sizing:border-box;';
+
+                const pickerIn = document.createElement('input');
+                pickerIn.type = 'date';
+                pickerIn.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;margin:0;padding:0;border:none;box-sizing:border-box;';
+                pickerIn.addEventListener('change', function() {
+                  if (this.value) {
+                    textIn.value = isoToDMY(this.value);
+                  }
+                });
+                pickerIn.addEventListener('click', function() {
+                  if (dateRegex.test(textIn.value)) this.value = dmyToISO(textIn.value);
+                });
+
+                calWrap.appendChild(calIcon);
+                calWrap.appendChild(pickerIn);
+
+                const todayBtn = document.createElement('button');
+                todayBtn.type = 'button';
+                todayBtn.className = 'date-today-btn';
+                todayBtn.textContent = 'Сьогодні';
+                todayBtn.addEventListener('click', () => {
+                  textIn.value = todayDMY();
+                });
+
+                row.appendChild(textIn);
+                row.appendChild(calWrap);
+                row.appendChild(todayBtn);
+                inner.appendChild(row);
+              });
+
+            } else {
+              inner.className = "filter-options-container";
+              uniqueValues.sort().forEach(val => {
+                const lbl = document.createElement('label');
+                lbl.className = "filter-opt";
+                lbl.innerHTML = `<input type="checkbox" class="cat-cb" data-cls="${cls}" data-field="${field}" value="${val}"> ${val}`;
+                inner.appendChild(lbl);
+              });
+            }
+            l2.appendChild(inner);
+            l1.appendChild(l2);
+          }
+          cont.appendChild(l1);
+        }
+      }
+
+      // ── RENDER ──
+      function hasActiveFilters() {
+        return searchTerm.length > 0 ||
+          Object.keys(activeFilters.categorical).length > 0 ||
+          Object.keys(activeFilters.numerical).length > 0 ||
+          Object.keys(activeFilters.chronological).length > 0;
+      }
+
+      function renderMainDisplay() {
+        const display = document.getElementById('mainDisplay');
+        display.innerHTML = "";
+        const filtering = hasActiveFilters();
+
+        if (filtering && !isDetailedMode) {
+          const results = Array.from(allNodes.values()).filter(validateNode);
+          const title = document.createElement('h3');
+          title.className = "children-section-title";
+          title.textContent = `Знайдено результатів: ${results.length}`;
+          display.appendChild(title);
+          display.appendChild(renderGrid(results, true));
+          return;
+        }
+
+        if (filtering) {
+          const backBtn = document.createElement('div');
+          backBtn.className = "header-controls";
+          backBtn.innerHTML = `<button class="back-btn" onclick="backToResults()">⬅ Повернутися до результатів</button>`;
+          display.appendChild(backBtn);
+        }
+
+        const header = document.createElement('div');
+        header.className = "content-header";
+        const h2 = document.createElement('h2');
+        h2.textContent = currentNode.name;
+        header.appendChild(h2);
+        display.appendChild(header);
+
+        const imgs = currentNode.data.filter(isMedia);
+        const info = currentNode.data.filter(d => !isMedia(d));
+
+        const mediaSection = document.createElement('div');
+        mediaSection.className = imgs.length > 0 ? 'media-section' : 'media-section no-media';
+
+        const imgWrap = document.createElement('div');
+        imgWrap.className = 'node-image-wrap';
+        if (imgs.length > 0 && !isVideo(imgs[0])) {
+          const img = document.createElement('img');
+          img.className = 'node-primary-image';
+          img.src = imgs[0].link || imgs[0].value;
+          img.alt = currentNode.name;
+          imgWrap.appendChild(img);
+        } else if (imgs.length > 0 && isVideo(imgs[0])) {
+          const video = document.createElement('video');
+          video.controls = true;
+          video.className = 'node-primary-image';
+          video.src = imgs[0].link || imgs[0].value;
+          imgWrap.appendChild(video);
+        } else {
+          imgWrap.style.cssText = 'max-width:600px; width:100%; padding:0.5rem; background:#edf2f7; border-radius:6px; display:flex; align-items:center; justify-content:center; color:#a0aec0; font-size:0.85rem;';
+          imgWrap.textContent = 'Немає зображення';
+        }
+        mediaSection.appendChild(imgWrap);
+        if (imgs.length > 0) {
+          mediaSection.appendChild(renderCarousel(imgs));
+        }
+        display.appendChild(mediaSection);
+
+        if (info.length > 0) {
+          const grouped = new Map();
+          const orderKeys = [];
+          info.forEach(t => {
+            if (!grouped.has(t.label)) {
+              grouped.set(t.label, []);
+              orderKeys.push(t.label);
+            }
+            grouped.get(t.label).push(t.value);
+          });
+
+          const grid = document.createElement('div');
+          grid.className = "data-fields-grid";
+
+          orderKeys.forEach(lbl => {
+            const values = grouped.get(lbl);
+            if (values.length > 1) {
+              const card = document.createElement('div');
+              card.className = "data-card-inline data-card-grouped";
+              const label = document.createElement('div');
+              label.className = "data-label";
+              label.textContent = lbl;
+              const content = document.createElement('div');
+              content.className = "data-group-values";
+              values.forEach(v => {
+                const chip = document.createElement('span');
+                chip.className = 'data-group-chip';
+                chip.textContent = v;
+                content.appendChild(chip);
+              });
+              card.appendChild(label);
+              card.appendChild(content);
+              grid.appendChild(card);
+            } else {
+              const card = document.createElement('div');
+              card.className = "data-card-inline";
+              const label = document.createElement('div');
+              label.className = "data-label";
+              label.textContent = lbl;
+              const content = document.createElement('div');
+              content.className = "data-content data-content-clamp";
+              content.innerHTML = values[0].replace(/\n/g, '<br>');
+              card.appendChild(label);
+              card.appendChild(content);
+              grid.appendChild(card);
+            }
+          });
+
+          display.appendChild(grid);
+
+          requestAnimationFrame(() => {
+            grid.querySelectorAll('.data-card-inline').forEach(card => {
+              const content = card.querySelector('.data-content');
+              if (!content) return;
+              if (content.scrollHeight > content.clientHeight + 2) {
+                const btn = document.createElement('button');
+                btn.className = 'read-more-btn';
+                btn.textContent = '▼ Читати далі';
+                btn.onclick = () => {
+                  const expanded = card.classList.toggle('expanded');
+                  content.classList.toggle('data-content-clamp', !expanded);
+                  btn.textContent = expanded ? '▲ Згорнути' : '▼ Читати далі';
+                };
+                card.appendChild(btn);
+              }
+            });
+          });
+        }
+
+        if (currentNode.children.length > 0) {
+          const sep = document.createElement('h3');
+          sep.className = "children-section-title";
+          sep.textContent = `Підрозділи / Елементи (${currentNode.children.length})`;
+          display.appendChild(sep);
+          display.appendChild(renderGrid(currentNode.children, false));
+        }
+      }
+
+      function renderGrid(nodes, isSearchResult) {
+        const grid = document.createElement('div');
+        grid.className = "children-grid";
+        nodes.forEach(n => {
+          const card = document.createElement('div');
+          card.className = "child-card";
+          card.onclick = () => {
+            if (isSearchResult) {
+              forceNavigate(n);
+            } else {
+              activeFilters = { categorical: {}, numerical: {}, chronological: {} };
+              searchTerm = "";
+              navigateTo(n);
+            }
+          };
+          const img = n.data.find(isImg);
+          const imgSrc = img ? (img.link || img.value) : "";
+          card.innerHTML = `
+            <div class="child-thumb-wrap">
+              ${imgSrc ? `<img class="child-thumb" src="${imgSrc}" loading="lazy">` : ''}
+            </div>
+            <h4>${n.name}</h4>
+            <div style="font-size:0.7rem; opacity:0.5; margin-top:5px;">${n.nclass}</div>
+          `;
+          grid.appendChild(card);
+        });
+        return grid;
+      }
+
+      // ── FILTER LOGIC ──
+      function applyFilters() {
+        activeFilters = { categorical: {}, numerical: {}, chronological: {} };
+
+        document.querySelectorAll('.cat-cb:checked').forEach(cb => {
+          const { cls, field } = cb.dataset;
+          if (!activeFilters.categorical[cls]) activeFilters.categorical[cls] = {};
+          if (!activeFilters.categorical[cls][field]) activeFilters.categorical[cls][field] = [];
+          activeFilters.categorical[cls][field].push(cb.value);
+        });
+
+        document.querySelectorAll('.num-in').forEach(input => {
+          if (!input.value) return;
+          const { cls, field, type } = input.dataset;
+          if (!activeFilters.numerical[cls]) activeFilters.numerical[cls] = {};
+          if (!activeFilters.numerical[cls][field]) activeFilters.numerical[cls][field] = {};
+          activeFilters.numerical[cls][field][type] = parseFloat(input.value);
+        });
+
+        document.querySelectorAll('.date-text-in').forEach(input => {
+          if (!input.value || !isDateValue(input.value)) return;
+          const { cls, field, type } = input.dataset;
+          const dateObj = parseDateValue(input.value);
+          if (!dateObj) return;
+          if (!activeFilters.chronological[cls]) activeFilters.chronological[cls] = {};
+          if (!activeFilters.chronological[cls][field]) activeFilters.chronological[cls][field] = {};
+          activeFilters.chronological[cls][field][type] = dateObj;
+        });
+
+        isDetailedMode = false;
+        renderMainDisplay();
+        toggleSidebar();
+      }
+
+      function resetFilters() {
+        document.querySelectorAll('input[type="checkbox"]').forEach(i => i.checked = false);
+        document.querySelectorAll('input[type="number"]').forEach(i => i.value = "");
+        document.querySelectorAll('.date-text-in').forEach(i => i.value = "");
+        document.querySelectorAll('.date-hidden-picker').forEach(i => i.value = "");
+        activeFilters = { categorical: {}, numerical: {}, chronological: {} };
+        searchTerm = "";
+        isDetailedMode = true;
+        renderMainDisplay();
+      }
+
+      function handleSearch(v) {
+        searchTerm = v.toLowerCase();
+        isDetailedMode = false;
+        renderMainDisplay();
+      }
+
+      function validateNode(node) {
+        const sMatch = !searchTerm || node.name.toLowerCase().includes(searchTerm) || node.data.some(d => d.value.toLowerCase().includes(searchTerm));
+        if (!sMatch) return false;
+
+        const hasCat = Object.keys(activeFilters.categorical).length > 0;
+        const hasNum = Object.keys(activeFilters.numerical).length > 0;
+        const hasDate = Object.keys(activeFilters.chronological).length > 0;
+        if (!hasCat && !hasNum && !hasDate) return true;
+
+        const cls = node.nclass;
+        const classesWithFilters = new Set([
+          ...Object.keys(activeFilters.categorical),
+          ...Object.keys(activeFilters.numerical),
+          ...Object.keys(activeFilters.chronological)
+        ]);
+        if (classesWithFilters.size > 0 && !classesWithFilters.has(cls)) return false;
+
+        if (activeFilters.categorical[cls]) {
+          for (const [f, vals] of Object.entries(activeFilters.categorical[cls])) {
+            const item = node.data.find(d => d.label === f);
+            if (!item || !vals.includes(item.value)) return false;
+          }
+        }
+
+        if (activeFilters.numerical[cls]) {
+          for (const [f, range] of Object.entries(activeFilters.numerical[cls])) {
+            const item = node.data.find(d => d.label === f);
+            const val = parseFloat(item ? item.value : NaN);
+            if (isNaN(val)) return false;
+            if (range.min !== undefined && val < range.min) return false;
+            if (range.max !== undefined && val > range.max) return false;
+          }
+        }
+
+        if (activeFilters.chronological[cls]) {
+          for (const [f, range] of Object.entries(activeFilters.chronological[cls])) {
+            const item = node.data.find(d => d.label === f);
+            if (!item || !isDateValue(item.value)) return false;
+            const dObj = parseDateValue(item.value);
+            if (!dObj) return false;
+            if (range.start && dObj < range.start) return false;
+            if (range.end && dObj > range.end) return false;
+          }
+        }
+
+        return true;
+      }
+
+      function isImg(d) { return d.label.toLowerCase().includes("image") || /\.(jpg|jpeg|png|webp|svg)$/i.test(d.link || d.value); }
+      function isVideo(d) { return d.label.toLowerCase().includes("video") || /\.(mp4|webm|ogg|avi|mov)$/i.test(d.link || d.value); }
+      function isMedia(d) { return isImg(d) || isVideo(d); }
+      function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+
+      function renderCarousel(items) {
+        const wrap = document.createElement('div');
+        wrap.className = 'carousel-wrap';
+
+        if (items.length === 0) {
+          const empty = document.createElement('div');
+          empty.style.cssText = 'flex:1; display:flex; align-items:center; justify-content:center; color:#a0aec0; font-size:1rem;';
+          empty.textContent = 'Медіа відсутні';
+          wrap.appendChild(empty);
+          return wrap;
+        }
+
+        const track = document.createElement('div');
+        track.className = 'carousel-track';
+        let current = 0;
+
+        const slides = items.map((item, i) => {
+          const slide = document.createElement('div');
+          slide.className = 'carousel-slide' + (i === 0 ? ' active' : '');
+          const src = item.link || item.value;
+          if (isVideo(item)) {
+            const video = document.createElement('video');
+            video.controls = true;
+            video.src = src;
+            video.className = 'carousel-media-video';
+            slide.appendChild(video);
+          } else {
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = item.label;
+            img.className = 'carousel-media';
+            img.loading = 'lazy';
+            slide.appendChild(img);
+          }
+          track.appendChild(slide);
+          return slide;
+        });
+
+        wrap.appendChild(track);
+
+        const indic = document.createElement('div');
+        indic.className = 'carousel-indicators';
+
+        const dots = items.map((_, i) => {
+          const dot = document.createElement('button');
+          dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+          dot.onclick = () => goTo(i);
+          indic.appendChild(dot);
+          return dot;
+        });
+
+        function goTo(n) {
+          slides[current].classList.remove('active');
+          dots[current].classList.remove('active');
+          current = ((n % items.length) + items.length) % items.length;
+          slides[current].classList.add('active');
+          dots[current].classList.add('active');
+        }
+
+        if (items.length > 1) {
+          const prev = document.createElement('button');
+          prev.className = 'carousel-nav carousel-prev';
+          prev.innerHTML = '&#10094;';
+          const next = document.createElement('button');
+          next.className = 'carousel-nav carousel-next';
+          next.innerHTML = '&#10095;';
+          prev.onclick = () => goTo(current - 1);
+          next.onclick = () => goTo(current + 1);
+          wrap.appendChild(prev);
+          wrap.appendChild(next);
+        }
+
+        wrap.appendChild(indic);
+        return wrap;
+      }
+
+      // ── URL & SHARING ──
+      function updateURL() {
+        const params = new URLSearchParams();
+        if (currentServerFile) {
+          params.set('file', currentServerFile);
+        } else if (currentApiSource) {
+          params.set('source', 'polyhedron');
+          params.set('type', currentApiSource.type);
+          params.set('id', currentApiSource.id);
+        } else {
+          return;
+        }
+        if (currentNode && currentNode !== rootNode) {
+          params.set('node', currentNode.guid);
+        }
+        history.replaceState(null, '', location.pathname + '?' + params.toString());
+      }
+
+      function getShareURL() {
+        const url = new URL(location.href);
+        url.search = '';
+        if (currentServerFile) {
+          url.searchParams.set('file', currentServerFile);
+        } else if (currentApiSource) {
+          url.searchParams.set('source', 'polyhedron');
+          url.searchParams.set('type', currentApiSource.type);
+          url.searchParams.set('id', currentApiSource.id);
+        } else {
+          return location.href;
+        }
+        if (currentNode && currentNode !== rootNode) {
+          url.searchParams.set('node', currentNode.guid);
+        }
+        return url.toString();
+      }
+
+      function copyShareLink() {
+        const url = getShareURL();
+        navigator.clipboard.writeText(url).then(() => {
+          showToast('Посилання скопійовано!');
+        }).catch(() => {
+          const ta = document.createElement('textarea');
+          ta.value = url;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          showToast('Посилання скопійовано!');
+        });
+      }
+
+      function showToast(msg) {
+        const existing = document.querySelector('.share-toast');
+        if (existing) existing.remove();
+        const toast = document.createElement('div');
+        toast.className = 'share-toast';
+        toast.textContent = msg;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2200);
+      }
+
+      function goHome() {
+        currentServerFile = null;
+        currentApiSource = null;
+        history.replaceState(null, '', location.pathname);
+        location.reload();
+      }
+
+      // ── INIT ──
+      (async function init() {
+        const params = new URLSearchParams(location.search);
+        const fileParam   = params.get('file');
+        const sourceParam = params.get('source');
+        const nodeParam   = params.get('node');
+
+        if (fileParam) {
+          try {
+            const probe = await fetch('api.php?action=list');
+            if (probe.ok) hasPHP = true;
+          } catch {}
+          loadServerFile(fileParam, nodeParam || null);
+        } else if (sourceParam === 'polyhedron') {
+          const type = params.get('type');
+          const id   = params.get('id');
+          if (type && id) {
+            loadFromPolyhedron(type, id, nodeParam || null);
+          } else {
+            loadServerFileList();
+          }
+        } else {
+          loadServerFileList();
+        }
+      })();
+    </script>
+  </body>
+</html>
