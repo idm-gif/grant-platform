@@ -421,29 +421,32 @@
   border: 1px solid;
 }
 .proj-badge-status[data-status="open"],
-.proj-badge-status[data-status="Open"] {
+.proj-badge-status[data-status="active"] {
   background: rgba(16, 185, 129, 0.15);
   color: var(--accent-emerald);
   border-color: rgba(16, 185, 129, 0.3);
 }
-.proj-badge-status[data-status="closes soon"],
-.proj-badge-status[data-status="Closes soon"] {
+.proj-badge-status[data-status="closes soon"] {
   background: rgba(245, 158, 11, 0.15);
   color: var(--accent-amber);
   border-color: rgba(245, 158, 11, 0.3);
 }
-.proj-badge-status[data-status="closed"],
-.proj-badge-status[data-status="Closed"],
-.proj-badge-status[data-status="archived"],
-.proj-badge-status[data-status="Archived"] {
+.proj-badge-status[data-status="no data"] {
   background: rgba(100, 116, 139, 0.15);
   color: var(--text-muted);
   border-color: rgba(100, 116, 139, 0.3);
 }
+.proj-badge-status[data-status="closed"],
+.proj-badge-status[data-status="archive"],
+.proj-badge-status[data-status="archived"] {
+  background: rgba(244, 63, 94, 0.15);
+  color: var(--accent-rose);
+  border-color: rgba(244, 63, 94, 0.3);
+}
 .proj-badge-archive {
-  background: rgba(100, 116, 139, 0.2);
-  color: var(--text-muted);
-  border: 1px solid rgba(100, 116, 139, 0.3);
+  background: rgba(244, 63, 94, 0.2);
+  color: var(--accent-rose);
+  border: 1px solid rgba(244, 63, 94, 0.3);
 }
 .proj-card-title {
   font-size: 1rem;
