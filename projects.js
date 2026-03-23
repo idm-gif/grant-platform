@@ -217,7 +217,7 @@
     p.linkInfoText = getFieldText(p, 'Link_info');
     p.weekNumber = getField(p, 'Номер_тижня');
 
-    p.isArchived = /^(archived|closed)$/i.test(p.status);
+    p.isArchived = /^(archived?|closed)$/i.test(p.status);
     p._deadlineParsed = parseDate(p.deadline);
 
     return p;
@@ -519,8 +519,7 @@
       <div class="proj-card-body">
         <div class="proj-card-badges">
           <span class="proj-badge proj-badge-program">${escHtml(p.acronym || shortGroupName(p._group))}</span>
-          ${p.status ? `<span class="proj-badge proj-badge-status" data-status="${escHtml(statusLower)}"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;margin-right:2px"></span>${escHtml(p.status)}</span>` : ''}
-          ${p.isArchived ? `<span class="proj-badge proj-badge-archive">${t('archive_badge')}</span>` : ''}
+          ${p.status && statusLower !== 'no data' ? `<span class="proj-badge proj-badge-status" data-status="${escHtml(statusLower)}"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;margin-right:2px"></span>${escHtml(p.status)}</span>` : ''}
         </div>
         <div class="proj-card-title">${escHtml(p.name)}</div>
         <div class="proj-card-desc">${escHtml(desc)}</div>
