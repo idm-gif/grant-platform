@@ -252,6 +252,7 @@
     const navList = document.getElementById('nav-links');
     if (!navList) return;
     let html = `<li><a href="#home" data-route="home">Головна</a></li>`;
+    html += `<li><a href="projects.html">🚀 Проєкти</a></li>`;
     dynamicNavTree.forEach(item => {
       if (item.type === 'group') {
         html += `<li class="dropdown">
