@@ -40,7 +40,11 @@
       uncategorized: 'Без програми / Uncategorized',
       archive_badge: 'Архів',
       n_projects: 'проєктів',
-      search_placeholder: 'Пошук проєктів... / Search projects...'
+      search_placeholder: 'Пошук проєктів... / Search projects...',
+      view_full_page: 'Переглянути повну сторінку',
+      copy_link: 'Копіювати посилання',
+      link_copied: 'Посилання скопійовано!',
+      back_to_explorer: '← Назад до проєктів'
     },
     en: {
       filter_program: 'Grant Program',
@@ -74,7 +78,11 @@
       uncategorized: 'Uncategorized',
       archive_badge: 'Archived',
       n_projects: 'projects',
-      search_placeholder: 'Search projects...'
+      search_placeholder: 'Search projects...',
+      view_full_page: 'View Full Page',
+      copy_link: 'Copy Link',
+      link_copied: 'Link copied!',
+      back_to_explorer: '← Back to Projects'
     }
   };
 
@@ -164,6 +172,10 @@
           parseGraph(doc);
           buildFilterOptions();
           applyFilters();
+          // Check if URL has a project route on initial load
+          if (window.location.hash.indexOf('#project/') === 0) {
+            handleRoute();
+          }
         } catch (e) {
           console.error('Parse error:', e);
         }
@@ -683,6 +695,18 @@
       html += '<div class="proj-modal-ref"><span>' + t('reference_id') + ':</span> ' + esc(p.code) + '</div>';
     }
 
+    // Action buttons: View Full Page + Copy Link
+    var projectUrl = window.location.pathname + '#project/' + encodeURIComponent(p._nodeName);
+    var fullUrl = window.location.origin + projectUrl;
+    html += '<div class="proj-modal-actions">';
+    html += '<button class="proj-modal-link-btn primary" id="btn-view-full-page">'
+      + '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> '
+      + t('view_full_page') + '</button>';
+    html += '<button class="proj-modal-link-btn secondary" id="btn-copy-link">'
+      + '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> '
+      + t('copy_link') + '</button>';
+    html += '</div>';
+
     body.innerHTML = html;
     overlay.classList.add('visible');
 
@@ -690,9 +714,52 @@
     var closeBtn = byId('modal-close-btn');
     if (closeBtn) {
       closeBtn.addEventListener('click', function () {
-        overlay.classList.remove('visible');
+        closeModal();
       });
     }
+
+    // View Full Page handler
+    var fullPageBtn = byId('btn-view-full-page');
+    if (fullPageBtn) {
+      fullPageBtn.addEventListener('click', function () {
+        overlay.classList.remove('visible');
+        window.location.hash = 'project/' + encodeURIComponent(p._nodeName);
+      });
+    }
+
+    // Copy Link handler
+    var copyBtn = byId('btn-copy-link');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
+        var textToCopy = fullUrl;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(textToCopy).then(function () {
+            showCopyFeedback(copyBtn);
+          });
+        } else {
+          // Fallback
+          var ta = document.createElement('textarea');
+          ta.value = textToCopy;
+          ta.style.position = 'fixed';
+          ta.style.left = '-9999px';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          showCopyFeedback(copyBtn);
+        }
+      });
+    }
+  }
+
+  function showCopyFeedback(btn) {
+    var orig = btn.innerHTML;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> ' + t('link_copied');
+    btn.classList.add('copied');
+    setTimeout(function () {
+      btn.innerHTML = orig;
+      btn.classList.remove('copied');
+    }, 2000);
   }
 
   function mSec(label, content) {
@@ -702,6 +769,176 @@
   function closeModal() {
     var overlay = byId('modal-overlay');
     if (overlay) overlay.classList.remove('visible');
+  }
+
+  /* ---------- Dedicated Project Page ---------- */
+  function findProjectByNodeName(name) {
+    for (var i = 0; i < allProjects.length; i++) {
+      if (allProjects[i]._nodeName === name) return allProjects[i];
+    }
+    return null;
+  }
+
+  function renderProjectPage(p) {
+    var mainEl = qs('.proj-main');
+    if (!mainEl) return;
+
+    var groupLabel = (p._group === '(empty)') ? t('uncategorized') : p._group;
+
+    // Status badge
+    var statusBadge = '';
+    if (p.status && p.statusLower !== 'no data') {
+      statusBadge = '<span class="proj-badge proj-badge-status" data-status="' + esc(p.statusLower) + '">'
+        + '<span class="proj-status-dot"></span>'
+        + esc(p.status) + '</span>';
+    }
+
+    var projectUrl = window.location.origin + window.location.pathname + '#project/' + encodeURIComponent(p._nodeName);
+
+    var html = '<div class="proj-detail-page">';
+
+    // Back button
+    html += '<button class="proj-back-btn" id="btn-back-explorer">'
+      + t('back_to_explorer') + '</button>';
+
+    // Hero section
+    html += '<div class="proj-detail-hero">';
+    if (p.image) {
+      html += '<img class="proj-detail-img" src="' + esc(p.image) + '" alt="" onerror="this.style.display=\'none\'">';
+    }
+    html += '<div class="proj-detail-hero-info">';
+    html += '<div class="proj-card-badges" style="margin-bottom:12px">';
+    html += '<span class="proj-badge proj-badge-program">' + esc(p.acronym || shortName(p._group)) + '</span>';
+    html += statusBadge;
+    html += '</div>';
+    html += '<h1 class="proj-detail-title">' + esc(p.name) + '</h1>';
+    html += '<div class="proj-modal-parent">' + t('parent_program') + ': <a href="#">' + esc(p.parentProgram || groupLabel) + '</a></div>';
+    html += '</div></div>';
+
+    // Copy link bar
+    html += '<div class="proj-detail-link-bar">';
+    html += '<input type="text" class="proj-detail-link-input" value="' + esc(projectUrl) + '" readonly id="proj-detail-url">';
+    html += '<button class="proj-modal-link-btn secondary" id="btn-detail-copy">'
+      + '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> '
+      + t('copy_link') + '</button>';
+    html += '</div>';
+
+    // Content grid
+    html += '<div class="proj-detail-grid">';
+
+    // Left column
+    html += '<div class="proj-detail-col">';
+    if (p.organizer) html += mSec(t('organizer'), esc(p.organizer));
+    if (p.coOrganizer) html += mSec(t('co_organizer'), esc(p.coOrganizer));
+    if (p.type || p.section) {
+      html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">';
+      if (p.type) html += '<div><div class="proj-modal-label">' + esc(t('type_label')) + '</div><div class="proj-modal-value">' + esc(p.type) + '</div></div>';
+      if (p.section) html += '<div><div class="proj-modal-label">' + esc(t('section_label')) + '</div><div class="proj-modal-value">' + esc(p.section) + '</div></div>';
+      html += '</div>';
+    }
+    if (p.whoCanSubmit) {
+      html += mSec(t('who_can_apply'), '<span style="display:inline-flex;align-items:center;gap:6px">&#127760; ' + esc(p.whoCanSubmit) + '</span>');
+    }
+    if (p.fundingDirections.length) {
+      var list = '<ul class="proj-modal-list">' + p.fundingDirections.map(function (d) { return '<li>' + esc(d) + '</li>'; }).join('') + '</ul>';
+      html += mSec(t('funding_directions'), list);
+    }
+    if (p.documents) {
+      html += mSec(t('documents_required'), '<div style="font-style:italic;color:var(--accent-amber)">' + esc(p.documents) + '</div>');
+    }
+    html += '</div>';
+
+    // Right column
+    html += '<div class="proj-detail-col">';
+    if (p.deadline) {
+      html += '<div class="proj-modal-deadline-box">'
+        + '<div class="proj-modal-deadline-label">' + t('submission_deadline') + '</div>'
+        + '<div class="proj-modal-deadline-date">' + fmtDate(p.deadline) + '</div>'
+        + (p.weekNumber ? '<div class="proj-modal-deadline-sub">Week ' + p.weekNumber + '</div>' : '')
+        + '</div>';
+    }
+
+    // Quick links
+    var links = '';
+    if (p.link) links += '<a href="' + esc(p.link) + '" target="_blank" rel="noopener" class="proj-modal-link-btn primary">&#128640; ' + t('apply') + '</a>';
+    if (p.linkInfo && p.linkInfo.indexOf('http') === 0) {
+      links += '<a href="' + esc(p.linkInfo) + '" target="_blank" rel="noopener" class="proj-modal-link-btn secondary">&#9432; ' + t('info') + '</a>';
+    }
+    if (links) {
+      html += '<div style="margin-top:14px"><div class="proj-modal-label">' + t('quick_links') + '</div><div class="proj-modal-links">' + links + '</div></div>';
+    }
+
+    html += '</div></div>';
+
+    // Reference ID
+    if (p.code) {
+      html += '<div class="proj-modal-ref"><span>' + t('reference_id') + ':</span> ' + esc(p.code) + '</div>';
+    }
+
+    html += '</div>';
+
+    // Store original content and replace
+    if (!mainEl._origHTML) mainEl._origHTML = mainEl.innerHTML;
+    mainEl.innerHTML = html;
+
+    // Bind back button
+    var backBtn = byId('btn-back-explorer');
+    if (backBtn) {
+      backBtn.addEventListener('click', function () {
+        window.location.hash = '';
+      });
+    }
+
+    // Bind copy button
+    var copyBtn = byId('btn-detail-copy');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
+        var input = byId('proj-detail-url');
+        if (input) input.select();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(projectUrl).then(function () {
+            showCopyFeedback(copyBtn);
+          });
+        } else {
+          document.execCommand('copy');
+          showCopyFeedback(copyBtn);
+        }
+      });
+    }
+
+    // Scroll to top
+    window.scrollTo(0, 0);
+  }
+
+  function showExplorerView() {
+    var mainEl = qs('.proj-main');
+    if (mainEl && mainEl._origHTML) {
+      mainEl.innerHTML = mainEl._origHTML;
+      mainEl._origHTML = null;
+      // Re-bind events on restored content
+      initEvents();
+      buildFilterOptions();
+      applyFilters();
+    }
+  }
+
+  /* ---------- Hash Routing ---------- */
+  function handleRoute() {
+    var hash = window.location.hash;
+    if (hash.indexOf('#project/') === 0) {
+      var nodeName = decodeURIComponent(hash.substring(9));
+      var proj = findProjectByNodeName(nodeName);
+      if (proj) {
+        closeModal();
+        renderProjectPage(proj);
+        return;
+      }
+    }
+    // Default: show explorer
+    var mainEl = qs('.proj-main');
+    if (mainEl && mainEl._origHTML) {
+      showExplorerView();
+    }
   }
 
   /* ---------- Loading ---------- */
@@ -854,6 +1091,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     initEvents();
     loadData();
+    window.addEventListener('hashchange', handleRoute);
   });
 
 })();
