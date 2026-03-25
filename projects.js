@@ -1,12 +1,13 @@
 /* ============================================
    Projects Page — JavaScript
-   Parses projects.xml, filters, search, modal
+   Parses projects.xml graph, renders cards,
+   filters, search, detail modal
    ============================================ */
 (function () {
   'use strict';
 
-  // ---- i18n ----
-  const I18N = {
+  /* ---------- i18n ---------- */
+  var I18N = {
     ua: {
       filter_program: 'Грантова програма',
       filter_section: 'Тематика',
@@ -38,10 +39,8 @@
       reference_id: 'Reference ID',
       uncategorized: 'Без програми / Uncategorized',
       archive_badge: 'Архів',
-      programme_page: 'Programme Page',
-      programme_guide: 'Programme Guide',
       n_projects: 'проєктів',
-      search_placeholder: 'Пошук проєктів... / Search projects...',
+      search_placeholder: 'Пошук проєктів... / Search projects...'
     },
     en: {
       filter_program: 'Grant Program',
@@ -74,240 +73,255 @@
       reference_id: 'Reference ID',
       uncategorized: 'Uncategorized',
       archive_badge: 'Archived',
-      programme_page: 'Programme Page',
-      programme_guide: 'Programme Guide',
       n_projects: 'projects',
-      search_placeholder: 'Search projects...',
-    },
-  };
-  let currentLang = 'ua';
-  function t(key) { return (I18N[currentLang] || I18N.ua)[key] || key; }
-
-  // ---- State ----
-  let allProjects = [];
-  let groups = {};        // groupName -> { nodeName, projects:[] }
-  let filteredProjects = [];
-  let activeFilters = { program: [], section: [], type: [], applicant: [], status: [] };
-  let showArchived = false;
-  let viewMode = 'program'; // 'program' | 'all'
-  let searchQuery = '';
-  let openDropdown = null;
-  let collapsedGroups = new Set();
-
-  // ---- DOM refs ----
-  const $ = (sel) => document.querySelector(sel);
-  const $$ = (sel) => [...document.querySelectorAll(sel)];
-
-  // ---- Parse XML ----
-  async function loadData() {
-    try {
-      const resp = await fetch('projects.xml');
-      const text = await resp.text();
-      const doc = new DOMParser().parseFromString(text, 'text/xml');
-      parseGraph(doc);
-      buildFilterOptions();
-      applyFilters();
-      hideLoading();
-    } catch (err) {
-      console.error('Failed to load projects.xml', err);
-      hideLoading();
+      search_placeholder: 'Search projects...'
     }
+  };
+
+  var lang = 'ua';
+  function t(k) { return (I18N[lang] || I18N.ua)[k] || k; }
+
+  /* ---------- State ---------- */
+  var allProjects = [];
+  var filteredProjects = [];
+  var groups = {};
+  var activeFilters = { program: [], section: [], type: [], applicant: [], status: [] };
+  var showArchived = false;
+  var viewMode = 'program';
+  var searchQuery = '';
+  var collapsedGroups = {};
+
+  /* ---------- Helpers ---------- */
+  function esc(s) {
+    if (!s) return '';
+    var d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  function qsa(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function qs(sel, root) { return (root || document).querySelector(sel); }
+  function byId(id) { return document.getElementById(id); }
+
+  function parseDate(s) {
+    if (!s) return null;
+    var m;
+    // DD.MM.YYYY
+    m = s.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+    if (m) return new Date(+m[3], +m[2] - 1, +m[1]);
+    // M/D/YYYY
+    m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if (m) return new Date(+m[3], +m[1] - 1, +m[2]);
+    // YYYY-MM-DD
+    m = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
+    return null;
+  }
+
+  function fmtDate(s) {
+    var d = parseDate(s);
+    if (!d || isNaN(d.getTime())) return s || '';
+    var dd = ('0' + d.getDate()).slice(-2);
+    var mm = ('0' + (d.getMonth() + 1)).slice(-2);
+    return dd + '.' + mm + '.' + d.getFullYear();
+  }
+
+  function hashStr(s) {
+    var h = 0;
+    for (var i = 0; i < s.length; i++) { h = ((h << 5) - h) + s.charCodeAt(i); h |= 0; }
+    return Math.abs(h);
+  }
+
+  function shortName(name) {
+    if (!name || name === '(empty)') return '—';
+    return name.replace(/\s*\(p\d+\)$/, '');
+  }
+
+  /* ---------- XML Parsing ---------- */
+  function loadData() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'projects.xml', true);
+    xhr.onload = function () {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        try {
+          var parser = new DOMParser();
+          var doc = parser.parseFromString(xhr.responseText, 'text/xml');
+          parseGraph(doc);
+          buildFilterOptions();
+          applyFilters();
+        } catch (e) {
+          console.error('Parse error:', e);
+        }
+      } else {
+        console.error('HTTP error:', xhr.status);
+      }
+      hideLoading();
+    };
+    xhr.onerror = function () {
+      console.error('Network error loading projects.xml');
+      hideLoading();
+    };
+    xhr.send();
   }
 
   function parseGraph(doc) {
-    // 1. Collect group nodes (Type_attestation)
-    const groupNodes = doc.querySelectorAll('Node[nclass="Type_attestation"]');
-    const groupMap = {};
-    groupNodes.forEach(n => {
-      const name = n.getAttribute('nodeName');
+    // 1. Group nodes (Type_attestation)
+    var groupMap = {};
+    qsa('Node[nclass="Type_attestation"]', doc).forEach(function (n) {
+      var name = n.getAttribute('nodeName');
       groupMap[name] = { nodeName: name, projects: [] };
     });
 
-    // 2. Collect project nodes (ПРОЕКТИ with data children, skip root)
-    const projectNodes = [...doc.querySelectorAll('Node[nclass="ПРОЕКТИ"]')]
-      .filter(n => n.querySelector('data'));
-
-    // 3. Build edge map: node1 -> node2
-    const edgeMap = {};
-    doc.querySelectorAll('Edge').forEach(e => {
-      const n1 = e.getAttribute('node1');
-      const n2 = e.getAttribute('node2');
-      if (!edgeMap[n1]) edgeMap[n1] = [];
-      edgeMap[n1].push(n2);
+    // 2. Project nodes (ПРОЕКТИ with data, skip root)
+    var projectEls = qsa('Node[nclass="ПРОЕКТИ"]', doc).filter(function (n) {
+      return n.querySelector('data');
     });
 
-    // 4. Parse projects
-    projectNodes.forEach(node => {
-      const p = parseProject(node);
-      // Determine group via edges
-      const nodeName = node.getAttribute('nodeName');
-      const parentNames = edgeMap[nodeName] || [];
-      // Find the Type_attestation parent
-      let assignedGroup = null;
-      for (const pn of parentNames) {
-        if (groupMap[pn]) {
-          assignedGroup = pn;
-          break;
-        }
+    // 3. Build edge lookup: node1 -> [node2, ...]
+    var edgeMap = {};
+    qsa('Edge', doc).forEach(function (e) {
+      var n1 = e.getAttribute('node1');
+      var n2 = e.getAttribute('node2');
+      if (n1 && n2) {
+        if (!edgeMap[n1]) edgeMap[n1] = [];
+        edgeMap[n1].push(n2);
       }
-      p._group = assignedGroup || '(empty)';
+    });
+
+    // 4. Parse each project
+    projectEls.forEach(function (el) {
+      var p = parseProjectNode(el);
+      var nodeName = el.getAttribute('nodeName');
+      var parents = edgeMap[nodeName] || [];
+      var group = null;
+      for (var i = 0; i < parents.length; i++) {
+        if (groupMap[parents[i]]) { group = parents[i]; break; }
+      }
+      p._group = group || '(empty)';
       p._nodeName = nodeName;
       allProjects.push(p);
     });
 
-    // 5. Group projects
-    // Ensure (empty) group
-    if (!groupMap['(empty)']) {
-      groupMap['(empty)'] = { nodeName: '(empty)', projects: [] };
-    }
-    allProjects.forEach(p => {
-      if (!groupMap[p._group]) {
-        groupMap[p._group] = { nodeName: p._group, projects: [] };
-      }
+    // 5. Assign to groups
+    if (!groupMap['(empty)']) groupMap['(empty)'] = { nodeName: '(empty)', projects: [] };
+    allProjects.forEach(function (p) {
+      if (!groupMap[p._group]) groupMap[p._group] = { nodeName: p._group, projects: [] };
       groupMap[p._group].projects.push(p);
     });
     groups = groupMap;
   }
 
-  function parseProject(node) {
-    const p = { _data: {} };
-    const dataEls = node.querySelectorAll('data');
-    const multiFields = new Set([
-      'List_what_is_founding_directions_of_foundings',
-      // Who_can_sumbit can have comma-separated values
-    ]);
-    dataEls.forEach(d => {
-      const tc = d.getAttribute('tclass');
-      const link = d.getAttribute('link') || '';
-      const type = d.getAttribute('type') || 'text';
-      const text = d.textContent.trim() || link;
-      if (multiFields.has(tc)) {
-        if (!p._data[tc]) p._data[tc] = [];
-        p._data[tc].push(text);
-      } else if (p._data[tc] !== undefined) {
-        // Already has value — make array
-        if (!Array.isArray(p._data[tc])) p._data[tc] = [p._data[tc]];
-        p._data[tc].push({ text, link, type });
+  function parseProjectNode(el) {
+    var raw = {};
+    var multiKeys = { 'List_what_is_founding_directions_of_foundings': true };
+
+    qsa('data', el).forEach(function (d) {
+      var tc = d.getAttribute('tclass') || '';
+      var link = d.getAttribute('link') || '';
+      var type = d.getAttribute('type') || 'text';
+      var text = (d.textContent || '').trim() || link;
+      var entry = { text: text, link: link, type: type };
+
+      if (multiKeys[tc]) {
+        if (!raw[tc]) raw[tc] = [];
+        raw[tc].push(text);
+      } else if (raw[tc]) {
+        if (!Array.isArray(raw[tc])) raw[tc] = [raw[tc]];
+        raw[tc].push(entry);
       } else {
-        p._data[tc] = { text, link, type };
+        raw[tc] = entry;
       }
     });
 
-    // Convenience accessors
-    p.name = getField(p, 'с');
-    p.code = getField(p, 'code');
-    p.type = getField(p, 'Type');
-    p.typeAttestation = getField(p, 'Type_attestation');
-    p.section = getField(p, 'Section');
-    p.sections = p.section ? p.section.split(',').map(s => s.trim()).filter(Boolean) : [];
-    p.fundingDirections = p._data['List_what_is_founding_directions_of_foundings'] || [];
-    p.whoCanSubmit = getField(p, 'Who_can_sumbit');
-    p.whoCanSubmitList = p.whoCanSubmit ? p.whoCanSubmit.split(',').map(s => s.trim()).filter(Boolean) : [];
-    p.acronym = getField(p, 'Acronym');
-    p.organizer = getField(p, 'Organizator');
-    p.coOrganizer = getField(p, 'Co-Organizator');
-    p.parentProgram = getField(p, 'In_terms_of_parent_program');
-    p.deadline = getField(p, 'Last_submition_deadline');
-    p.submissionOpening = getField(p, 'Submition_opening');
-    p.documents = getField(p, 'Documents_required_to_be_prepared');
-    p.status = getField(p, 'Status') || '';
-    p.image = getFieldLink(p, 'Image') || getField(p, 'Image');
-    p.link = getFieldLink(p, 'Link') || getField(p, 'Link');
-    p.linkInfo = getFieldLink(p, 'Link_info') || getField(p, 'Link_info');
-    p.linkInfoText = getFieldText(p, 'Link_info');
-    p.weekNumber = getField(p, 'Номер_тижня');
-
-    p.isArchived = /^(archived?|closed)$/i.test(p.status);
-    p._deadlineParsed = parseDate(p.deadline);
-
-    return p;
-  }
-
-  function getField(p, key) {
-    const d = p._data[key];
-    if (!d) return '';
-    if (Array.isArray(d)) return d.map(x => typeof x === 'object' ? x.text : x).join(', ');
-    return typeof d === 'object' ? d.text : d;
-  }
-
-  function getFieldLink(p, key) {
-    const d = p._data[key];
-    if (!d) return '';
-    if (Array.isArray(d)) {
-      const found = d.find(x => typeof x === 'object' && x.link);
-      return found ? found.link : '';
+    function getVal(key) {
+      var v = raw[key];
+      if (!v) return '';
+      if (Array.isArray(v)) return v.map(function (x) { return typeof x === 'object' ? x.text : x; }).join(', ');
+      return typeof v === 'object' ? v.text : v;
     }
-    return typeof d === 'object' ? d.link : '';
+    function getLink(key) {
+      var v = raw[key];
+      if (!v) return '';
+      if (Array.isArray(v)) {
+        for (var i = 0; i < v.length; i++) { if (typeof v[i] === 'object' && v[i].link) return v[i].link; }
+        return '';
+      }
+      return typeof v === 'object' ? v.link : '';
+    }
+
+    var status = getVal('Status') || '';
+    var whoStr = getVal('Who_can_sumbit');
+    var sectionStr = getVal('Section');
+
+    return {
+      _raw: raw,
+      name: getVal('\u0441') || getVal('с'),   // Cyrillic 'с'
+      code: getVal('code'),
+      type: getVal('Type'),
+      typeAttestation: getVal('Type_attestation'),
+      section: sectionStr,
+      sections: sectionStr ? sectionStr.split(',').map(function (s) { return s.trim(); }).filter(Boolean) : [],
+      fundingDirections: raw['List_what_is_founding_directions_of_foundings'] || [],
+      whoCanSubmit: whoStr,
+      whoCanSubmitList: whoStr ? whoStr.split(',').map(function (s) { return s.trim(); }).filter(Boolean) : [],
+      acronym: getVal('Acronym'),
+      organizer: getVal('Organizator'),
+      coOrganizer: getVal('Co-Organizator'),
+      parentProgram: getVal('In_terms_of_parent_program'),
+      deadline: getVal('Last_submition_deadline'),
+      submissionOpening: getVal('Submition_opening'),
+      documents: getVal('Documents_required_to_be_prepared'),
+      status: status,
+      statusLower: status.toLowerCase(),
+      image: getLink('Image') || getVal('Image'),
+      link: getLink('Link') || getVal('Link'),
+      linkInfo: getLink('Link_info') || getVal('Link_info'),
+      linkInfoText: getVal('Link_info'),
+      weekNumber: getVal('\u041d\u043e\u043c\u0435\u0440_\u0442\u0438\u0436\u043d\u044f'),  // 'Номер_тижня'
+      isArchived: /^(archive|archived|closed)$/i.test(status),
+      _deadlineParsed: parseDate(getVal('Last_submition_deadline')),
+      _group: '',
+      _nodeName: ''
+    };
   }
 
-  function getFieldText(p, key) {
-    const d = p._data[key];
-    if (!d) return '';
-    if (Array.isArray(d)) return d.map(x => typeof x === 'object' ? x.text : x).join(', ');
-    return typeof d === 'object' ? d.text : d;
-  }
-
-  function parseDate(str) {
-    if (!str) return null;
-    // Try DD.MM.YYYY
-    let m = str.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
-    if (m) return new Date(+m[3], +m[2] - 1, +m[1]);
-    // Try MM/DD/YYYY
-    m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-    if (m) return new Date(+m[3], +m[1] - 1, +m[2]);
-    // Try YYYY-MM-DD
-    m = str.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-    if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
-    return null;
-  }
-
-  function formatDate(str) {
-    const d = parseDate(str);
-    if (!d) return str;
-    const dd = String(d.getDate()).padStart(2, '0');
-    const mm = String(d.getMonth() + 1).padStart(2, '0');
-    return `${dd}.${mm}.${d.getFullYear()}`;
-  }
-
-  // ---- Filter Options ----
+  /* ---------- Filter Options ---------- */
   function buildFilterOptions() {
-    const programs = new Set();
-    const sections = new Set();
-    const types = new Set();
-    const applicants = new Set();
-    const statuses = new Set();
+    var sets = { program: {}, section: {}, type: {}, applicant: {}, status: {} };
 
-    allProjects.forEach(p => {
-      if (p._group && p._group !== '(empty)') programs.add(p._group);
-      if (p._group === '(empty)') programs.add('(empty)');
-      p.sections.forEach(s => sections.add(s));
-      if (p.type) types.add(p.type);
-      p.whoCanSubmitList.forEach(a => applicants.add(a));
-      if (p.status) statuses.add(p.status);
+    allProjects.forEach(function (p) {
+      sets.program[p._group] = true;
+      p.sections.forEach(function (s) { sets.section[s] = true; });
+      if (p.type) sets.type[p.type] = true;
+      p.whoCanSubmitList.forEach(function (a) { sets.applicant[a] = true; });
+      if (p.status) sets.status[p.status] = true;
     });
 
-    renderDropdown('panel-program', [...programs].sort(), 'program');
-    renderDropdown('panel-section', [...sections].sort(), 'section');
-    renderDropdown('panel-type', [...types].sort(), 'type');
-    renderDropdown('panel-applicant', [...applicants].sort(), 'applicant');
-    renderDropdown('panel-status', [...statuses].sort(), 'status');
+    fillDropdown('panel-program', Object.keys(sets.program).sort(), 'program');
+    fillDropdown('panel-section', Object.keys(sets.section).sort(), 'section');
+    fillDropdown('panel-type', Object.keys(sets.type).sort(), 'type');
+    fillDropdown('panel-applicant', Object.keys(sets.applicant).sort(), 'applicant');
+    fillDropdown('panel-status', Object.keys(sets.status).sort(), 'status');
   }
 
-  function renderDropdown(panelId, items, filterKey) {
-    const panel = document.getElementById(panelId);
-    panel.innerHTML = items.map(item => {
-      const label = item === '(empty)' ? t('uncategorized') : item;
-      const selected = activeFilters[filterKey].includes(item) ? ' selected' : '';
-      return `<div class="proj-dropdown-item${selected}" data-value="${escHtml(item)}">
-        <span class="check-box"></span>
-        <span>${escHtml(label)}</span>
-      </div>`;
-    }).join('');
+  function fillDropdown(panelId, items, filterKey) {
+    var panel = byId(panelId);
+    if (!panel) return;
+    var html = '';
+    items.forEach(function (item) {
+      var label = (item === '(empty)') ? t('uncategorized') : item;
+      var sel = (activeFilters[filterKey].indexOf(item) >= 0) ? ' selected' : '';
+      html += '<div class="proj-dropdown-item' + sel + '" data-value="' + esc(item) + '">'
+        + '<span class="check-box"></span>'
+        + '<span>' + esc(label) + '</span>'
+        + '</div>';
+    });
+    panel.innerHTML = html;
 
-    panel.querySelectorAll('.proj-dropdown-item').forEach(el => {
-      el.addEventListener('click', () => {
-        const val = el.dataset.value;
-        const idx = activeFilters[filterKey].indexOf(val);
+    qsa('.proj-dropdown-item', panel).forEach(function (el) {
+      el.addEventListener('click', function () {
+        var val = el.getAttribute('data-value');
+        var idx = activeFilters[filterKey].indexOf(val);
         if (idx >= 0) {
           activeFilters[filterKey].splice(idx, 1);
           el.classList.remove('selected');
@@ -315,246 +329,231 @@
           activeFilters[filterKey].push(val);
           el.classList.add('selected');
         }
-        updateFilterBtnState(filterKey);
+        syncFilterBtn(filterKey);
         applyFilters();
       });
     });
   }
 
-  function updateFilterBtnState(filterKey) {
-    const btn = document.getElementById('btn-filter-' + filterKey);
+  function syncFilterBtn(key) {
+    var btn = byId('btn-filter-' + key);
     if (!btn) return;
-    if (activeFilters[filterKey].length > 0) {
-      btn.classList.add('has-active');
-    } else {
-      btn.classList.remove('has-active');
-    }
+    btn.classList.toggle('has-active', activeFilters[key].length > 0);
   }
 
-  // ---- Filter Logic ----
+  /* ---------- Filtering ---------- */
   function applyFilters() {
-    const q = searchQuery.toLowerCase();
-    filteredProjects = allProjects.filter(p => {
-      // Archive filter
+    var q = searchQuery.toLowerCase();
+
+    filteredProjects = allProjects.filter(function (p) {
       if (!showArchived && p.isArchived) return false;
 
-      // Text search
       if (q) {
-        const haystack = [p.name, p.section, p.organizer, p.whoCanSubmit,
+        var hay = [p.name, p.section, p.organizer, p.whoCanSubmit,
           p.fundingDirections.join(' '), p.acronym, p.code, p.coOrganizer].join(' ').toLowerCase();
-        if (!haystack.includes(q)) return false;
+        if (hay.indexOf(q) < 0) return false;
       }
 
-      // Filter: program
-      if (activeFilters.program.length > 0) {
-        if (!activeFilters.program.includes(p._group)) return false;
-      }
-      // Filter: section
-      if (activeFilters.section.length > 0) {
-        if (!p.sections.some(s => activeFilters.section.includes(s))) return false;
-      }
-      // Filter: type
-      if (activeFilters.type.length > 0) {
-        if (!activeFilters.type.includes(p.type)) return false;
-      }
-      // Filter: applicant
-      if (activeFilters.applicant.length > 0) {
-        if (!p.whoCanSubmitList.some(a => activeFilters.applicant.includes(a))) return false;
-      }
-      // Filter: status
-      if (activeFilters.status.length > 0) {
-        if (!activeFilters.status.includes(p.status)) return false;
-      }
+      if (activeFilters.program.length && activeFilters.program.indexOf(p._group) < 0) return false;
+      if (activeFilters.section.length && !p.sections.some(function (s) { return activeFilters.section.indexOf(s) >= 0; })) return false;
+      if (activeFilters.type.length && activeFilters.type.indexOf(p.type) < 0) return false;
+      if (activeFilters.applicant.length && !p.whoCanSubmitList.some(function (a) { return activeFilters.applicant.indexOf(a) >= 0; })) return false;
+      if (activeFilters.status.length && activeFilters.status.indexOf(p.status) < 0) return false;
 
       return true;
     });
 
-    // Sort: active first, then by deadline
-    filteredProjects.sort((a, b) => {
+    filteredProjects.sort(function (a, b) {
       if (a.isArchived !== b.isArchived) return a.isArchived ? 1 : -1;
-      const da = a._deadlineParsed ? a._deadlineParsed.getTime() : Infinity;
-      const db = b._deadlineParsed ? b._deadlineParsed.getTime() : Infinity;
+      var da = a._deadlineParsed ? a._deadlineParsed.getTime() : Infinity;
+      var db = b._deadlineParsed ? b._deadlineParsed.getTime() : Infinity;
       return da - db;
     });
 
     renderCounter();
-    renderActivePills();
+    renderPills();
     renderProjects();
   }
 
+  /* ---------- Counter ---------- */
   function renderCounter() {
-    const total = showArchived ? allProjects.length : allProjects.filter(p => !p.isArchived).length;
-    const shown = filteredProjects.length;
-    const el = document.getElementById('proj-counter');
-    el.textContent = `${t('showing')} ${shown} ${t('of')} ${total} ${t('projects')}`;
+    var total = showArchived ? allProjects.length : allProjects.filter(function (p) { return !p.isArchived; }).length;
+    var el = byId('proj-counter');
+    if (el) el.textContent = t('showing') + ' ' + filteredProjects.length + ' ' + t('of') + ' ' + total + ' ' + t('projects');
   }
 
-  function renderActivePills() {
-    const container = document.getElementById('active-filters');
-    const pills = [];
+  /* ---------- Active Filter Pills ---------- */
+  function renderPills() {
+    var c = byId('active-filters');
+    if (!c) return;
+    var html = '';
+    var keys = Object.keys(activeFilters);
+    var any = false;
 
-    Object.keys(activeFilters).forEach(key => {
-      activeFilters[key].forEach(val => {
-        const label = val === '(empty)' ? t('uncategorized') : val;
-        pills.push(`<span class="proj-pill">${escHtml(label)} <span class="proj-pill-close" data-key="${key}" data-value="${escHtml(val)}">&times;</span></span>`);
+    keys.forEach(function (key) {
+      activeFilters[key].forEach(function (val) {
+        any = true;
+        var label = (val === '(empty)') ? t('uncategorized') : val;
+        html += '<span class="proj-pill">' + esc(label)
+          + ' <span class="proj-pill-close" data-fkey="' + key + '" data-fval="' + esc(val) + '">&times;</span></span>';
       });
     });
 
-    if (pills.length > 0) {
-      pills.push(`<button class="proj-clear-all" id="clear-all-filters">${t('clear_all')}</button>`);
-    }
+    if (any) html += '<button class="proj-clear-all" id="btn-clear-all">' + t('clear_all') + '</button>';
+    c.innerHTML = html;
 
-    container.innerHTML = pills.join('');
-
-    container.querySelectorAll('.proj-pill-close').forEach(el => {
-      el.addEventListener('click', () => {
-        const key = el.dataset.key;
-        const val = el.dataset.value;
-        const idx = activeFilters[key].indexOf(val);
-        if (idx >= 0) activeFilters[key].splice(idx, 1);
-        // Update dropdown
-        const panel = document.getElementById('panel-' + key);
+    qsa('.proj-pill-close', c).forEach(function (el) {
+      el.addEventListener('click', function () {
+        var k = el.getAttribute('data-fkey');
+        var v = el.getAttribute('data-fval');
+        var idx = activeFilters[k].indexOf(v);
+        if (idx >= 0) activeFilters[k].splice(idx, 1);
+        // Uncheck in dropdown
+        var panel = byId('panel-' + k);
         if (panel) {
-          const item = panel.querySelector(`.proj-dropdown-item[data-value="${CSS.escape(val)}"]`);
-          if (item) item.classList.remove('selected');
+          qsa('.proj-dropdown-item', panel).forEach(function (di) {
+            if (di.getAttribute('data-value') === v) di.classList.remove('selected');
+          });
         }
-        updateFilterBtnState(key);
+        syncFilterBtn(k);
         applyFilters();
       });
     });
 
-    const clearBtn = document.getElementById('clear-all-filters');
+    var clearBtn = byId('btn-clear-all');
     if (clearBtn) {
-      clearBtn.addEventListener('click', () => {
-        Object.keys(activeFilters).forEach(key => {
-          activeFilters[key] = [];
-          updateFilterBtnState(key);
+      clearBtn.addEventListener('click', function () {
+        keys.forEach(function (k) {
+          activeFilters[k] = [];
+          syncFilterBtn(k);
         });
-        $$('.proj-dropdown-item.selected').forEach(el => el.classList.remove('selected'));
+        qsa('.proj-dropdown-item.selected').forEach(function (el) { el.classList.remove('selected'); });
         applyFilters();
       });
     }
   }
 
-  // ---- Rendering ----
+  /* ---------- Rendering ---------- */
   function renderProjects() {
-    const container = document.getElementById('projects-container');
+    var c = byId('projects-container');
+    if (!c) return;
 
-    if (filteredProjects.length === 0) {
-      container.innerHTML = `<div class="proj-empty">
-        <div class="proj-empty-icon">&#128269;</div>
-        <div class="proj-empty-text">${t('no_results')}</div>
-        <p style="color:var(--text-muted);margin-top:8px">${t('no_results_hint')}</p>
-      </div>`;
+    if (!filteredProjects.length) {
+      c.innerHTML = '<div class="proj-empty">'
+        + '<div class="proj-empty-icon">&#128269;</div>'
+        + '<div class="proj-empty-text">' + t('no_results') + '</div>'
+        + '<p style="color:var(--text-muted);margin-top:8px">' + t('no_results_hint') + '</p>'
+        + '</div>';
       return;
     }
 
     if (viewMode === 'program') {
-      renderByProgram(container);
+      renderByProgram(c);
     } else {
-      renderFlat(container);
+      renderFlat(c);
     }
   }
 
   function renderByProgram(container) {
-    // Determine group order: groups with visible projects
-    const groupOrder = [];
-    const projectsByGroup = {};
-
-    filteredProjects.forEach(p => {
-      if (!projectsByGroup[p._group]) projectsByGroup[p._group] = [];
-      projectsByGroup[p._group].push(p);
+    var byGroup = {};
+    filteredProjects.forEach(function (p) {
+      if (!byGroup[p._group]) byGroup[p._group] = [];
+      byGroup[p._group].push(p);
     });
 
-    // Named groups first (sorted), then (empty)
-    Object.keys(projectsByGroup).sort((a, b) => {
+    var order = Object.keys(byGroup).sort(function (a, b) {
       if (a === '(empty)') return 1;
       if (b === '(empty)') return -1;
       return a.localeCompare(b);
-    }).forEach(g => groupOrder.push(g));
+    });
 
-    let html = '';
-    groupOrder.forEach(groupName => {
-      const projects = projectsByGroup[groupName];
-      const label = groupName === '(empty)' ? t('uncategorized') : groupName;
-      const isCollapsed = collapsedGroups.has(groupName);
-      const collClass = isCollapsed ? ' collapsed' : '';
+    var html = '';
+    order.forEach(function (gName) {
+      var projs = byGroup[gName];
+      var label = (gName === '(empty)') ? t('uncategorized') : gName;
+      var coll = collapsedGroups[gName] ? ' collapsed' : '';
 
-      html += `<div class="proj-group">
-        <div class="proj-group-header${collClass}" data-group="${escHtml(groupName)}">
-          <span class="proj-group-bar"></span>
-          <span class="proj-group-name">${escHtml(label)}</span>
-          <span class="proj-group-count">(${projects.length} ${t('n_projects')})</span>
-          <svg class="proj-group-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-        </div>
-        <div class="proj-group-body${collClass}" id="group-${hashCode(groupName)}">
-          ${projects.map(p => renderCard(p)).join('')}
-        </div>
-      </div>`;
+      html += '<div class="proj-group">'
+        + '<div class="proj-group-header' + coll + '" data-group="' + esc(gName) + '">'
+        + '<span class="proj-group-bar"></span>'
+        + '<span class="proj-group-name">' + esc(label) + '</span>'
+        + '<span class="proj-group-count">(' + projs.length + ' ' + t('n_projects') + ')</span>'
+        + '<svg class="proj-group-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>'
+        + '</div>'
+        + '<div class="proj-group-body' + coll + '">'
+        + projs.map(renderCard).join('')
+        + '</div></div>';
     });
 
     container.innerHTML = html;
-    bindGroupToggle();
-    bindCardClicks();
+    bindGroupHeaders();
+    bindCards();
   }
 
   function renderFlat(container) {
-    container.innerHTML = `<div class="proj-flat-grid">${filteredProjects.map(p => renderCard(p)).join('')}</div>`;
-    bindCardClicks();
+    container.innerHTML = '<div class="proj-flat-grid">' + filteredProjects.map(renderCard).join('') + '</div>';
+    bindCards();
   }
 
+  /* ---------- Card ---------- */
   function renderCard(p) {
-    const statusLower = p.status.toLowerCase();
-    const archivedClass = p.isArchived ? ' archived' : '';
-    const imgHtml = p.image
-      ? `<img class="proj-card-img" src="${escHtml(p.image)}" alt="" loading="lazy" onerror="this.style.display='none'">`
+    var cls = p.isArchived ? ' archived' : '';
+    var img = p.image
+      ? '<img class="proj-card-img" src="' + esc(p.image) + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">'
       : '';
 
-    const desc = p.fundingDirections.length > 0
-      ? p.fundingDirections[0]
-      : (p.section || '');
+    var desc = p.fundingDirections.length ? p.fundingDirections[0] : (p.section || '');
 
-    return `<div class="proj-card${archivedClass}" data-project="${escHtml(p._nodeName)}">
-      ${imgHtml}
-      <div class="proj-card-body">
-        <div class="proj-card-badges">
-          <span class="proj-badge proj-badge-program">${escHtml(p.acronym || shortGroupName(p._group))}</span>
-          ${p.status && statusLower !== 'no data' ? `<span class="proj-badge proj-badge-status" data-status="${escHtml(statusLower)}"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;margin-right:2px"></span>${escHtml(p.status)}</span>` : ''}
-        </div>
-        <div class="proj-card-title">${escHtml(p.name)}</div>
-        <div class="proj-card-desc">${escHtml(desc)}</div>
-        <div class="proj-card-meta">
-          ${p.deadline ? `<span class="proj-card-meta-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-            ${t('deadline')}: ${formatDate(p.deadline)}
-          </span>` : '<span></span>'}
-          <span class="proj-card-meta-item">
-            ${p.type ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/>${p.type === 'Collective' ? '<path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>' : ''}</svg>` : ''}
-            ${escHtml(p.type)}
-          </span>
-        </div>
-      </div>
-    </div>`;
+    // Status badge: only show for meaningful statuses
+    var statusBadge = '';
+    if (p.status && p.statusLower !== 'no data') {
+      statusBadge = '<span class="proj-badge proj-badge-status" data-status="' + esc(p.statusLower) + '">'
+        + '<span class="proj-status-dot"></span>'
+        + esc(p.status) + '</span>';
+    }
+
+    // Type icon
+    var typeIcon = '';
+    if (p.type) {
+      if (p.type === 'Collective') {
+        typeIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">'
+          + '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>'
+          + '<path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>';
+      } else {
+        typeIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">'
+          + '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+      }
+    }
+
+    return '<div class="proj-card' + cls + '" data-project="' + esc(p._nodeName) + '">'
+      + img
+      + '<div class="proj-card-body">'
+      + '<div class="proj-card-badges">'
+      + '<span class="proj-badge proj-badge-program">' + esc(p.acronym || shortName(p._group)) + '</span>'
+      + statusBadge
+      + '</div>'
+      + '<div class="proj-card-title">' + esc(p.name) + '</div>'
+      + '<div class="proj-card-desc">' + esc(desc) + '</div>'
+      + '<div class="proj-card-meta">'
+      + (p.deadline
+          ? '<span class="proj-card-meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> ' + t('deadline') + ': ' + fmtDate(p.deadline) + '</span>'
+          : '<span></span>')
+      + '<span class="proj-card-meta-item">' + typeIcon + ' ' + esc(p.type) + '</span>'
+      + '</div></div></div>';
   }
 
-  function shortGroupName(name) {
-    if (!name || name === '(empty)') return '—';
-    // Extract short name: remove (pXX) suffix
-    return name.replace(/\s*\(p\d+\)$/, '');
-  }
-
-  // ---- Card & Group Interactions ----
-  function bindGroupToggle() {
-    $$('.proj-group-header').forEach(hdr => {
-      hdr.addEventListener('click', () => {
-        const groupName = hdr.dataset.group;
-        const body = hdr.nextElementSibling;
-        if (collapsedGroups.has(groupName)) {
-          collapsedGroups.delete(groupName);
+  /* ---------- Interactions ---------- */
+  function bindGroupHeaders() {
+    qsa('.proj-group-header').forEach(function (hdr) {
+      hdr.addEventListener('click', function () {
+        var g = hdr.getAttribute('data-group');
+        var body = hdr.nextElementSibling;
+        if (collapsedGroups[g]) {
+          delete collapsedGroups[g];
           hdr.classList.remove('collapsed');
           body.classList.remove('collapsed');
         } else {
-          collapsedGroups.add(groupName);
+          collapsedGroups[g] = true;
           hdr.classList.add('collapsed');
           body.classList.add('collapsed');
         }
@@ -562,165 +561,160 @@
     });
   }
 
-  function bindCardClicks() {
-    $$('.proj-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const nodeName = card.dataset.project;
-        const project = allProjects.find(p => p._nodeName === nodeName);
-        if (project) openModal(project);
+  function bindCards() {
+    qsa('.proj-card').forEach(function (card) {
+      card.addEventListener('click', function () {
+        var name = card.getAttribute('data-project');
+        var proj = null;
+        for (var i = 0; i < allProjects.length; i++) {
+          if (allProjects[i]._nodeName === name) { proj = allProjects[i]; break; }
+        }
+        if (proj) openModal(proj);
       });
     });
   }
 
-  // ---- Modal ----
+  /* ---------- Modal ---------- */
   function openModal(p) {
-    const overlay = document.getElementById('modal-overlay');
-    const body = document.getElementById('modal-body');
+    var overlay = byId('modal-overlay');
+    var body = byId('modal-body');
+    if (!overlay || !body) return;
 
-    const groupLabel = p._group === '(empty)' ? t('uncategorized') : p._group;
+    var groupLabel = (p._group === '(empty)') ? t('uncategorized') : p._group;
 
-    let leftSections = '';
+    // Status badge for modal
+    var statusBadge = '';
+    if (p.status && p.statusLower !== 'no data') {
+      statusBadge = '<span class="proj-badge proj-badge-status" data-status="' + esc(p.statusLower) + '" style="font-size:0.75rem">'
+        + '<span class="proj-status-dot"></span>'
+        + esc(p.status) + '</span>';
+    }
+
+    var html = '';
+
+    // Close button
+    html += '<button class="modal-close" id="modal-close-btn">&times;</button>';
+
+    // Top section: image + title
+    html += '<div class="proj-modal-top">';
+    if (p.image) {
+      html += '<img class="proj-modal-img" src="' + esc(p.image) + '" alt="" onerror="this.style.display=\'none\'">';
+    }
+    html += '<div class="proj-modal-header">';
+    html += '<h2>' + esc(p.name) + '</h2>';
+    html += '<div class="proj-modal-parent">' + t('parent_program') + ': <a href="#">' + esc(p.parentProgram || groupLabel) + '</a></div>';
+    html += '<div style="display:flex;gap:6px;flex-wrap:wrap">' + statusBadge;
+    if (p.acronym) html += '<span class="proj-badge proj-badge-program">' + esc(p.acronym) + '</span>';
+    html += '</div></div></div>';
+
+    // Grid: left info, right deadlines
+    html += '<div class="proj-modal-grid"><div>';
 
     // Organizer
-    if (p.organizer) {
-      leftSections += modalSection(t('organizer'), escHtml(p.organizer));
-    }
-    if (p.coOrganizer) {
-      leftSections += modalSection(t('co_organizer'), escHtml(p.coOrganizer));
-    }
+    if (p.organizer) html += mSec(t('organizer'), esc(p.organizer));
+    if (p.coOrganizer) html += mSec(t('co_organizer'), esc(p.coOrganizer));
 
     // Type & Section
-    const typeSection = [];
-    if (p.type) typeSection.push(modalMiniField(t('type_label'), p.type));
-    if (p.section) typeSection.push(modalMiniField(t('section_label'), p.section));
-    if (typeSection.length) {
-      leftSections += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">${typeSection.join('')}</div>`;
+    if (p.type || p.section) {
+      html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">';
+      if (p.type) html += '<div><div class="proj-modal-label">' + esc(t('type_label')) + '</div><div class="proj-modal-value">' + esc(p.type) + '</div></div>';
+      if (p.section) html += '<div><div class="proj-modal-label">' + esc(t('section_label')) + '</div><div class="proj-modal-value">' + esc(p.section) + '</div></div>';
+      html += '</div>';
     }
 
     // Who can apply
     if (p.whoCanSubmit) {
-      leftSections += modalSection(t('who_can_apply'),
-        `<span style="display:inline-flex;align-items:center;gap:6px">&#127760; ${escHtml(p.whoCanSubmit)}</span>`);
+      html += mSec(t('who_can_apply'), '<span style="display:inline-flex;align-items:center;gap:6px">&#127760; ' + esc(p.whoCanSubmit) + '</span>');
     }
 
     // Funding directions
-    if (p.fundingDirections.length > 0) {
-      const list = p.fundingDirections.map(d => `<li>${escHtml(d)}</li>`).join('');
-      leftSections += modalSection(t('funding_directions'), `<ul class="proj-modal-list">${list}</ul>`);
+    if (p.fundingDirections.length) {
+      var list = '<ul class="proj-modal-list">' + p.fundingDirections.map(function (d) { return '<li>' + esc(d) + '</li>'; }).join('') + '</ul>';
+      html += mSec(t('funding_directions'), list);
     }
 
-    // Right side: deadlines + documents
-    let rightSections = '';
+    // Quick links
+    var links = '';
+    if (p.link) links += '<a href="' + esc(p.link) + '" target="_blank" rel="noopener" class="proj-modal-link-btn primary">&#128640; ' + t('apply') + '</a>';
+    if (p.linkInfo && p.linkInfo.indexOf('http') === 0) {
+      links += '<a href="' + esc(p.linkInfo) + '" target="_blank" rel="noopener" class="proj-modal-link-btn secondary">&#9432; ' + t('info') + '</a>';
+    }
+    if (links) {
+      html += '<div style="margin-top:16px"><div class="proj-modal-label">' + t('quick_links') + '</div><div class="proj-modal-links">' + links + '</div></div>';
+    }
+
+    html += '</div><div>';
 
     // Deadline box
     if (p.deadline) {
-      rightSections += `<div class="proj-modal-deadline-box">
-        <div class="proj-modal-deadline-label">${t('submission_deadline')}</div>
-        <div class="proj-modal-deadline-date">${formatDate(p.deadline)}</div>
-        ${p.weekNumber ? `<div class="proj-modal-deadline-sub">Week ${p.weekNumber}</div>` : ''}
-      </div>`;
+      html += '<div class="proj-modal-deadline-box">'
+        + '<div class="proj-modal-deadline-label">' + t('submission_deadline') + '</div>'
+        + '<div class="proj-modal-deadline-date">' + fmtDate(p.deadline) + '</div>'
+        + (p.weekNumber ? '<div class="proj-modal-deadline-sub">Week ' + p.weekNumber + '</div>' : '')
+        + '</div>';
     }
 
     // Documents
     if (p.documents) {
-      rightSections += `<div style="margin-top:14px">${modalSection(t('documents_required'),
-        `<div style="font-style:italic;color:var(--accent-amber)">${escHtml(p.documents)}</div>`)}</div>`;
+      html += '<div style="margin-top:14px">' + mSec(t('documents_required'),
+        '<div style="font-style:italic;color:var(--accent-amber)">' + esc(p.documents) + '</div>') + '</div>';
     }
 
-    // Quick links
-    const links = [];
-    if (p.link) links.push(`<a href="${escHtml(p.link)}" target="_blank" rel="noopener" class="proj-modal-link-btn primary">&#128640; ${t('apply')}</a>`);
-    if (p.linkInfo && p.linkInfo.startsWith('http')) {
-      links.push(`<a href="${escHtml(p.linkInfo)}" target="_blank" rel="noopener" class="proj-modal-link-btn secondary">&#9432; ${t('info')}</a>`);
+    html += '</div></div>';
+
+    // Reference ID
+    if (p.code) {
+      html += '<div class="proj-modal-ref"><span>' + t('reference_id') + ':</span> ' + esc(p.code) + '</div>';
     }
 
-    let linksHtml = '';
-    if (links.length > 0) {
-      linksHtml = `<div style="margin-top:16px">
-        <div class="proj-modal-label">${t('quick_links')}</div>
-        <div class="proj-modal-links">${links.join('')}</div>
-      </div>`;
-    }
-
-    const statusBadge = p.status
-      ? `<span class="proj-badge proj-badge-status" data-status="${escHtml(p.status.toLowerCase())}" style="font-size:0.75rem"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;margin-right:3px"></span>${escHtml(p.status)}</span>`
-      : '';
-
-    body.innerHTML = `
-      <button class="modal-close" onclick="document.getElementById('modal-overlay').classList.remove('visible')">&times;</button>
-      <div class="proj-modal-top">
-        ${p.image ? `<img class="proj-modal-img" src="${escHtml(p.image)}" alt="" onerror="this.style.display='none'">` : ''}
-        <div class="proj-modal-header">
-          <h2>${escHtml(p.name)}</h2>
-          <div class="proj-modal-parent">${t('parent_program')}: <a href="#">${escHtml(p.parentProgram || groupLabel)}</a></div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap">
-            ${statusBadge}
-            ${p.acronym ? `<span class="proj-badge proj-badge-program">${escHtml(p.acronym)}</span>` : ''}
-          </div>
-        </div>
-      </div>
-      <div class="proj-modal-grid">
-        <div>${leftSections}${linksHtml}</div>
-        <div>${rightSections}</div>
-      </div>
-      ${p.code ? `<div class="proj-modal-ref"><span>${t('reference_id')}:</span> ${escHtml(p.code)}</div>` : ''}
-    `;
-
+    body.innerHTML = html;
     overlay.classList.add('visible');
-  }
 
-  function modalSection(label, content) {
-    return `<div class="proj-modal-section">
-      <div class="proj-modal-label">${label}</div>
-      <div class="proj-modal-value">${content}</div>
-    </div>`;
-  }
-
-  function modalMiniField(label, value) {
-    return `<div>
-      <div class="proj-modal-label">${escHtml(label)}</div>
-      <div class="proj-modal-value">${escHtml(value)}</div>
-    </div>`;
-  }
-
-  // ---- Utilities ----
-  function escHtml(str) {
-    if (!str) return '';
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-  }
-
-  function hashCode(str) {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      hash = ((hash << 5) - hash) + str.charCodeAt(i);
-      hash |= 0;
+    // Close handler
+    var closeBtn = byId('modal-close-btn');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function () {
+        overlay.classList.remove('visible');
+      });
     }
-    return Math.abs(hash);
   }
 
+  function mSec(label, content) {
+    return '<div class="proj-modal-section"><div class="proj-modal-label">' + label + '</div><div class="proj-modal-value">' + content + '</div></div>';
+  }
+
+  function closeModal() {
+    var overlay = byId('modal-overlay');
+    if (overlay) overlay.classList.remove('visible');
+  }
+
+  /* ---------- Loading ---------- */
   function hideLoading() {
-    const ls = document.getElementById('loading-screen');
-    if (ls) ls.style.display = 'none';
+    var ls = byId('loading-screen');
+    if (ls) {
+      ls.classList.add('hidden');
+      setTimeout(function () { ls.style.display = 'none'; }, 700);
+    }
   }
 
-  // ---- Event Bindings ----
+  /* ---------- Events ---------- */
   function initEvents() {
     // Search
-    const searchInput = document.getElementById('proj-search');
-    searchInput.addEventListener('input', () => {
-      searchQuery = searchInput.value.trim();
-      applyFilters();
-    });
+    var searchInput = byId('proj-search');
+    if (searchInput) {
+      searchInput.addEventListener('input', function () {
+        searchQuery = searchInput.value.trim();
+        applyFilters();
+      });
+    }
 
-    // ESC to clear search
-    document.addEventListener('keydown', (e) => {
+    // ESC key
+    document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') {
-        const overlay = document.getElementById('modal-overlay');
-        if (overlay.classList.contains('visible')) {
-          overlay.classList.remove('visible');
-        } else if (searchInput.value) {
+        var overlay = byId('modal-overlay');
+        if (overlay && overlay.classList.contains('visible')) {
+          closeModal();
+        } else if (searchInput && searchInput.value) {
           searchInput.value = '';
           searchQuery = '';
           applyFilters();
@@ -729,112 +723,121 @@
       }
     });
 
-    // Modal close on backdrop click
-    document.getElementById('modal-overlay').addEventListener('click', (e) => {
-      if (e.target.id === 'modal-overlay') {
-        e.target.classList.remove('visible');
-      }
-    });
+    // Modal backdrop close
+    var overlay = byId('modal-overlay');
+    if (overlay) {
+      overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) closeModal();
+      });
+    }
 
     // Filter dropdowns
-    $$('.proj-filter-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
+    var openPanel = null;
+    qsa('.proj-filter-btn').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
         e.stopPropagation();
-        const dd = btn.closest('.proj-filter-dropdown');
-        const panel = dd.querySelector('.proj-dropdown-panel');
-        const isOpen = panel.classList.contains('open');
+        var dd = btn.parentElement;
+        var panel = dd ? dd.querySelector('.proj-dropdown-panel') : null;
+        if (!panel) return;
+        var wasOpen = panel.classList.contains('open');
 
-        // Close all panels
-        $$('.proj-dropdown-panel.open').forEach(p => p.classList.remove('open'));
-        $$('.proj-filter-btn.open').forEach(b => b.classList.remove('open'));
+        // Close all
+        qsa('.proj-dropdown-panel.open').forEach(function (p) { p.classList.remove('open'); });
+        qsa('.proj-filter-btn.open').forEach(function (b) { b.classList.remove('open'); });
 
-        if (!isOpen) {
+        if (!wasOpen) {
           panel.classList.add('open');
           btn.classList.add('open');
-          openDropdown = panel;
+          openPanel = panel;
         } else {
-          openDropdown = null;
+          openPanel = null;
         }
       });
     });
 
     // Close dropdown on outside click
-    document.addEventListener('click', () => {
-      if (openDropdown) {
-        $$('.proj-dropdown-panel.open').forEach(p => p.classList.remove('open'));
-        $$('.proj-filter-btn.open').forEach(b => b.classList.remove('open'));
-        openDropdown = null;
+    document.addEventListener('click', function () {
+      if (openPanel) {
+        qsa('.proj-dropdown-panel.open').forEach(function (p) { p.classList.remove('open'); });
+        qsa('.proj-filter-btn.open').forEach(function (b) { b.classList.remove('open'); });
+        openPanel = null;
       }
     });
 
-    // Stop propagation inside panels
-    $$('.proj-dropdown-panel').forEach(p => {
-      p.addEventListener('click', e => e.stopPropagation());
+    // Prevent dropdown close when clicking inside
+    qsa('.proj-dropdown-panel').forEach(function (p) {
+      p.addEventListener('click', function (e) { e.stopPropagation(); });
     });
 
     // Archive toggle
-    document.getElementById('toggle-archived').addEventListener('change', (e) => {
-      showArchived = e.target.checked;
-      applyFilters();
-    });
+    var archToggle = byId('toggle-archived');
+    if (archToggle) {
+      archToggle.addEventListener('change', function () {
+        showArchived = archToggle.checked;
+        applyFilters();
+      });
+    }
 
-    // View mode
-    document.getElementById('btn-view-program').addEventListener('click', () => {
-      viewMode = 'program';
-      document.getElementById('btn-view-program').classList.add('active');
-      document.getElementById('btn-view-all').classList.remove('active');
-      renderProjects();
-    });
-    document.getElementById('btn-view-all').addEventListener('click', () => {
-      viewMode = 'all';
-      document.getElementById('btn-view-all').classList.add('active');
-      document.getElementById('btn-view-program').classList.remove('active');
-      renderProjects();
-    });
+    // View mode buttons
+    var btnProgram = byId('btn-view-program');
+    var btnAll = byId('btn-view-all');
+    if (btnProgram) {
+      btnProgram.addEventListener('click', function () {
+        viewMode = 'program';
+        btnProgram.classList.add('active');
+        if (btnAll) btnAll.classList.remove('active');
+        renderProjects();
+      });
+    }
+    if (btnAll) {
+      btnAll.addEventListener('click', function () {
+        viewMode = 'all';
+        btnAll.classList.add('active');
+        if (btnProgram) btnProgram.classList.remove('active');
+        renderProjects();
+      });
+    }
 
     // Language switch
-    $$('.proj-lang-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        currentLang = btn.dataset.lang;
-        $$('.proj-lang-btn').forEach(b => b.classList.remove('active'));
+    qsa('.proj-lang-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        lang = btn.getAttribute('data-lang') || 'ua';
+        qsa('.proj-lang-btn').forEach(function (b) { b.classList.remove('active'); });
         btn.classList.add('active');
         updateI18n();
         applyFilters();
       });
     });
 
-    // Navbar scroll effect
-    window.addEventListener('scroll', () => {
-      const navbar = document.getElementById('navbar');
-      if (window.scrollY > 10) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
+    // Navbar scroll
+    window.addEventListener('scroll', function () {
+      var nav = byId('navbar');
+      if (nav) nav.classList.toggle('scrolled', window.scrollY > 10);
     });
 
-    // Hamburger menu
-    const hamburger = document.getElementById('hamburger-btn');
+    // Hamburger
+    var hamburger = byId('hamburger-btn');
     if (hamburger) {
-      hamburger.addEventListener('click', () => {
-        document.getElementById('nav-links').classList.toggle('open');
+      hamburger.addEventListener('click', function () {
+        var links = byId('nav-links');
+        if (links) links.classList.toggle('open');
         hamburger.classList.toggle('active');
       });
     }
   }
 
   function updateI18n() {
-    $$('[data-i18n]').forEach(el => {
-      const key = el.dataset.i18n;
-      el.textContent = t(key);
+    qsa('[data-i18n]').forEach(function (el) {
+      el.textContent = t(el.getAttribute('data-i18n'));
     });
-    const searchInput = document.getElementById('proj-search');
-    if (searchInput) searchInput.placeholder = t('search_placeholder');
+    var si = byId('proj-search');
+    if (si) si.placeholder = t('search_placeholder');
   }
 
-  // ---- Init ----
-  document.addEventListener('DOMContentLoaded', () => {
+  /* ---------- Init ---------- */
+  document.addEventListener('DOMContentLoaded', function () {
     initEvents();
     loadData();
   });
+
 })();
