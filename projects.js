@@ -41,6 +41,8 @@
       archive_badge: 'Архів',
       n_projects: 'проєктів',
       search_placeholder: 'Пошук проєктів... / Search projects...',
+      all_filters: 'Всі фільтри',
+      apply_filters: 'Застосувати',
       view_full_page: 'Переглянути повну сторінку',
       copy_link: 'Копіювати посилання',
       link_copied: 'Посилання скопійовано!',
@@ -86,6 +88,8 @@
       archive_badge: 'Archived',
       n_projects: 'projects',
       search_placeholder: 'Search projects...',
+      all_filters: 'All Filters',
+      apply_filters: 'Apply',
       view_full_page: 'View Full Page',
       copy_link: 'Copy Link',
       link_copied: 'Link copied!',
@@ -185,6 +189,7 @@
           var doc = parser.parseFromString(xhr.responseText, 'text/xml');
           parseGraph(doc);
           buildFilterOptions();
+          fillSidebarPanels();
           applyFilters();
           // Check if URL has a project route on initial load
           if (window.location.hash.indexOf('#project/') === 0) {
@@ -234,6 +239,7 @@
     projectEls.forEach(function (el) {
       var p = parseProjectNode(el);
       var nodeName = el.getAttribute('nodeName');
+      var guid = el.getAttribute('guid') || '';
       var parents = edgeMap[nodeName] || [];
       var group = null;
       for (var i = 0; i < parents.length; i++) {
@@ -241,6 +247,7 @@
       }
       p._group = group || '(empty)';
       p._nodeName = nodeName;
+      p._guid = guid;
       allProjects.push(p);
     });
 
@@ -323,7 +330,8 @@
       isArchived: /^(archive|archived|closed)$/i.test(status),
       _deadlineParsed: parseDate(getVal('Last_submition_deadline')),
       _group: '',
-      _nodeName: ''
+      _nodeName: '',
+      _guid: ''
     };
   }
 
@@ -710,7 +718,7 @@
     }
 
     // Action buttons: View Full Page + Copy Link
-    var projectUrl = window.location.pathname + '#project/' + encodeURIComponent(p._nodeName);
+    var projectUrl = window.location.pathname + '#project/' + p._guid;
     var fullUrl = window.location.origin + projectUrl;
     html += '<div class="proj-modal-actions">';
     html += '<button class="proj-modal-link-btn primary" id="btn-view-full-page">'
@@ -786,9 +794,9 @@
   }
 
   /* ---------- Dedicated Project Page ---------- */
-  function findProjectByNodeName(name) {
+  function findProjectById(id) {
     for (var i = 0; i < allProjects.length; i++) {
-      if (allProjects[i]._nodeName === name) return allProjects[i];
+      if (allProjects[i]._guid === id || allProjects[i]._nodeName === id) return allProjects[i];
     }
     return null;
   }
@@ -807,7 +815,7 @@
         + esc(p.status) + '</span>';
     }
 
-    var projectUrl = window.location.origin + window.location.pathname + '#project/' + encodeURIComponent(p._nodeName);
+    var projectUrl = window.location.origin + window.location.pathname + '#project/' + p._guid;
 
     var html = '<div class="proj-detail-page">';
 
@@ -1000,8 +1008,8 @@
   function handleRoute() {
     var hash = window.location.hash;
     if (hash.indexOf('#project/') === 0) {
-      var nodeName = decodeURIComponent(hash.substring(9));
-      var proj = findProjectByNodeName(nodeName);
+      var projectId = decodeURIComponent(hash.substring(9));
+      var proj = findProjectById(projectId);
       if (proj) {
         closeModal();
         renderProjectPage(proj);
@@ -1161,9 +1169,137 @@
     if (si) si.placeholder = t('search_placeholder');
   }
 
+  /* ---------- Filter Sidebar ---------- */
+  function initSidebar() {
+    var openBtn = byId('btn-open-filters');
+    var closeBtn = byId('btn-close-sidebar');
+    var overlay = byId('sidebar-overlay');
+    var sidebar = byId('filter-sidebar');
+    var applyBtn = byId('btn-sidebar-apply');
+    var clearBtn = byId('btn-sidebar-clear');
+    var sidebarArchive = byId('sidebar-toggle-archived');
+
+    function openSidebar() {
+      if (sidebar) sidebar.classList.add('open');
+      if (overlay) overlay.classList.add('open');
+      // Sync archive toggle
+      if (sidebarArchive) sidebarArchive.checked = showArchived;
+    }
+    function closeSidebar() {
+      if (sidebar) sidebar.classList.remove('open');
+      if (overlay) overlay.classList.remove('open');
+    }
+
+    if (openBtn) openBtn.addEventListener('click', openSidebar);
+    if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+    if (overlay) overlay.addEventListener('click', closeSidebar);
+
+    // Sync sidebar archive with main archive
+    if (sidebarArchive) {
+      sidebarArchive.addEventListener('change', function () {
+        showArchived = sidebarArchive.checked;
+        var mainToggle = byId('toggle-archived');
+        if (mainToggle) mainToggle.checked = showArchived;
+      });
+    }
+
+    // Apply button closes sidebar and applies
+    if (applyBtn) {
+      applyBtn.addEventListener('click', function () {
+        closeSidebar();
+        applyFilters();
+      });
+    }
+
+    // Clear button
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function () {
+        var keys = Object.keys(activeFilters);
+        keys.forEach(function (k) {
+          activeFilters[k] = [];
+          syncFilterBtn(k);
+        });
+        // Uncheck all in sidebar panels
+        qsa('.proj-sidebar-panel .proj-dropdown-item.selected').forEach(function (el) { el.classList.remove('selected'); });
+        // Uncheck all in main dropdowns
+        qsa('.proj-dropdown-panel .proj-dropdown-item.selected').forEach(function (el) { el.classList.remove('selected'); });
+        // Reset archive
+        showArchived = false;
+        if (sidebarArchive) sidebarArchive.checked = false;
+        var mainToggle = byId('toggle-archived');
+        if (mainToggle) mainToggle.checked = false;
+        applyFilters();
+      });
+    }
+
+    // ESC closes sidebar
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && sidebar && sidebar.classList.contains('open')) {
+        closeSidebar();
+      }
+    });
+  }
+
+  function fillSidebarPanels() {
+    var filterKeys = ['program', 'section', 'type', 'applicant', 'status'];
+    filterKeys.forEach(function (key) {
+      var sidebarPanel = byId('sidebar-panel-' + key);
+      var mainPanel = byId('panel-' + key);
+      if (!sidebarPanel || !mainPanel) return;
+
+      // Clone items from main panel
+      var items = qsa('.proj-dropdown-item', mainPanel);
+      var html = '';
+      items.forEach(function (item) {
+        var val = item.getAttribute('data-value');
+        var label = item.querySelector('span:last-child');
+        var labelText = label ? label.textContent : val;
+        var sel = (activeFilters[key].indexOf(val) >= 0) ? ' selected' : '';
+        html += '<div class="proj-dropdown-item' + sel + '" data-value="' + esc(val) + '">'
+          + '<span class="check-box"></span>'
+          + '<span>' + esc(labelText) + '</span>'
+          + '</div>';
+      });
+      sidebarPanel.innerHTML = html;
+
+      // Bind clicks
+      qsa('.proj-dropdown-item', sidebarPanel).forEach(function (el) {
+        el.addEventListener('click', function () {
+          var val = el.getAttribute('data-value');
+          var idx = activeFilters[key].indexOf(val);
+          if (idx >= 0) {
+            activeFilters[key].splice(idx, 1);
+            el.classList.remove('selected');
+          } else {
+            activeFilters[key].push(val);
+            el.classList.add('selected');
+          }
+          // Sync main dropdown
+          syncFilterBtn(key);
+          syncMainDropdown(key, val, activeFilters[key].indexOf(val) >= 0);
+        });
+      });
+    });
+  }
+
+  function syncMainDropdown(key, val, selected) {
+    var panel = byId('panel-' + key);
+    if (!panel) return;
+    qsa('.proj-dropdown-item', panel).forEach(function (di) {
+      if (di.getAttribute('data-value') === val) {
+        if (selected) {
+          di.classList.add('selected');
+        } else {
+          di.classList.remove('selected');
+        }
+      }
+    });
+  }
+
   /* ---------- Init ---------- */
   document.addEventListener('DOMContentLoaded', function () {
     initEvents();
+    initSidebar();
     loadData();
     window.addEventListener('hashchange', handleRoute);
   });
