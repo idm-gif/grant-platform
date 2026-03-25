@@ -237,10 +237,9 @@
 /* Status badge base */
 .proj-badge-status { border: 1px solid; }
 
-/* Active / Open / Actual → green */
+/* Active / Open → green */
 .proj-badge-status[data-status="open"],
-.proj-badge-status[data-status="active"],
-.proj-badge-status[data-status="actual"] {
+.proj-badge-status[data-status="active"] {
   background: rgba(16,185,129,0.15);
   color: var(--accent-emerald);
   border-color: rgba(16,185,129,0.3);
