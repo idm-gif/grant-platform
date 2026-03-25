@@ -44,7 +44,14 @@
       view_full_page: 'Переглянути повну сторінку',
       copy_link: 'Копіювати посилання',
       link_copied: 'Посилання скопійовано!',
-      back_to_explorer: '← Назад до проєктів'
+      back_to_explorer: '← Назад до проєктів',
+      submission_opening: 'Дата відкриття подачі / Submission opening',
+      type_attestation: 'Атестаційна програма / Attestation program',
+      acronym_label: 'Акронім / Acronym',
+      status_label: 'Статус / Status',
+      project_code: 'Код проєкту / Project code',
+      additional_info: 'Додаткова інформація / Additional info',
+      link_info_label: 'Інформаційне посилання / Info link'
     },
     en: {
       filter_program: 'Grant Program',
@@ -82,7 +89,14 @@
       view_full_page: 'View Full Page',
       copy_link: 'Copy Link',
       link_copied: 'Link copied!',
-      back_to_explorer: '← Back to Projects'
+      back_to_explorer: '← Back to Projects',
+      submission_opening: 'Submission opening',
+      type_attestation: 'Attestation program',
+      acronym_label: 'Acronym',
+      status_label: 'Status',
+      project_code: 'Project code',
+      additional_info: 'Additional information',
+      link_info_label: 'Info link'
     }
   };
 
@@ -810,9 +824,11 @@
     html += '<div class="proj-card-badges" style="margin-bottom:12px">';
     html += '<span class="proj-badge proj-badge-program">' + esc(p.acronym || shortName(p._group)) + '</span>';
     html += statusBadge;
+    if (p.isArchived) html += '<span class="proj-badge proj-badge-status" data-status="archive"><span class="proj-status-dot"></span>' + t('archive_badge') + '</span>';
     html += '</div>';
     html += '<h1 class="proj-detail-title">' + esc(p.name) + '</h1>';
     html += '<div class="proj-modal-parent">' + t('parent_program') + ': <a href="#">' + esc(p.parentProgram || groupLabel) + '</a></div>';
+    if (p.code) html += '<div style="margin-top:4px;font-size:0.82rem;color:var(--text-muted)">' + t('project_code') + ': <strong>' + esc(p.code) + '</strong></div>';
     html += '</div></div>';
 
     // Copy link bar
@@ -826,36 +842,62 @@
     // Content grid
     html += '<div class="proj-detail-grid">';
 
-    // Left column
+    // Left column — all project details
     html += '<div class="proj-detail-col">';
+
+    // Organizer block
     if (p.organizer) html += mSec(t('organizer'), esc(p.organizer));
     if (p.coOrganizer) html += mSec(t('co_organizer'), esc(p.coOrganizer));
-    if (p.type || p.section) {
-      html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">';
-      if (p.type) html += '<div><div class="proj-modal-label">' + esc(t('type_label')) + '</div><div class="proj-modal-value">' + esc(p.type) + '</div></div>';
-      if (p.section) html += '<div><div class="proj-modal-label">' + esc(t('section_label')) + '</div><div class="proj-modal-value">' + esc(p.section) + '</div></div>';
-      html += '</div>';
+
+    // Key properties grid
+    var propsHtml = '';
+    if (p.type) propsHtml += '<div><div class="proj-modal-label">' + esc(t('type_label')) + '</div><div class="proj-modal-value">' + esc(p.type) + '</div></div>';
+    if (p.section) propsHtml += '<div><div class="proj-modal-label">' + esc(t('section_label')) + '</div><div class="proj-modal-value">' + esc(p.section) + '</div></div>';
+    if (p.typeAttestation) propsHtml += '<div><div class="proj-modal-label">' + esc(t('type_attestation')) + '</div><div class="proj-modal-value">' + esc(p.typeAttestation) + '</div></div>';
+    if (p.acronym) propsHtml += '<div><div class="proj-modal-label">' + esc(t('acronym_label')) + '</div><div class="proj-modal-value">' + esc(p.acronym) + '</div></div>';
+    if (p.status) propsHtml += '<div><div class="proj-modal-label">' + esc(t('status_label')) + '</div><div class="proj-modal-value">' + statusBadge + '</div></div>';
+    if (propsHtml) {
+      html += '<div class="proj-detail-props-grid">' + propsHtml + '</div>';
     }
+
+    // Who can apply
     if (p.whoCanSubmit) {
       html += mSec(t('who_can_apply'), '<span style="display:inline-flex;align-items:center;gap:6px">&#127760; ' + esc(p.whoCanSubmit) + '</span>');
     }
+
+    // Funding directions
     if (p.fundingDirections.length) {
       var list = '<ul class="proj-modal-list">' + p.fundingDirections.map(function (d) { return '<li>' + esc(d) + '</li>'; }).join('') + '</ul>';
       html += mSec(t('funding_directions'), list);
     }
+
+    // Documents
     if (p.documents) {
       html += mSec(t('documents_required'), '<div style="font-style:italic;color:var(--accent-amber)">' + esc(p.documents) + '</div>');
     }
+
+    // Info link text (non-URL info text)
+    if (p.linkInfoText && p.linkInfoText.indexOf('http') !== 0) {
+      html += mSec(t('link_info_label'), esc(p.linkInfoText));
+    }
+
     html += '</div>';
 
-    // Right column
+    // Right column — dates, links, extra data
     html += '<div class="proj-detail-col">';
+
+    // Deadline box
     if (p.deadline) {
       html += '<div class="proj-modal-deadline-box">'
         + '<div class="proj-modal-deadline-label">' + t('submission_deadline') + '</div>'
         + '<div class="proj-modal-deadline-date">' + fmtDate(p.deadline) + '</div>'
         + (p.weekNumber ? '<div class="proj-modal-deadline-sub">Week ' + p.weekNumber + '</div>' : '')
         + '</div>';
+    }
+
+    // Submission opening date
+    if (p.submissionOpening) {
+      html += '<div style="margin-top:14px">' + mSec(t('submission_opening'), fmtDate(p.submissionOpening)) + '</div>';
     }
 
     // Quick links
@@ -868,9 +910,41 @@
       html += '<div style="margin-top:14px"><div class="proj-modal-label">' + t('quick_links') + '</div><div class="proj-modal-links">' + links + '</div></div>';
     }
 
+    // Any extra raw fields not already shown
+    var knownKeys = {
+      '\u0441': 1, 'с': 1, 'code': 1, 'Type': 1, 'Type_attestation': 1,
+      'Section': 1, 'List_what_is_founding_directions_of_foundings': 1,
+      'Who_can_sumbit': 1, 'Acronym': 1, 'Organizator': 1, 'Co-Organizator': 1,
+      'In_terms_of_parent_program': 1, 'Last_submition_deadline': 1,
+      'Submition_opening': 1, 'Documents_required_to_be_prepared': 1,
+      'Status': 1, 'Image': 1, 'Link': 1, 'Link_info': 1,
+      '\u041d\u043e\u043c\u0435\u0440_\u0442\u0438\u0436\u043d\u044f': 1
+    };
+    var extraHtml = '';
+    var rawKeys = Object.keys(p._raw || {});
+    rawKeys.forEach(function (key) {
+      if (knownKeys[key]) return;
+      var v = p._raw[key];
+      var text = '';
+      if (Array.isArray(v)) {
+        text = v.map(function (x) { return typeof x === 'object' ? x.text : x; }).filter(Boolean).join(', ');
+      } else if (typeof v === 'object') {
+        text = v.text || v.link || '';
+      } else {
+        text = String(v);
+      }
+      if (text) {
+        var label = key.replace(/_/g, ' ');
+        extraHtml += mSec(label, esc(text));
+      }
+    });
+    if (extraHtml) {
+      html += '<div style="margin-top:14px"><div class="proj-modal-label" style="margin-bottom:8px">' + t('additional_info') + '</div>' + extraHtml + '</div>';
+    }
+
     html += '</div></div>';
 
-    // Reference ID
+    // Reference ID at bottom
     if (p.code) {
       html += '<div class="proj-modal-ref"><span>' + t('reference_id') + ':</span> ' + esc(p.code) + '</div>';
     }

@@ -444,6 +444,13 @@
   gap: 28px; margin-bottom: 20px;
 }
 .proj-detail-col {}
+.proj-detail-props-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; margin-bottom: 14px;
+  padding: 16px; background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+}
 
 /* ---------- Responsive ---------- */
 @media (max-width: 768px) {
