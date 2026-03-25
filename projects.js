@@ -137,6 +137,21 @@
     return name.replace(/\s*\(p\d+\)$/, '');
   }
 
+  function expandSemicolonList(arr) {
+    var result = [];
+    arr.forEach(function (item) {
+      if (item.indexOf(';') >= 0) {
+        item.split(';').forEach(function (s) {
+          var trimmed = s.trim();
+          if (trimmed) result.push(trimmed);
+        });
+      } else {
+        if (item.trim()) result.push(item.trim());
+      }
+    });
+    return result;
+  }
+
   /* ---------- XML Parsing ---------- */
   function loadData() {
     var xhr = new XMLHttpRequest();
@@ -172,9 +187,10 @@
       groupMap[name] = { nodeName: name, projects: [] };
     });
 
-    // 2. Project nodes (ПРОЕКТИ with data, skip root)
-    var projectEls = qsa('Node[nclass="ПРОЕКТИ"]', doc).filter(function (n) {
-      return n.querySelector('data');
+    // 2. Project nodes — any nclass != Type_attestation, with data (skip root)
+    var projectEls = qsa('Node', doc).filter(function (n) {
+      var nc = n.getAttribute('nclass') || '';
+      return nc !== 'Type_attestation' && n.querySelector('data');
     });
 
     // 3. Build edge lookup: node1 -> [node2, ...]
@@ -261,7 +277,7 @@
       typeAttestation: getVal('Type_attestation'),
       section: sectionStr,
       sections: sectionStr ? sectionStr.split(',').map(function (s) { return s.trim(); }).filter(Boolean) : [],
-      fundingDirections: raw['List_what_is_founding_directions_of_foundings'] || [],
+      fundingDirections: expandSemicolonList(raw['List_what_is_founding_directions_of_foundings'] || []),
       whoCanSubmit: whoStr,
       whoCanSubmitList: whoStr ? whoStr.split(',').map(function (s) { return s.trim(); }).filter(Boolean) : [],
       acronym: getVal('Acronym'),
