@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Науковий сектор НЦ «МАНУ»</title>
+  <meta name="description" content="Онтологічна візуалізація наукової діяльності, підрозділів, проектів та публікацій Наукового центру Малої академії наук України.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔬</text></svg>">
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <div class="loader-spinner"></div>
+    <div class="loader-text">Завантаження даних…</div>
+  </div>
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <div class="nav-logo" onclick="location.hash='home'">
+        <div class="nav-logo-icon">🔬</div>
+        <span>Науковий сектор НЦ «МАНУ»</span>
+      </div>
+      <ul class="nav-links" id="nav-links">
+        <!-- Dynamically populated from XML structure -->
+      </ul>
+      <button class="hamburger" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+  <!-- Main Content -->
+  <main id="app-content"></main>
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2024–2026 Науковий сектор НЦ «МАНУ»</p>
+  </footer>
+  <!-- Detail Modal -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal-content" id="modal-body"></div>
+  </div>
+  <script src="app.js?v=20260320a"></script>
+</body>
+</html>

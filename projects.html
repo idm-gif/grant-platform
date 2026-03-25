@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Проєкти / Projects — Науковий сектор НЦ «МАНУ»</title>
+  <meta name="description" content="Грантові проєкти та можливості фінансування для науковців.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="projects.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔬</text></svg>">
+</head>
+<body>
+  <div id="loading-screen">
+    <div class="loader-spinner"></div>
+    <div class="loader-text">Завантаження проєктів…</div>
+  </div>
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <div class="nav-logo-icon">🔬</div>
+        <span>Synthetic Observatory</span>
+      </div>
+      <ul class="nav-links" id="nav-links" data-nav-count="1">
+        <li><a href="projects.html" class="active">Проєкти / Projects</a></li>
+      </ul>
+      <div class="proj-lang-switch" id="lang-switch">
+        <button class="proj-lang-btn active" data-lang="ua">UA</button>
+        <span class="proj-lang-sep">|</span>
+        <button class="proj-lang-btn" data-lang="en">EN</button>
+      </div>
+      <button class="hamburger" aria-label="Menu" id="hamburger-btn">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main class="proj-main">
+    <div class="proj-search-wrap">
+      <div class="proj-search-box">
+        <svg class="proj-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" id="proj-search" class="proj-search-input" placeholder="Пошук проєктів... / Search projects..." autocomplete="off">
+        <kbd class="proj-search-kbd">ESC</kbd>
+      </div>
+    </div>
+
+    <div class="proj-filters-bar">
+      <div class="proj-filter-controls">
+        <div class="proj-filter-dropdown" data-filter="program">
+          <button class="proj-filter-btn" id="btn-filter-program">
+            <span data-i18n="filter_program">Грантова програма</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="proj-dropdown-panel" id="panel-program"></div>
+        </div>
+        <div class="proj-filter-dropdown" data-filter="section">
+          <button class="proj-filter-btn" id="btn-filter-section">
+            <span data-i18n="filter_section">Тематика</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="proj-dropdown-panel" id="panel-section"></div>
+        </div>
+        <div class="proj-filter-dropdown" data-filter="type">
+          <button class="proj-filter-btn" id="btn-filter-type">
+            <span data-i18n="filter_type">Тип</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="proj-dropdown-panel" id="panel-type"></div>
+        </div>
+        <div class="proj-filter-dropdown" data-filter="applicant">
+          <button class="proj-filter-btn" id="btn-filter-applicant">
+            <span data-i18n="filter_applicant">Хто може подати</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="proj-dropdown-panel" id="panel-applicant"></div>
+        </div>
+        <div class="proj-filter-dropdown" data-filter="status">
+          <button class="proj-filter-btn" id="btn-filter-status">
+            <span data-i18n="filter_status">Статус</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="proj-dropdown-panel" id="panel-status"></div>
+        </div>
+      </div>
+      <label class="proj-archive-toggle">
+        <input type="checkbox" id="toggle-archived">
+        <span class="proj-toggle-track"><span class="proj-toggle-thumb"></span></span>
+        <span data-i18n="show_archived">Показати архівні</span>
+      </label>
+    </div>
+
+    <div class="proj-active-filters" id="active-filters"></div>
+
+    <div class="proj-header-row">
+      <div>
+        <h1 class="proj-page-title">Explorer</h1>
+        <p class="proj-counter" id="proj-counter"></p>
+      </div>
+      <div class="proj-view-toggle">
+        <button class="proj-view-btn active" id="btn-view-program" data-i18n="view_by_program">По програмах / By Program</button>
+        <button class="proj-view-btn" id="btn-view-all" data-i18n="view_all">Всi / All</button>
+      </div>
+    </div>
+
+    <div id="projects-container"></div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2024&ndash;2026 Науковий сектор НЦ «МАНУ»</p>
+  </footer>
+
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal-content" id="modal-body"></div>
+  </div>
+
+  <script src="projects.js?v=20260325"></script>
+</body>
+</html>
