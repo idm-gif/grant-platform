@@ -53,7 +53,12 @@
       status_label: 'Статус / Status',
       project_code: 'Код проєкту / Project code',
       additional_info: 'Додаткова інформація / Additional info',
-      link_info_label: 'Інформаційне посилання / Info link'
+      link_info_label: 'Інформаційне посилання / Info link',
+      date_filter: 'Дати',
+      date_from: 'Від',
+      date_to: 'До',
+      dates_title: 'Дати',
+      clear_date: 'Скинути'
     },
     en: {
       filter_program: 'Grant Program',
@@ -100,7 +105,26 @@
       status_label: 'Status',
       project_code: 'Project code',
       additional_info: 'Additional information',
-      link_info_label: 'Info link'
+      link_info_label: 'Info link',
+      date_filter: 'Dates',
+      date_from: 'From',
+      date_to: 'To',
+      dates_title: 'Dates',
+      clear_date: 'Clear'
+    }
+  };
+
+  /* ---------- Date field label map (for known fields) ---------- */
+  var DATE_FIELD_LABELS = {
+    ua: {
+      'Last_submition_deadline': 'Дедлайн подачі',
+      'Submition_opening': 'Відкриття подачі',
+      'Last_deccision_deadline': 'Дедлайн рішення'
+    },
+    en: {
+      'Last_submition_deadline': 'Submission Deadline',
+      'Submition_opening': 'Submission Opening',
+      'Last_deccision_deadline': 'Decision Deadline'
     }
   };
 
@@ -112,6 +136,8 @@
   var filteredProjects = [];
   var groups = {};
   var activeFilters = { program: [], section: [], type: [], applicant: [], status: [] };
+  var dateFilters = {};        // key -> { from: Date|null, to: Date|null, fromStr: '', toStr: '' }
+  var detectedDateFields = []; // [{ key, label }] — auto-detected from XML data
   var showArchived = false;
   var viewMode = 'program';
   var searchQuery = '';
@@ -190,6 +216,7 @@
           parseGraph(doc);
           buildFilterOptions();
           fillSidebarPanels();
+          buildDateFilters();
           applyFilters();
           // Check if URL has a project route on initial load
           if (window.location.hash.indexOf('#project/') === 0) {
@@ -335,6 +362,175 @@
     };
   }
 
+  /* ---------- Dynamic Date Detection ---------- */
+
+  function detectDateFields() {
+    // For each raw field key, count how many project values parse as dates
+    var keyStats = {};
+    allProjects.forEach(function (p) {
+      Object.keys(p._raw).forEach(function (key) {
+        var v = p._raw[key];
+        var text = '';
+        if (!v) return;
+        if (Array.isArray(v)) return; // multi-value fields (e.g. funding directions) — skip
+        if (typeof v === 'object') text = v.text || '';
+        else text = String(v);
+        text = text.trim();
+        if (!text) return;
+        if (!keyStats[key]) keyStats[key] = { total: 0, dateCount: 0 };
+        keyStats[key].total++;
+        if (parseDate(text)) keyStats[key].dateCount++;
+      });
+    });
+
+    detectedDateFields = [];
+    Object.keys(keyStats).forEach(function (key) {
+      var s = keyStats[key];
+      // Require at least 2 values and ≥ 60% parseable as dates
+      if (s.total >= 2 && s.dateCount / s.total >= 0.6) {
+        detectedDateFields.push({ key: key });
+        if (!dateFilters[key]) {
+          dateFilters[key] = { from: null, to: null, fromStr: '', toStr: '' };
+        }
+      }
+    });
+
+    // Sort: deadline fields first, then alphabetically
+    detectedDateFields.sort(function (a, b) {
+      var aD = /deadline/i.test(a.key) ? 0 : 1;
+      var bD = /deadline/i.test(b.key) ? 0 : 1;
+      return (aD - bD) || a.key.localeCompare(b.key);
+    });
+  }
+
+  function getDateFieldLabel(key) {
+    var map = DATE_FIELD_LABELS[lang] || DATE_FIELD_LABELS.ua;
+    return map[key] || key.replace(/_/g, ' ');
+  }
+
+  function getProjectDates(p) {
+    // Returns all date fields for this project that have a parseable value
+    var result = [];
+    detectedDateFields.forEach(function (f) {
+      var v = p._raw[f.key];
+      if (!v) return;
+      var text = typeof v === 'object' && !Array.isArray(v) ? (v.text || '') : (Array.isArray(v) ? '' : String(v));
+      text = text.trim();
+      if (!text) return;
+      var parsed = parseDate(text);
+      if (!parsed) return;
+      result.push({
+        key: f.key,
+        label: getDateFieldLabel(f.key),
+        raw: text,
+        parsed: parsed,
+        formatted: fmtDate(text),
+        isDeadline: /deadline/i.test(f.key)
+      });
+    });
+    return result;
+  }
+
+  function syncDateFilterBtn() {
+    var btn = byId('btn-filter-date');
+    if (!btn) return;
+    var hasAny = detectedDateFields.some(function (f) {
+      var df = dateFilters[f.key];
+      return df && (df.from || df.to);
+    });
+    btn.classList.toggle('has-active', hasAny);
+  }
+
+  function buildDateFilters() {
+    buildDateFilterPanel();
+    buildSidebarDateFilters();
+  }
+
+  function buildDateFilterPanel() {
+    var panel = byId('panel-date');
+    if (!panel) return;
+    var dd = byId('date-filter-dd');
+
+    if (!detectedDateFields.length) {
+      if (dd) dd.style.display = 'none';
+      return;
+    }
+    if (dd) dd.style.display = '';
+
+    panel.innerHTML = renderDateFilterFields('bar');
+    bindDateFilterInputs(panel, 'bar');
+  }
+
+  function buildSidebarDateFilters() {
+    var section = byId('sidebar-date-section');
+    if (!section) return;
+
+    if (!detectedDateFields.length) {
+      section.style.display = 'none';
+      return;
+    }
+    section.style.display = '';
+    section.innerHTML = renderDateFilterFields('sidebar');
+    bindDateFilterInputs(section, 'sidebar');
+  }
+
+  function renderDateFilterFields(ctx) {
+    var html = '<div class="proj-date-filter-section">';
+    detectedDateFields.forEach(function (f) {
+      var df = dateFilters[f.key] || {};
+      var idSuffix = ctx + '-' + f.key;
+      html += '<div class="proj-date-filter-field">'
+        + '<div class="proj-date-filter-field-label">' + esc(getDateFieldLabel(f.key)) + '</div>'
+        + '<div class="proj-date-filter-row">'
+        + '<div class="proj-date-input-wrap"><label for="date-from-' + idSuffix + '">' + t('date_from') + '</label>'
+        + '<input type="date" id="date-from-' + idSuffix + '" class="proj-date-input" data-field="' + esc(f.key) + '" data-dir="from" value="' + esc(df.fromStr || '') + '"></div>'
+        + '<div class="proj-date-input-wrap"><label for="date-to-' + idSuffix + '">' + t('date_to') + '</label>'
+        + '<input type="date" id="date-to-' + idSuffix + '" class="proj-date-input" data-field="' + esc(f.key) + '" data-dir="to" value="' + esc(df.toStr || '') + '"></div>'
+        + '</div></div>';
+    });
+    html += '</div>';
+    return html;
+  }
+
+  function bindDateFilterInputs(container, ctx) {
+    qsa('.proj-date-input', container).forEach(function (input) {
+      input.addEventListener('change', function () {
+        var field = input.getAttribute('data-field');
+        var dir = input.getAttribute('data-dir');
+        var val = input.value; // YYYY-MM-DD from <input type="date">
+
+        if (!dateFilters[field]) dateFilters[field] = { from: null, to: null, fromStr: '', toStr: '' };
+        var parts = val ? val.split('-') : [];
+        var parsed = parts.length === 3 ? new Date(+parts[0], +parts[1] - 1, +parts[2]) : null;
+
+        if (dir === 'from') {
+          dateFilters[field].fromStr = val;
+          dateFilters[field].from = parsed;
+        } else {
+          dateFilters[field].toStr = val;
+          dateFilters[field].to = parsed;
+        }
+
+        // Sync the sibling context (bar ↔ sidebar)
+        var otherCtx = ctx === 'bar' ? 'sidebar' : 'bar';
+        var otherId = 'date-' + dir + '-' + otherCtx + '-' + field;
+        var otherInput = byId(otherId);
+        if (otherInput) otherInput.value = val;
+
+        syncDateFilterBtn();
+        applyFilters();
+      });
+    });
+  }
+
+  function clearAllDateFilters() {
+    detectedDateFields.forEach(function (f) {
+      dateFilters[f.key] = { from: null, to: null, fromStr: '', toStr: '' };
+    });
+    qsa('.proj-date-input').forEach(function (inp) { inp.value = ''; });
+    syncDateFilterBtn();
+  }
+
   /* ---------- Filter Options ---------- */
   function buildFilterOptions() {
     var sets = { program: {}, section: {}, type: {}, applicant: {}, status: {} };
@@ -352,6 +548,8 @@
     fillDropdown('panel-type', Object.keys(sets.type).sort(), 'type');
     fillDropdown('panel-applicant', Object.keys(sets.applicant).sort(), 'applicant');
     fillDropdown('panel-status', Object.keys(sets.status).sort(), 'status');
+
+    detectDateFields();
   }
 
   function fillDropdown(panelId, items, filterKey) {
@@ -410,6 +608,23 @@
       if (activeFilters.applicant.length && !p.whoCanSubmitList.some(function (a) { return activeFilters.applicant.indexOf(a) >= 0; })) return false;
       if (activeFilters.status.length && activeFilters.status.indexOf(p.status) < 0) return false;
 
+      // Dynamic date filters
+      for (var _di = 0; _di < detectedDateFields.length; _di++) {
+        var _fkey = detectedDateFields[_di].key;
+        var _df = dateFilters[_fkey];
+        if (!_df || (!_df.from && !_df.to)) continue;
+        var _v = p._raw[_fkey];
+        var _txt = !_v ? '' : (typeof _v === 'object' && !Array.isArray(_v) ? (_v.text || '') : String(_v));
+        _txt = _txt.trim();
+        var _d = parseDate(_txt);
+        if (!_d) return false;
+        if (_df.from && _d < _df.from) return false;
+        if (_df.to) {
+          var _toEnd = new Date(_df.to.getFullYear(), _df.to.getMonth(), _df.to.getDate(), 23, 59, 59);
+          if (_d > _toEnd) return false;
+        }
+      }
+
       return true;
     });
 
@@ -449,16 +664,33 @@
       });
     });
 
+    // Date filter pills
+    detectedDateFields.forEach(function (f) {
+      var df = dateFilters[f.key];
+      if (!df) return;
+      var fieldLabel = getDateFieldLabel(f.key);
+      if (df.from && df.fromStr) {
+        any = true;
+        html += '<span class="proj-pill">' + esc(fieldLabel) + ' ≥ ' + esc(fmtDate(df.fromStr))
+          + ' <span class="proj-pill-close" data-dfkey="' + esc(f.key) + '" data-dfdir="from">&times;</span></span>';
+      }
+      if (df.to && df.toStr) {
+        any = true;
+        html += '<span class="proj-pill">' + esc(fieldLabel) + ' ≤ ' + esc(fmtDate(df.toStr))
+          + ' <span class="proj-pill-close" data-dfkey="' + esc(f.key) + '" data-dfdir="to">&times;</span></span>';
+      }
+    });
+
     if (any) html += '<button class="proj-clear-all" id="btn-clear-all">' + t('clear_all') + '</button>';
     c.innerHTML = html;
 
-    qsa('.proj-pill-close', c).forEach(function (el) {
+    // Pill close — categorical filters
+    qsa('.proj-pill-close[data-fkey]', c).forEach(function (el) {
       el.addEventListener('click', function () {
         var k = el.getAttribute('data-fkey');
         var v = el.getAttribute('data-fval');
         var idx = activeFilters[k].indexOf(v);
         if (idx >= 0) activeFilters[k].splice(idx, 1);
-        // Uncheck in dropdown
         var panel = byId('panel-' + k);
         if (panel) {
           qsa('.proj-dropdown-item', panel).forEach(function (di) {
@@ -466,6 +698,25 @@
           });
         }
         syncFilterBtn(k);
+        applyFilters();
+      });
+    });
+
+    // Pill close — date filters
+    qsa('.proj-pill-close[data-dfkey]', c).forEach(function (el) {
+      el.addEventListener('click', function () {
+        var k = el.getAttribute('data-dfkey');
+        var dir = el.getAttribute('data-dfdir');
+        if (dateFilters[k]) {
+          if (dir === 'from') { dateFilters[k].from = null; dateFilters[k].fromStr = ''; }
+          else { dateFilters[k].to = null; dateFilters[k].toStr = ''; }
+        }
+        // Clear corresponding inputs in both bar and sidebar
+        ['bar', 'sidebar'].forEach(function (ctx) {
+          var inp = byId('date-' + dir + '-' + ctx + '-' + k);
+          if (inp) inp.value = '';
+        });
+        syncDateFilterBtn();
         applyFilters();
       });
     });
@@ -478,6 +729,7 @@
           syncFilterBtn(k);
         });
         qsa('.proj-dropdown-item.selected').forEach(function (el) { el.classList.remove('selected'); });
+        clearAllDateFilters();
         applyFilters();
       });
     }
@@ -575,6 +827,20 @@
       }
     }
 
+    // Build date chips for all detected date fields
+    var dates = getProjectDates(p);
+    var datesHtml = '';
+    if (dates.length) {
+      datesHtml = '<div class="proj-card-dates">';
+      dates.forEach(function (d) {
+        datesHtml += '<span class="proj-date-chip' + (d.isDeadline ? ' is-deadline' : '') + '">'
+          + '<span class="proj-date-chip-label">' + esc(d.label) + '</span>'
+          + '<span class="proj-date-chip-value">' + esc(d.formatted) + '</span>'
+          + '</span>';
+      });
+      datesHtml += '</div>';
+    }
+
     return '<div class="proj-card' + cls + '" data-project="' + esc(p._nodeName) + '">'
       + img
       + '<div class="proj-card-body">'
@@ -584,10 +850,9 @@
       + '</div>'
       + '<div class="proj-card-title">' + esc(p.name) + '</div>'
       + '<div class="proj-card-desc">' + esc(desc) + '</div>'
+      + datesHtml
       + '<div class="proj-card-meta">'
-      + (p.deadline
-          ? '<span class="proj-card-meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> ' + t('deadline') + ': ' + fmtDate(p.deadline) + '</span>'
-          : '<span></span>')
+      + '<span></span>'
       + '<span class="proj-card-meta-item">' + typeIcon + ' ' + esc(p.type) + '</span>'
       + '</div></div></div>';
   }
@@ -695,13 +960,21 @@
 
     html += '</div><div>';
 
-    // Deadline box
-    if (p.deadline) {
-      html += '<div class="proj-modal-deadline-box">'
-        + '<div class="proj-modal-deadline-label">' + t('submission_deadline') + '</div>'
-        + '<div class="proj-modal-deadline-date">' + fmtDate(p.deadline) + '</div>'
-        + (p.weekNumber ? '<div class="proj-modal-deadline-sub">Week ' + p.weekNumber + '</div>' : '')
-        + '</div>';
+    // Unified dates box — all detected date fields
+    var modalDates = getProjectDates(p);
+    if (modalDates.length) {
+      html += '<div class="proj-dates-box">'
+        + '<div class="proj-dates-box-title">' + t('dates_title') + '</div>';
+      modalDates.forEach(function (d) {
+        html += '<div class="proj-date-row' + (d.isDeadline ? ' is-deadline' : '') + '">'
+          + '<span class="proj-date-row-label">' + esc(d.label) + '</span>'
+          + '<span class="proj-date-row-value">' + esc(d.formatted) + '</span>'
+          + '</div>';
+      });
+      if (p.weekNumber) {
+        html += '<div style="margin-top:6px;font-size:0.75rem;color:var(--text-muted)">Week ' + esc(p.weekNumber) + '</div>';
+      }
+      html += '</div>';
     }
 
     // Documents
@@ -894,18 +1167,21 @@
     // Right column — dates, links, extra data
     html += '<div class="proj-detail-col">';
 
-    // Deadline box
-    if (p.deadline) {
-      html += '<div class="proj-modal-deadline-box">'
-        + '<div class="proj-modal-deadline-label">' + t('submission_deadline') + '</div>'
-        + '<div class="proj-modal-deadline-date">' + fmtDate(p.deadline) + '</div>'
-        + (p.weekNumber ? '<div class="proj-modal-deadline-sub">Week ' + p.weekNumber + '</div>' : '')
-        + '</div>';
-    }
-
-    // Submission opening date
-    if (p.submissionOpening) {
-      html += '<div style="margin-top:14px">' + mSec(t('submission_opening'), fmtDate(p.submissionOpening)) + '</div>';
+    // Unified dates box — all detected date fields
+    var detailDates = getProjectDates(p);
+    if (detailDates.length) {
+      html += '<div class="proj-dates-box">'
+        + '<div class="proj-dates-box-title">' + t('dates_title') + '</div>';
+      detailDates.forEach(function (d) {
+        html += '<div class="proj-date-row' + (d.isDeadline ? ' is-deadline' : '') + '">'
+          + '<span class="proj-date-row-label">' + esc(d.label) + '</span>'
+          + '<span class="proj-date-row-value">' + esc(d.formatted) + '</span>'
+          + '</div>';
+      });
+      if (p.weekNumber) {
+        html += '<div style="margin-top:6px;font-size:0.75rem;color:var(--text-muted)">Week ' + esc(p.weekNumber) + '</div>';
+      }
+      html += '</div>';
     }
 
     // Quick links
@@ -928,6 +1204,8 @@
       'Status': 1, 'Image': 1, 'Link': 1, 'Link_info': 1,
       '\u041d\u043e\u043c\u0435\u0440_\u0442\u0438\u0436\u043d\u044f': 1
     };
+    // Exclude all dynamically detected date fields from "extra" section
+    detectedDateFields.forEach(function (f) { knownKeys[f.key] = 1; });
     var extraHtml = '';
     var rawKeys = Object.keys(p._raw || {});
     rawKeys.forEach(function (key) {
@@ -1000,6 +1278,8 @@
       // Re-bind events on restored content
       initEvents();
       buildFilterOptions();
+      fillSidebarPanels();
+      buildDateFilters();
       applyFilters();
     }
   }
@@ -1223,6 +1503,8 @@
         qsa('.proj-sidebar-panel .proj-dropdown-item.selected').forEach(function (el) { el.classList.remove('selected'); });
         // Uncheck all in main dropdowns
         qsa('.proj-dropdown-panel .proj-dropdown-item.selected').forEach(function (el) { el.classList.remove('selected'); });
+        // Clear date filters
+        clearAllDateFilters();
         // Reset archive
         showArchived = false;
         if (sidebarArchive) sidebarArchive.checked = false;
