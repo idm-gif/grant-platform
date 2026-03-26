@@ -41,6 +41,11 @@
       archive_badge: 'Архів',
       n_projects: 'проєктів',
       search_placeholder: 'Пошук проєктів... / Search projects...',
+      all_filters: 'Всі фільтри',
+      apply_filters: 'Застосувати',
+      date_from: 'Від',
+      date_to: 'До',
+      date_filter: 'Фільтр за датами',
       view_full_page: 'Переглянути повну сторінку',
       copy_link: 'Копіювати посилання',
       link_copied: 'Посилання скопійовано!',
@@ -86,6 +91,11 @@
       archive_badge: 'Archived',
       n_projects: 'projects',
       search_placeholder: 'Search projects...',
+      all_filters: 'All Filters',
+      apply_filters: 'Apply',
+      date_from: 'From',
+      date_to: 'To',
+      date_filter: 'Date filter',
       view_full_page: 'View Full Page',
       copy_link: 'Copy Link',
       link_copied: 'Link copied!',
@@ -108,6 +118,7 @@
   var filteredProjects = [];
   var groups = {};
   var activeFilters = { program: [], section: [], type: [], applicant: [], status: [] };
+  var dateFilter = { from: null, to: null };
   var showArchived = false;
   var viewMode = 'program';
   var searchQuery = '';
@@ -185,6 +196,7 @@
           var doc = parser.parseFromString(xhr.responseText, 'text/xml');
           parseGraph(doc);
           buildFilterOptions();
+          fillSidebarPanels();
           applyFilters();
           // Check if URL has a project route on initial load
           if (window.location.hash.indexOf('#project/') === 0) {
@@ -234,6 +246,7 @@
     projectEls.forEach(function (el) {
       var p = parseProjectNode(el);
       var nodeName = el.getAttribute('nodeName');
+      var guid = el.getAttribute('guid') || '';
       var parents = edgeMap[nodeName] || [];
       var group = null;
       for (var i = 0; i < parents.length; i++) {
@@ -241,6 +254,7 @@
       }
       p._group = group || '(empty)';
       p._nodeName = nodeName;
+      p._guid = guid;
       allProjects.push(p);
     });
 
@@ -322,9 +336,42 @@
       weekNumber: getVal('\u041d\u043e\u043c\u0435\u0440_\u0442\u0438\u0436\u043d\u044f'),  // 'Номер_тижня'
       isArchived: /^(archive|archived|closed)$/i.test(status),
       _deadlineParsed: parseDate(getVal('Last_submition_deadline')),
+      _openingParsed: parseDate(getVal('Submition_opening')),
+      _allDates: [],  // populated below
       _group: '',
-      _nodeName: ''
+      _nodeName: '',
+      _guid: ''
     };
+
+    // Auto-detect all date fields from raw data
+    var dateFieldLabels = {
+      'Last_submition_deadline': 'deadline',
+      'Submition_opening': 'submission_opening'
+    };
+    var rawKeys = Object.keys(raw);
+    rawKeys.forEach(function (key) {
+      var v = raw[key];
+      var text = '';
+      if (Array.isArray(v)) {
+        text = v.map(function (x) { return typeof x === 'object' ? x.text : x; }).join(', ');
+      } else if (typeof v === 'object') {
+        text = v.text || '';
+      } else {
+        text = String(v);
+      }
+      var parsed = parseDate(text.trim());
+      if (parsed && !isNaN(parsed.getTime())) {
+        var labelKey = dateFieldLabels[key] || key.replace(/_/g, ' ');
+        p._allDates.push({ key: key, label: labelKey, raw: text.trim(), parsed: parsed });
+      }
+    });
+    // Sort dates chronologically
+    p._allDates.sort(function (a, b) { return a.parsed.getTime() - b.parsed.getTime(); });
+    // Earliest date for range filtering
+    p._earliestDate = p._allDates.length ? p._allDates[0].parsed : null;
+    p._latestDate = p._allDates.length ? p._allDates[p._allDates.length - 1].parsed : null;
+
+    return p;
   }
 
   /* ---------- Filter Options ---------- */
@@ -401,6 +448,19 @@
       if (activeFilters.type.length && activeFilters.type.indexOf(p.type) < 0) return false;
       if (activeFilters.applicant.length && !p.whoCanSubmitList.some(function (a) { return activeFilters.applicant.indexOf(a) >= 0; })) return false;
       if (activeFilters.status.length && activeFilters.status.indexOf(p.status) < 0) return false;
+
+      // Date range filter: check if ANY date on the project falls within range
+      if (dateFilter.from || dateFilter.to) {
+        var hasDateInRange = false;
+        if (!p._allDates.length) return false;
+        for (var di = 0; di < p._allDates.length; di++) {
+          var dt = p._allDates[di].parsed.getTime();
+          var afterFrom = !dateFilter.from || dt >= dateFilter.from.getTime();
+          var beforeTo = !dateFilter.to || dt <= dateFilter.to.getTime() + 86400000 - 1;
+          if (afterFrom && beforeTo) { hasDateInRange = true; break; }
+        }
+        if (!hasDateInRange) return false;
+      }
 
       return true;
     });
@@ -567,6 +627,23 @@
       }
     }
 
+    // Build date chips for card
+    var dateChips = '';
+    var calIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>';
+    if (p._allDates.length) {
+      p._allDates.forEach(function (d) {
+        var isDeadline = d.key === 'Last_submition_deadline';
+        var labelKey = d.label;
+        // Use i18n for known labels, otherwise use raw label
+        var displayLabel = (I18N[lang] || I18N.ua)[labelKey] || labelKey;
+        dateChips += '<span class="proj-date' + (isDeadline ? ' proj-date-deadline' : '') + '">'
+          + calIcon + ' '
+          + '<span class="proj-date-label">' + esc(displayLabel) + ':</span> '
+          + '<span class="proj-date-value">' + fmtDate(d.raw) + '</span>'
+          + '</span>';
+      });
+    }
+
     return '<div class="proj-card' + cls + '" data-project="' + esc(p._nodeName) + '">'
       + img
       + '<div class="proj-card-body">'
@@ -576,10 +653,8 @@
       + '</div>'
       + '<div class="proj-card-title">' + esc(p.name) + '</div>'
       + '<div class="proj-card-desc">' + esc(desc) + '</div>'
+      + (dateChips ? '<div class="proj-card-dates">' + dateChips + '</div>' : '')
       + '<div class="proj-card-meta">'
-      + (p.deadline
-          ? '<span class="proj-card-meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> ' + t('deadline') + ': ' + fmtDate(p.deadline) + '</span>'
-          : '<span></span>')
       + '<span class="proj-card-meta-item">' + typeIcon + ' ' + esc(p.type) + '</span>'
       + '</div></div></div>';
   }
@@ -687,13 +762,21 @@
 
     html += '</div><div>';
 
-    // Deadline box
-    if (p.deadline) {
-      html += '<div class="proj-modal-deadline-box">'
-        + '<div class="proj-modal-deadline-label">' + t('submission_deadline') + '</div>'
-        + '<div class="proj-modal-deadline-date">' + fmtDate(p.deadline) + '</div>'
-        + (p.weekNumber ? '<div class="proj-modal-deadline-sub">Week ' + p.weekNumber + '</div>' : '')
-        + '</div>';
+    // All dates section
+    if (p._allDates.length) {
+      html += '<div class="proj-modal-dates-box">';
+      p._allDates.forEach(function (d) {
+        var isDeadline = d.key === 'Last_submition_deadline';
+        var displayLabel = (I18N[lang] || I18N.ua)[d.label] || d.label;
+        html += '<div class="proj-date-row' + (isDeadline ? ' proj-date-deadline' : '') + '">'
+          + '<span class="proj-date-label">' + esc(displayLabel) + '</span>'
+          + '<span class="proj-date-value">' + fmtDate(d.raw) + '</span>'
+          + '</div>';
+      });
+      if (p.weekNumber) {
+        html += '<div class="proj-modal-deadline-sub" style="margin-top:4px">Week ' + esc(p.weekNumber) + '</div>';
+      }
+      html += '</div>';
     }
 
     // Documents
@@ -710,7 +793,7 @@
     }
 
     // Action buttons: View Full Page + Copy Link
-    var projectUrl = window.location.pathname + '#project/' + encodeURIComponent(p._nodeName);
+    var projectUrl = window.location.pathname + '#project/' + p._guid;
     var fullUrl = window.location.origin + projectUrl;
     html += '<div class="proj-modal-actions">';
     html += '<button class="proj-modal-link-btn primary" id="btn-view-full-page">'
@@ -786,9 +869,9 @@
   }
 
   /* ---------- Dedicated Project Page ---------- */
-  function findProjectByNodeName(name) {
+  function findProjectById(id) {
     for (var i = 0; i < allProjects.length; i++) {
-      if (allProjects[i]._nodeName === name) return allProjects[i];
+      if (allProjects[i]._guid === id || allProjects[i]._nodeName === id) return allProjects[i];
     }
     return null;
   }
@@ -807,7 +890,7 @@
         + esc(p.status) + '</span>';
     }
 
-    var projectUrl = window.location.origin + window.location.pathname + '#project/' + encodeURIComponent(p._nodeName);
+    var projectUrl = window.location.origin + window.location.pathname + '#project/' + p._guid;
 
     var html = '<div class="proj-detail-page">';
 
@@ -886,18 +969,21 @@
     // Right column — dates, links, extra data
     html += '<div class="proj-detail-col">';
 
-    // Deadline box
-    if (p.deadline) {
-      html += '<div class="proj-modal-deadline-box">'
-        + '<div class="proj-modal-deadline-label">' + t('submission_deadline') + '</div>'
-        + '<div class="proj-modal-deadline-date">' + fmtDate(p.deadline) + '</div>'
-        + (p.weekNumber ? '<div class="proj-modal-deadline-sub">Week ' + p.weekNumber + '</div>' : '')
-        + '</div>';
-    }
-
-    // Submission opening date
-    if (p.submissionOpening) {
-      html += '<div style="margin-top:14px">' + mSec(t('submission_opening'), fmtDate(p.submissionOpening)) + '</div>';
+    // All dates section
+    if (p._allDates.length) {
+      html += '<div class="proj-modal-dates-box">';
+      p._allDates.forEach(function (d) {
+        var isDeadline = d.key === 'Last_submition_deadline';
+        var displayLabel = (I18N[lang] || I18N.ua)[d.label] || d.label;
+        html += '<div class="proj-date-row' + (isDeadline ? ' proj-date-deadline' : '') + '">'
+          + '<span class="proj-date-label">' + esc(displayLabel) + '</span>'
+          + '<span class="proj-date-value">' + fmtDate(d.raw) + '</span>'
+          + '</div>';
+      });
+      if (p.weekNumber) {
+        html += '<div class="proj-modal-deadline-sub" style="margin-top:4px">Week ' + esc(p.weekNumber) + '</div>';
+      }
+      html += '</div>';
     }
 
     // Quick links
@@ -1000,8 +1086,8 @@
   function handleRoute() {
     var hash = window.location.hash;
     if (hash.indexOf('#project/') === 0) {
-      var nodeName = decodeURIComponent(hash.substring(9));
-      var proj = findProjectByNodeName(nodeName);
+      var projectId = decodeURIComponent(hash.substring(9));
+      var proj = findProjectById(projectId);
       if (proj) {
         closeModal();
         renderProjectPage(proj);
@@ -1161,9 +1247,177 @@
     if (si) si.placeholder = t('search_placeholder');
   }
 
+  /* ---------- Filter Sidebar ---------- */
+  function initSidebar() {
+    var openBtn = byId('btn-open-filters');
+    var closeBtn = byId('btn-close-sidebar');
+    var overlay = byId('sidebar-overlay');
+    var sidebar = byId('filter-sidebar');
+    var applyBtn = byId('btn-sidebar-apply');
+    var clearBtn = byId('btn-sidebar-clear');
+    var sidebarArchive = byId('sidebar-toggle-archived');
+
+    var sidebarDateFrom = byId('sidebar-date-from');
+    var sidebarDateTo = byId('sidebar-date-to');
+    var inlineDateFrom = byId('inline-date-from');
+    var inlineDateTo = byId('inline-date-to');
+
+    function syncDateInputs(source) {
+      var fromVal = source === 'sidebar' ? (sidebarDateFrom ? sidebarDateFrom.value : '') : (inlineDateFrom ? inlineDateFrom.value : '');
+      var toVal = source === 'sidebar' ? (sidebarDateTo ? sidebarDateTo.value : '') : (inlineDateTo ? inlineDateTo.value : '');
+      dateFilter.from = fromVal ? new Date(fromVal) : null;
+      dateFilter.to = toVal ? new Date(toVal) : null;
+      // Sync both sets
+      if (sidebarDateFrom) sidebarDateFrom.value = fromVal;
+      if (sidebarDateTo) sidebarDateTo.value = toVal;
+      if (inlineDateFrom) inlineDateFrom.value = fromVal;
+      if (inlineDateTo) inlineDateTo.value = toVal;
+    }
+
+    // Inline date filter events
+    if (inlineDateFrom) {
+      inlineDateFrom.addEventListener('change', function () { syncDateInputs('inline'); applyFilters(); });
+    }
+    if (inlineDateTo) {
+      inlineDateTo.addEventListener('change', function () { syncDateInputs('inline'); applyFilters(); });
+    }
+
+    // Sidebar date filter events
+    if (sidebarDateFrom) {
+      sidebarDateFrom.addEventListener('change', function () { syncDateInputs('sidebar'); });
+    }
+    if (sidebarDateTo) {
+      sidebarDateTo.addEventListener('change', function () { syncDateInputs('sidebar'); });
+    }
+
+    function openSidebar() {
+      if (sidebar) sidebar.classList.add('open');
+      if (overlay) overlay.classList.add('open');
+      // Sync archive toggle
+      if (sidebarArchive) sidebarArchive.checked = showArchived;
+    }
+    function closeSidebar() {
+      if (sidebar) sidebar.classList.remove('open');
+      if (overlay) overlay.classList.remove('open');
+    }
+
+    if (openBtn) openBtn.addEventListener('click', openSidebar);
+    if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+    if (overlay) overlay.addEventListener('click', closeSidebar);
+
+    // Sync sidebar archive with main archive
+    if (sidebarArchive) {
+      sidebarArchive.addEventListener('change', function () {
+        showArchived = sidebarArchive.checked;
+        var mainToggle = byId('toggle-archived');
+        if (mainToggle) mainToggle.checked = showArchived;
+      });
+    }
+
+    // Apply button closes sidebar and applies
+    if (applyBtn) {
+      applyBtn.addEventListener('click', function () {
+        closeSidebar();
+        applyFilters();
+      });
+    }
+
+    // Clear button
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function () {
+        var keys = Object.keys(activeFilters);
+        keys.forEach(function (k) {
+          activeFilters[k] = [];
+          syncFilterBtn(k);
+        });
+        // Uncheck all in sidebar panels
+        qsa('.proj-sidebar-panel .proj-dropdown-item.selected').forEach(function (el) { el.classList.remove('selected'); });
+        // Uncheck all in main dropdowns
+        qsa('.proj-dropdown-panel .proj-dropdown-item.selected').forEach(function (el) { el.classList.remove('selected'); });
+        // Reset archive
+        showArchived = false;
+        if (sidebarArchive) sidebarArchive.checked = false;
+        var mainToggle = byId('toggle-archived');
+        if (mainToggle) mainToggle.checked = false;
+        // Reset dates
+        dateFilter.from = null;
+        dateFilter.to = null;
+        if (sidebarDateFrom) sidebarDateFrom.value = '';
+        if (sidebarDateTo) sidebarDateTo.value = '';
+        if (inlineDateFrom) inlineDateFrom.value = '';
+        if (inlineDateTo) inlineDateTo.value = '';
+        applyFilters();
+      });
+    }
+
+    // ESC closes sidebar
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && sidebar && sidebar.classList.contains('open')) {
+        closeSidebar();
+      }
+    });
+  }
+
+  function fillSidebarPanels() {
+    var filterKeys = ['program', 'section', 'type', 'applicant', 'status'];
+    filterKeys.forEach(function (key) {
+      var sidebarPanel = byId('sidebar-panel-' + key);
+      var mainPanel = byId('panel-' + key);
+      if (!sidebarPanel || !mainPanel) return;
+
+      // Clone items from main panel
+      var items = qsa('.proj-dropdown-item', mainPanel);
+      var html = '';
+      items.forEach(function (item) {
+        var val = item.getAttribute('data-value');
+        var label = item.querySelector('span:last-child');
+        var labelText = label ? label.textContent : val;
+        var sel = (activeFilters[key].indexOf(val) >= 0) ? ' selected' : '';
+        html += '<div class="proj-dropdown-item' + sel + '" data-value="' + esc(val) + '">'
+          + '<span class="check-box"></span>'
+          + '<span>' + esc(labelText) + '</span>'
+          + '</div>';
+      });
+      sidebarPanel.innerHTML = html;
+
+      // Bind clicks
+      qsa('.proj-dropdown-item', sidebarPanel).forEach(function (el) {
+        el.addEventListener('click', function () {
+          var val = el.getAttribute('data-value');
+          var idx = activeFilters[key].indexOf(val);
+          if (idx >= 0) {
+            activeFilters[key].splice(idx, 1);
+            el.classList.remove('selected');
+          } else {
+            activeFilters[key].push(val);
+            el.classList.add('selected');
+          }
+          // Sync main dropdown
+          syncFilterBtn(key);
+          syncMainDropdown(key, val, activeFilters[key].indexOf(val) >= 0);
+        });
+      });
+    });
+  }
+
+  function syncMainDropdown(key, val, selected) {
+    var panel = byId('panel-' + key);
+    if (!panel) return;
+    qsa('.proj-dropdown-item', panel).forEach(function (di) {
+      if (di.getAttribute('data-value') === val) {
+        if (selected) {
+          di.classList.add('selected');
+        } else {
+          di.classList.remove('selected');
+        }
+      }
+    });
+  }
+
   /* ---------- Init ---------- */
   document.addEventListener('DOMContentLoaded', function () {
     initEvents();
+    initSidebar();
     loadData();
     window.addEventListener('hashchange', handleRoute);
   });
