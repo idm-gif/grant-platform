@@ -43,12 +43,9 @@
       search_placeholder: 'Пошук проєктів... / Search projects...',
       all_filters: 'Всі фільтри',
       apply_filters: 'Застосувати',
-<<<<<<< HEAD
-=======
       date_from: 'Від',
       date_to: 'До',
       date_filter: 'Фільтр за датами',
->>>>>>> e6b25d27228d4838652f6309195f9f30de0ee536
       view_full_page: 'Переглянути повну сторінку',
       copy_link: 'Копіювати посилання',
       link_copied: 'Посилання скопійовано!',
@@ -96,12 +93,9 @@
       search_placeholder: 'Search projects...',
       all_filters: 'All Filters',
       apply_filters: 'Apply',
-<<<<<<< HEAD
-=======
       date_from: 'From',
       date_to: 'To',
       date_filter: 'Date filter',
->>>>>>> e6b25d27228d4838652f6309195f9f30de0ee536
       view_full_page: 'View Full Page',
       copy_link: 'Copy Link',
       link_copied: 'Link copied!',
@@ -1263,8 +1257,6 @@
     var clearBtn = byId('btn-sidebar-clear');
     var sidebarArchive = byId('sidebar-toggle-archived');
 
-<<<<<<< HEAD
-=======
     var sidebarDateFrom = byId('sidebar-date-from');
     var sidebarDateTo = byId('sidebar-date-to');
     var inlineDateFrom = byId('inline-date-from');
@@ -1298,7 +1290,6 @@
       sidebarDateTo.addEventListener('change', function () { syncDateInputs('sidebar'); });
     }
 
->>>>>>> e6b25d27228d4838652f6309195f9f30de0ee536
     function openSidebar() {
       if (sidebar) sidebar.classList.add('open');
       if (overlay) overlay.classList.add('open');
@@ -1348,8 +1339,6 @@
         if (sidebarArchive) sidebarArchive.checked = false;
         var mainToggle = byId('toggle-archived');
         if (mainToggle) mainToggle.checked = false;
-<<<<<<< HEAD
-=======
         // Reset dates
         dateFilter.from = null;
         dateFilter.to = null;
@@ -1357,7 +1346,6 @@
         if (sidebarDateTo) sidebarDateTo.value = '';
         if (inlineDateFrom) inlineDateFrom.value = '';
         if (inlineDateTo) inlineDateTo.value = '';
->>>>>>> e6b25d27228d4838652f6309195f9f30de0ee536
         applyFilters();
       });
     }

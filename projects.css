@@ -374,8 +374,6 @@
   gap: 20px;
 }
 
-<<<<<<< HEAD
-=======
 /* ---------- Date Display ---------- */
 .proj-date {
   display: inline-flex; align-items: center; gap: 4px;
@@ -473,7 +471,6 @@
   color: var(--text-muted); font-size: 0.8rem;
 }
 
->>>>>>> e6b25d27228d4838652f6309195f9f30de0ee536
 /* ---------- Filter Sidebar ---------- */
 .proj-filters-toggle-btn {
   border: 1px solid rgba(139,92,246,0.3) !important;
