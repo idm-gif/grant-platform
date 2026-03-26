@@ -45,6 +45,10 @@
     </div>
 
     <div class="proj-filters-bar">
+      <button class="proj-filter-btn proj-filters-toggle-btn" id="btn-open-filters">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V14"/><path d="M4 10V3"/><path d="M12 21V12"/><path d="M12 8V3"/><path d="M20 21V16"/><path d="M20 12V3"/><path d="M1 14h6"/><path d="M9 8h6"/><path d="M17 16h6"/></svg>
+        <span data-i18n="all_filters">Всі фільтри / All Filters</span>
+      </button>
       <div class="proj-filter-controls">
         <div class="proj-filter-dropdown" data-filter="program">
           <button class="proj-filter-btn" id="btn-filter-program">
@@ -104,6 +108,48 @@
 
     <div id="projects-container"></div>
   </main>
+
+  <!-- Filter Sidebar -->
+  <div class="proj-sidebar-overlay" id="sidebar-overlay"></div>
+  <aside class="proj-sidebar" id="filter-sidebar">
+    <div class="proj-sidebar-header">
+      <h3 data-i18n="all_filters">Всі фільтри / All Filters</h3>
+      <button class="proj-sidebar-close" id="btn-close-sidebar">&times;</button>
+    </div>
+    <div class="proj-sidebar-body">
+      <div class="proj-sidebar-section">
+        <div class="proj-sidebar-label" data-i18n="filter_program">Грантова програма</div>
+        <div class="proj-sidebar-panel" id="sidebar-panel-program"></div>
+      </div>
+      <div class="proj-sidebar-section">
+        <div class="proj-sidebar-label" data-i18n="filter_section">Тематика</div>
+        <div class="proj-sidebar-panel" id="sidebar-panel-section"></div>
+      </div>
+      <div class="proj-sidebar-section">
+        <div class="proj-sidebar-label" data-i18n="filter_type">Тип</div>
+        <div class="proj-sidebar-panel" id="sidebar-panel-type"></div>
+      </div>
+      <div class="proj-sidebar-section">
+        <div class="proj-sidebar-label" data-i18n="filter_applicant">Хто може подати</div>
+        <div class="proj-sidebar-panel" id="sidebar-panel-applicant"></div>
+      </div>
+      <div class="proj-sidebar-section">
+        <div class="proj-sidebar-label" data-i18n="filter_status">Статус</div>
+        <div class="proj-sidebar-panel" id="sidebar-panel-status"></div>
+      </div>
+      <div class="proj-sidebar-section">
+        <label class="proj-archive-toggle">
+          <input type="checkbox" id="sidebar-toggle-archived">
+          <span class="proj-toggle-track"><span class="proj-toggle-thumb"></span></span>
+          <span data-i18n="show_archived">Показати архівні</span>
+        </label>
+      </div>
+    </div>
+    <div class="proj-sidebar-footer">
+      <button class="proj-sidebar-apply-btn" id="btn-sidebar-apply" data-i18n="apply_filters">Застосувати / Apply</button>
+      <button class="proj-sidebar-clear-btn" id="btn-sidebar-clear" data-i18n="clear_all">Скинути всі</button>
+    </div>
+  </aside>
 
   <footer class="footer">
     <p>&copy; 2024&ndash;2026 Науковий сектор НЦ «МАНУ»</p>
