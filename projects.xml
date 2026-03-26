@@ -1,22 +1,14 @@
 <?xml version="1.0" ?>
-<Graph vspacing="30" hspacing="200" padding="40" guid="F3B7BC75D2D9">
+<Graph vspacing="30" hspacing="200" padding="40" guid="DDB0A49FC930">
   <Nodes>
-    <Node guid="33637F34F7E2" nodeName="ПРОЕКТИ" nclass="ПРОЕКТИ" shape="circle" xPos="0" yPos="0" color="13421772"/>
-    <Node guid="B2D1B1360977" nodeName="УКФ (p18)" nclass="Type_attestation" shape="circle" xPos="300" yPos="0" color="13421772"/>
-    <Node guid="3F29D9EA7A16" nodeName="Грантова програма «Стипендії» УКФ" nclass="ПРОЕКТИ" shape="circle" xPos="600" yPos="0" color="13421772">
+    <Node guid="44E2F0DD6BEB" nodeName="Проєкти" nclass="Проєкти" shape="circle" xPos="0" yPos="0" color="13421772"/>
+    <Node guid="D69A7ED4EF9E" nodeName="УКФ (p18)" nclass="Type_attestation" shape="circle" xPos="300" yPos="0" color="13421772"/>
+    <Node guid="8013A5DE94E3" nodeName="Грантова програма «Стипендії» УКФ" nclass="Проєкти" shape="circle" xPos="600" yPos="0" color="13421772">
       <data tclass="с" link="" type="text">Грантова програма «Стипендії» УКФ</data>
       <data tclass="Type" link="" type="text">Individual</data>
       <data tclass="Type_attestation" link="" type="text">УКФ (p18)</data>
       <data tclass="Section" link="" type="text">Cultural and Creative Industries</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">артоб’єкти: скульптури, інсталяції, інтерактивні об’єкти</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">перформанси: театральні, танцювальні, музично-перформативні події</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">виставки й експозиції: класичні, інтерактивні, тактильні або адаптовані для маломобільних груп</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">відео- та аудіоконтент: відеоролики, вебфільми, відеоблоги, телепрограми, подкасти, радіопередачі, музичні релізи та аудіокниги</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">авторські матеріали: сценарії, п’єси, партитури</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">3D-моделі та реконструкції пам’яток і об’єктів культурної спадщини</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">адаптовані інклюзивні цифрові продукти й заходи з доступності (сурдопереклад, субтитри, аудіоописи, тактильні елементи), інклюзивні вистави та концерти</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">народні промисли, ремесла й декоративно-прикладні роботи</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">дослідження у сфері культури та культурної спадщини України</data>
+      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">артоб’єкти: скульптури, інсталяції, інтерактивні об’єкти; перформанси: театральні, танцювальні, музично-перформативні події; виставки й експозиції: класичні, інтерактивні, тактильні або адаптовані для маломобільних груп; відео- та аудіоконтент: відеоролики, вебфільми, відеоблоги, телепрограми, подкасти, радіопередачі, музичні релізи та аудіокниги; авторські матеріали: сценарії, п’єси, партитури; 3D-моделі та реконструкції пам’яток і об’єктів культурної спадщини; адаптовані інклюзивні цифрові продукти й заходи з доступності (сурдопереклад, субтитри, аудіоописи, тактильні елементи), інклюзивні вистави та концерти; народні промисли, ремесла й декоративно-прикладні роботи; дослідження у сфері культури та культурної спадщини України</data>
       <data tclass="Who_can_sumbit" link="" type="text">Individuals</data>
       <data tclass="Acronym" link="" type="text">УКФ</data>
       <data tclass="Organizator" link="" type="text">Український культурний фонд</data>
@@ -26,21 +18,15 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Заявка на сайті УКФ, підписана ЕЦП</data>
       <data tclass="Link" link="https://ucf.in.ua/m_lots/6918a227c47c8934192b95d2" type="link"/>
       <data tclass="Link_info" link="https://ucf.in.ua/news/stypendii-2026" type="link"/>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Actual</data>
     </Node>
-    <Node guid="02A7CA018F66" nodeName="Erasmus+ (p20)" nclass="Type_attestation" shape="circle" xPos="900" yPos="0" color="13421772"/>
-    <Node guid="5FBEEB3E27C8" nodeName="ПРОГРАМА ЄС ЕРАЗМУС+" nclass="ПРОЕКТИ" shape="circle" xPos="1200" yPos="0" color="13421772">
+    <Node guid="35D40494D55B" nodeName="Erasmus+ (p20)" nclass="Type_attestation" shape="circle" xPos="900" yPos="0" color="13421772"/>
+    <Node guid="B88FBA4D7490" nodeName="ПРОГРАМА ЄС ЕРАЗМУС+" nclass="Проєкти" shape="circle" xPos="1200" yPos="0" color="13421772">
       <data tclass="с" link="" type="text">ПРОГРАМА ЄС ЕРАЗМУС+</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Erasmus+ (p20)</data>
       <data tclass="Section" link="" type="text">Education, General, Digital humanism, Humanities, Social sciences, Natural sciences, Life sciences</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Міжнародна співпраця у сфері освіти, молоді та спорту</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">можливості навчальної та академічної мобільності</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">проєкти та партнерства</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">альянси для розвитку інновацій</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">розвиток стратегій і міжнародної співпраці</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">професійні мережі</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">відкриті ресурси і платформи</data>
+      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Міжнародна співпраця у сфері освіти, молоді та спорту; можливості навчальної та академічної мобільності; проєкти та партнерства; альянси для розвитку інновацій; розвиток стратегій і міжнародної співпраці; професійні мережі; відкриті ресурси і платформи</data>
       <data tclass="Who_can_sumbit" link="" type="text">Individuals, Scienfitic institutions, Higher educational institutions, Schools, Other type of educational institutions, Молоді вчені, Кандидати наук</data>
       <data tclass="Acronym" link="" type="text">Erasmus+</data>
       <data tclass="Organizator" link="" type="text">Єврокомісія</data>
@@ -49,16 +35,15 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Проєктна заявка, супровідні документи (залежно від конкурсу: CV, PIF, Concept Note, рекомендації, бюджет тощо)</data>
       <data tclass="Link" link="https://erasmusplus.org.ua/" type="link"/>
       <data tclass="Link_info" link="" type="text">Опис Програми ЄС Еразмус+ 2021-2027</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">No data</data>
     </Node>
-    <Node guid="8CE713F99C8A" nodeName="Erasmus Mundus Joint Masters" nclass="ПРОЕКТИ" shape="circle" xPos="0" yPos="150" color="13421772">
+    <Node guid="18E133A15127" nodeName="Erasmus Mundus Joint Masters" nclass="Проєкти" shape="circle" xPos="0" yPos="150" color="13421772">
       <data tclass="с" link="" type="text">Erasmus Mundus Joint Masters</data>
       <data tclass="code" link="" type="text">ERASMUS-EDU-2026-PEX-EMJM-MOB</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Erasmus+ (p20)</data>
       <data tclass="Section" link="" type="text">Education</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">High-level integrated study programmes at master level</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">funding for running programmes and offering scholarships to students</data>
+      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">High-level integrated study programmes at master level; funding for running programmes and offering scholarships to students</data>
       <data tclass="Who_can_sumbit" link="" type="text">Higher educational institutions</data>
       <data tclass="Acronym" link="" type="text">EMJM</data>
       <data tclass="Organizator" link="" type="text">Єврокомісія</data>
@@ -67,11 +52,11 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Fully developed and accredited joint study programme proposal</data>
       <data tclass="Link" link="https://erasmus-plus.ec.europa.eu/opportunities/opportunities-for-organisations/cooperation-among-organisations-and-institutions/erasmus-mundus-joint-masters" type="link">https://erasmus-plus.ec.europa.eu/opportunities/opportunities-for-organisations/cooperation-among-organisations-and-institutions/erasmus-mundus-joint-masters</data>
       <data tclass="Link_info" link="https://erasmus-plus.ec.europa.eu/programme-guide/part-b/key-action-2/erasmus-mundus" type="link">https://erasmus-plus.ec.europa.eu/programme-guide/part-b/key-action-2/erasmus-mundus</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Archive</data>
       <data tclass="Image" link="https://mobilnist.kpi.ua/wp-content/uploads/2021/04/erasmus_mundus_EU-1.png" type="image">https://mobilnist.kpi.ua/wp-content/uploads/2021/04/erasmus_mundus_EU-1.png</data>
       <data tclass="Номер_тижня" link="" type="text">6.0</data>
     </Node>
-    <Node guid="2A17DFE6AD5C" nodeName="Aurora Call for Incentive Research and Education Collaboration" nclass="ПРОЕКТИ" shape="circle" xPos="300" yPos="150" color="13421772">
+    <Node guid="ED14EB2EF5B4" nodeName="Aurora Call for Incentive Research and Education Collaboration" nclass="Проєкти" shape="circle" xPos="300" yPos="150" color="13421772">
       <data tclass="с" link="" type="text">Aurora Call for Incentive Research and Education Collaboration</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Erasmus+ (p20)</data>
@@ -89,8 +74,8 @@
       <data tclass="Image" link="https://aurora-universities.eu/new/wp-content/uploads/2026/02/News-webpage.png" type="image">https://aurora-universities.eu/new/wp-content/uploads/2026/02/News-webpage.png</data>
       <data tclass="Номер_тижня" link="" type="text">11.0</data>
     </Node>
-    <Node guid="01763932DC9C" nodeName="Інший грант міжнародної організації (p20)" nclass="Type_attestation" shape="circle" xPos="600" yPos="150" color="13421772"/>
-    <Node guid="6A17CF055379" nodeName="Virtual Ukraine Institute for Advanced Study Fellowships in Ukraine" nclass="ПРОЕКТИ" shape="circle" xPos="900" yPos="150" color="13421772">
+    <Node guid="F099F27ED2FA" nodeName="Інший грант міжнародної організації (p20)" nclass="Type_attestation" shape="circle" xPos="600" yPos="150" color="13421772"/>
+    <Node guid="6C4A544F32D1" nodeName="Virtual Ukraine Institute for Advanced Study Fellowships in Ukraine" nclass="Проєкти" shape="circle" xPos="900" yPos="150" color="13421772">
       <data tclass="с" link="" type="text">Virtual Ukraine Institute for Advanced Study Fellowships in Ukraine</data>
       <data tclass="Type" link="" type="text">Individual</data>
       <data tclass="Type_attestation" link="" type="text">Інший грант міжнародної організації (p20)</data>
@@ -104,10 +89,10 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Application form, CV, research project description, recommendation letters</data>
       <data tclass="Link" link="https://vuias.org/call/" type="link"/>
       <data tclass="Link_info" link="" type="text">Call for Applications for the Virtual Ukraine Institute for Advanced Study</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Archive</data>
       <data tclass="Image" link="https://nec.ro/wp-content/uploads/2023/05/345232129_154230357594366_3099622691270273068_n.jpg" type="image">https://nec.ro/wp-content/uploads/2023/05/345232129_154230357594366_3099622691270273068_n.jpg</data>
     </Node>
-    <Node guid="70C17B7C1C51" nodeName="SPOTLIGHT TAIWAN PROJECT" nclass="ПРОЕКТИ" shape="circle" xPos="1200" yPos="150" color="13421772">
+    <Node guid="F1D1E2DBA6E8" nodeName="SPOTLIGHT TAIWAN PROJECT" nclass="Проєкти" shape="circle" xPos="1200" yPos="150" color="13421772">
       <data tclass="с" link="" type="text">SPOTLIGHT TAIWAN PROJECT</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Інший грант міжнародної організації (p20)</data>
@@ -121,9 +106,9 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Theme, Timetable, Budget, Resources, Marketing, Introduction, Letter of Recommendation</data>
       <data tclass="Link" link="https://www.moc.gov.tw/en/cl.aspx?n=377" type="link">https://www.moc.gov.tw/en/cl.aspx?n=377</data>
       <data tclass="Link_info" link="" type="text">Application Guidelines</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Archive</data>
     </Node>
-    <Node guid="0EE7917BEB60" nodeName="Seed Fund for Research Excellence" nclass="ПРОЕКТИ" shape="circle" xPos="0" yPos="300" color="13421772">
+    <Node guid="386DD8D56308" nodeName="Seed Fund for Research Excellence" nclass="Проєкти" shape="circle" xPos="0" yPos="300" color="13421772">
       <data tclass="с" link="" type="text">Seed Fund for Research Excellence</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Інший грант міжнародної організації (p20)</data>
@@ -137,10 +122,10 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Application form, Budget Proposal Spreadsheet (Annex A), Call Guidelines</data>
       <data tclass="Link" link="https://www.twinningukraine.com/seed-fund-1" type="link">https://www.twinningukraine.com/seed-fund-1</data>
       <data tclass="Link_info" link="https://docs.google.com/forms/d/e/1FAIpQLSeFo5RINU1l9h3XJEN0X_tF8u1a6mgIpK2HrUFA7BIMMcbhVQ/viewform" type="link">https://docs.google.com/forms/d/e/1FAIpQLSeFo5RINU1l9h3XJEN0X_tF8u1a6mgIpK2HrUFA7BIMMcbhVQ/viewform</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Archive</data>
       <data tclass="Image" link="https://images.squarespace-cdn.com/content/v1/62f245737799f102c6576dd3/f05b236a-22fc-46dc-94bb-a6d195105ae6/Twinning+Logo+white+and+colour.png" type="image">https://images.squarespace-cdn.com/content/v1/62f245737799f102c6576dd3/f05b236a-22fc-46dc-94bb-a6d195105ae6/Twinning+Logo+white+and+colour.png</data>
     </Node>
-    <Node guid="ED25A2EEBCB5" nodeName="Deep Tech Accelerator: Hardware Edition" nclass="ПРОЕКТИ" shape="circle" xPos="300" yPos="300" color="13421772">
+    <Node guid="479F71F35A9E" nodeName="Deep Tech Accelerator: Hardware Edition" nclass="Проєкти" shape="circle" xPos="300" yPos="300" color="13421772">
       <data tclass="с" link="" type="text">Deep Tech Accelerator: Hardware Edition</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Інший грант міжнародної організації (p20)</data>
@@ -151,10 +136,10 @@
       <data tclass="Last_submition_deadline" link="" type="text">12/19/2025</data>
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Заповніть індивідуальну або командну реєстраційну форму</data>
       <data tclass="Link" link="https://aihouse.org.ua/event/deep-tech-accelerator-hardware-edition/" type="link">https://aihouse.org.ua/event/deep-tech-accelerator-hardware-edition/</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Archive</data>
       <data tclass="Image" link="https://fintechinsider.com.ua/wp-content/uploads/2025/11/deep-tech-accelerator-scaled.jpg" type="image">https://fintechinsider.com.ua/wp-content/uploads/2025/11/deep-tech-accelerator-scaled.jpg</data>
     </Node>
-    <Node guid="64B16847C8E7" nodeName="Startup EDGE: грантова програма для українських стартапів у сферах DeepTech, GreenTech та EdTech" nclass="ПРОЕКТИ" shape="circle" xPos="600" yPos="300" color="13421772">
+    <Node guid="F4A978ACE3B7" nodeName="Startup EDGE: грантова програма для українських стартапів у сферах DeepTech, GreenTech та EdTech" nclass="Проєкти" shape="circle" xPos="600" yPos="300" color="13421772">
       <data tclass="с" link="" type="text">Startup EDGE: грантова програма для українських стартапів у сферах DeepTech, GreenTech та EdTech</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Інший грант міжнародної організації (p20)</data>
@@ -168,10 +153,10 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Заявка через портал (включає опис проєкту, команду, бюджет тощо)</data>
       <data tclass="Link" link="https://usf.com.ua/programs/grant-support?referrer=grok.com" type="link">https://usf.com.ua/programs/grant-support</data>
       <data tclass="Link_info" link="https://portal.usf.com.ua/?referrer=grok.com" type="link">https://portal.usf.com.ua/</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">No data</data>
       <data tclass="Image" link="https://inventure.com.ua/img/thumb.990.660/upload/pic2025-2H/edge.jpg" type="image">https://inventure.com.ua/img/thumb.990.660/upload/pic2025-2H/edge.jpg</data>
     </Node>
-    <Node guid="729169A95350" nodeName="5th Call of the INNOGLOBO Programme" nclass="ПРОЕКТИ" shape="circle" xPos="900" yPos="300" color="13421772">
+    <Node guid="A2519EE5D164" nodeName="5th Call of the INNOGLOBO Programme" nclass="Проєкти" shape="circle" xPos="900" yPos="300" color="13421772">
       <data tclass="с" link="" type="text">5th Call of the INNOGLOBO Programme</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Інший грант міжнародної організації (p20)</data>
@@ -186,10 +171,10 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Application form (submitted by Polish lead), declaration of funding from foreign partners, project proposal, CVs of key personnel, budget justification</data>
       <data tclass="Link" link="https://lsi.ncbr.gov.pl/?referrer=grok.com" type="link">https://lsi.ncbr.gov.pl</data>
       <data tclass="Link_info" link="https://www.gov.pl/web/ncbr-en/innoglobo-5th-call-is-open?referrer=grok.com" type="link">https://www.gov.pl/web/ncbr-en/innoglobo-5th-call-is-open</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Actual</data>
       <data tclass="Image" link="https://nrfu.org.ua/wp-content/uploads/2025/12/a34c061f-1d28-4957-8273-591978fef73a.png" type="image">https://nrfu.org.ua/wp-content/uploads/2025/12/a34c061f-1d28-4957-8273-591978fef73a.png</data>
     </Node>
-    <Node guid="01886FD6BB6E" nodeName="Open call for Network Projects applications" nclass="ПРОЕКТИ" shape="circle" xPos="1200" yPos="300" color="13421772">
+    <Node guid="EF0015AED215" nodeName="Open call for Network Projects applications" nclass="Проєкти" shape="circle" xPos="1200" yPos="300" color="13421772">
       <data tclass="с" link="" type="text">Open call for Network Projects applications</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Інший грант міжнародної організації (p20)</data>
@@ -204,35 +189,28 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Application form, GANTT chart, co-signature form, consortium agreement</data>
       <data tclass="Link" link="https://www.eurekanetwork.org/programmes-and-calls/network-projects/network-projects-open-call/?referrer=grok.com" type="link">https://www.eurekanetwork.org/programmes-and-calls/network-projects/network-projects-open-call/</data>
       <data tclass="Link_info" link="https://business.diia.gov.ua/news/konkurs-mizhnarodnykh-innovatsiinykh-proiektiv-dlia-naukovtsiv-ta-biznesu?referrer=grok.com" type="link">https://business.diia.gov.ua/news/konkurs-mizhnarodnykh-innovatsiinykh-proiektiv-dlia-naukovtsiv-ta-biznesu</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Actual</data>
       <data tclass="Image" link="https://www.esastap.org.za/wp-content/uploads/2024/04/Eureka-Network-projects.jpg" type="image">https://www.esastap.org.za/wp-content/uploads/2024/04/Eureka-Network-projects.jpg</data>
     </Node>
-    <Node guid="3E5AB900A732" nodeName="Kirkland Research – стипендії на дослідницькі стажування в Польщі" nclass="ПРОЕКТИ" shape="circle" xPos="0" yPos="450" color="13421772">
+    <Node guid="DB4E09F16B1D" nodeName="Kirkland Research – стипендії на дослідницькі стажування в Польщі" nclass="Проєкти" shape="circle" xPos="0" yPos="450" color="13421772">
       <data tclass="с" link="" type="text">Kirkland Research – стипендії на дослідницькі стажування в Польщі</data>
       <data tclass="Type" link="" type="text">Individual</data>
       <data tclass="Type_attestation" link="" type="text">Інший грант міжнародної організації (p20)</data>
       <data tclass="Section" link="" type="text">економіка і менеджмент, "галузі, пов’язані з відбудовою територій, знищених під час війни, наприклад, урбаністика, цивільне будівництво, криміналістика", політика розвитку та гуманітарна допомога, кризовий менеджмент, сфера безпеки та кібербезпеки, охорона навколишнього середовища і клімату, політологія і міжнародні відносини, "суспільні науки (соціальна психологія, соціологія)", "право, зокрема права людини та питання міграції", державне управління (органи державної влади та самоврядування), "управління в бізнесі, НУО, культурі, освіті, охороні здоров’я"</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">стипендія 2700 злотих щомісяця протягом чотирьох місяців</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">поселення протягом чотирьох місяців</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">повернення вартості квитків до Польщі та додому після завершення програми</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">повернення вартості квитків на громадський транспорт</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">науково-дидактичний пакет на суму до 3500 злотих</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">медичне страхування у приватних медичних установах</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">участь у додаткових тренінгах та заняттях із польської мови</data>
+      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">стипендія 2700 злотих щомісяця протягом чотирьох місяців; поселення протягом чотирьох місяців; повернення вартості квитків до Польщі та додому після завершення програми; повернення вартості квитків на громадський транспорт; науково-дидактичний пакет на суму до 3500 злотих; медичне страхування у приватних медичних установах; участь у додаткових тренінгах та заняттях із польської мови</data>
       <data tclass="Who_can_sumbit" link="" type="text">Вчені, Individuals, Scienfitic institutions</data>
       <data tclass="Acronym" link="" type="text">KIRKLAND RESEARCH</data>
       <data tclass="Organizator" link="" type="text">Polsko-Amerykańska Fundacja Wolności</data>
       <data tclass="Co-Organizator" link="" type="text">Fundacja Liderzy Przemian</data>
       <data tclass="In_terms_of_parent_program" link="" type="text">Lane Kirkland Scholarship Program</data>
       <data tclass="Last_submition_deadline" link="" type="text">03.01.2026</data>
-      <data tclass="Documents_required_to_be_prepared" link="" type="text">Заповнений онлайн-формуляр заявки на участь у програмі з такими елементами: анкета з персональними даними</data>
-      <data tclass="Documents_required_to_be_prepared" link="" type="text">проєкт науково-дослідницької роботи – обґрунтування намірів кандидата щодо участі в програмі «Kirkland Research» та пропозиції використання результатів проведених досліджень (7500–12000 знаків із пробілами)", "Два рекомендаційні листи з переліком досягнень та кваліфікацій кандидата, а також описом перспектив його подальшого розвитку і роботи у професійній або громадській діяльності (польською, російською або англійською мовою)", "Копія диплома кандидата наук (доктора PhD)</data>
+      <data tclass="Documents_required_to_be_prepared" link="" type="text">Заповнений онлайн-формуляр заявки на участь у програмі з такими елементами: анкета з персональними даними; проєкт науково-дослідницької роботи – обґрунтування намірів кандидата щодо участі в програмі «Kirkland Research» та пропозиції використання результатів проведених досліджень (7500–12000 знаків із пробілами)", "Два рекомендаційні листи з переліком досягнень та кваліфікацій кандидата, а також описом перспектив його подальшого розвитку і роботи у професійній або громадській діяльності (польською, російською або англійською мовою)", "Копія диплома кандидата наук (доктора PhD)</data>
       <data tclass="Link" link="https://kirkland.edu.pl/?referrer=grok.com" type="link">https://kirkland.edu.pl</data>
       <data tclass="Link_info" link="" type="text">Оголошення про конкурс</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Archive</data>
       <data tclass="Image" link="https://monitorwolynski.com/storage/news_image/main/n_1767081986.jpg" type="image">https://monitorwolynski.com/storage/news_image/main/n_1767081986.jpg</data>
     </Node>
-    <Node guid="55527C85AAF2" nodeName="Safe Haven Fellowship" nclass="ПРОЕКТИ" shape="circle" xPos="300" yPos="450" color="13421772">
+    <Node guid="461C4D16AD8A" nodeName="Safe Haven Fellowship" nclass="Проєкти" shape="circle" xPos="300" yPos="450" color="13421772">
       <data tclass="с" link="" type="text">Safe Haven Fellowship</data>
       <data tclass="Type" link="" type="text">Individual</data>
       <data tclass="Type_attestation" link="" type="text">Інший грант міжнародної організації (p20)</data>
@@ -249,7 +227,7 @@
       <data tclass="Image" link="https://shfarms.org/wp-content/uploads/2022/03/SFHVN-CLR_WEB-300x277.png" type="image">https://shfarms.org/wp-content/uploads/2022/03/SFHVN-CLR_WEB-300x277.png</data>
       <data tclass="Номер_тижня" link="" type="text">6.0</data>
     </Node>
-    <Node guid="C782E1D13B99" nodeName="Видавничі ґранти Наукового Товариства імені Шевченка" nclass="ПРОЕКТИ" shape="circle" xPos="600" yPos="450" color="13421772">
+    <Node guid="B74475FA0BBF" nodeName="Видавничі ґранти Наукового Товариства імені Шевченка" nclass="Проєкти" shape="circle" xPos="600" yPos="450" color="13421772">
       <data tclass="с" link="" type="text">Видавничі ґранти Наукового Товариства імені Шевченка</data>
       <data tclass="Type" link="" type="text">Individual</data>
       <data tclass="Type_attestation" link="" type="text">Інший грант міжнародної організації (p20)</data>
@@ -263,11 +241,11 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Резюме з вибраними публікаціями, Лист від видавця про прийняття рукопису або копія угоди, Рецензування рукопису, Рукопис у PDF, Кошторис від видавництва</data>
       <data tclass="Link" link="https://shevchenko.org/grants-and-scholarships/publication-grants_application/publications_grants_ukr/" type="link">https://shevchenko.org/grants-and-scholarships/publication-grants_application/publications_grants_ukr/</data>
       <data tclass="Link_info" link="" type="text">Інформація про видавничі ґранти</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Archive</data>
       <data tclass="Image" link="https://www.lute.lviv.ua/uploads/pics/2019.12.25_News_1.jpg" type="image">https://www.lute.lviv.ua/uploads/pics/2019.12.25_News_1.jpg</data>
       <data tclass="Номер_тижня" link="" type="text">6.0</data>
     </Node>
-    <Node guid="623DFD0F26AD" nodeName="Visegrad+ Grants" nclass="ПРОЕКТИ" shape="circle" xPos="900" yPos="450" color="13421772">
+    <Node guid="11F0B815DA11" nodeName="Visegrad+ Grants" nclass="Проєкти" shape="circle" xPos="900" yPos="450" color="13421772">
       <data tclass="с" link="" type="text">Visegrad+ Grants</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Інший грант міжнародної організації (p20)</data>
@@ -281,11 +259,11 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Main goal of the project with a proposed solution, Planned activities, List of project partners, Target groups, Estimated budget</data>
       <data tclass="Link" link="https://www.visegradfund.org/apply/grants/visegrad-plus-grants/" type="link">https://www.visegradfund.org/apply/grants/visegrad-plus-grants/</data>
       <data tclass="Link_info" link="" type="text">Grant Guidelines</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
-      <data tclass="Image" link="https://www.visegradfund.org/assets/images/visegrad25.png" type="image">https://www.visegradfund.org/assets/images/visegrad25.png</data>
+      <data tclass="Status" link="" type="text">Actual</data>
+      <data tclass="Image" link="https://upload.wikimedia.org/wikipedia/commons/6/62/International_Visegrad_Fund%2C_emblemo_blua.jpg" type="image">https://upload.wikimedia.org/wikipedia/commons/6/62/International_Visegrad_Fund%2C_emblemo_blua.jpg</data>
       <data tclass="Номер_тижня" link="" type="text">7.0</data>
     </Node>
-    <Node guid="99A3D9CCF118" nodeName="EMEA Youth and Wellbeing Grant" nclass="ПРОЕКТИ" shape="circle" xPos="1200" yPos="450" color="13421772">
+    <Node guid="99F98F81FF9E" nodeName="EMEA Youth and Wellbeing Grant" nclass="Проєкти" shape="circle" xPos="1200" yPos="450" color="13421772">
       <data tclass="с" link="" type="text">EMEA Youth and Wellbeing Grant</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Інший грант міжнародної організації (p20)</data>
@@ -299,11 +277,11 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">[Назва проєкту, Детальний опис пропозиції (максимум 500 слів), Детальний кошторис із обґрунтуванням, Резюме учасників команди та підтвердження приналежності до організації, Заява про етичність та план обробки даних, Листи підтримки або підтвердження партнерства]</data>
       <data tclass="Link" link="https://openai.smapply.org/prog/emea_youth_wellbeing_grant/" type="link">https://openai.smapply.org/prog/emea_youth_wellbeing_grant/</data>
       <data tclass="Link_info" link="https://openai.com/uk-UA/index/emea-youth-and-wellbeing-grant/" type="link">https://openai.com/uk-UA/index/emea-youth-and-wellbeing-grant/</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Archive</data>
       <data tclass="Image" link="https://openai.smapply.org/media/awssmapply2/reviewrooms/openai/logo/openai-logo.png" type="image">https://openai.smapply.org/media/awssmapply2/reviewrooms/openai/logo/openai-logo.png</data>
       <data tclass="Номер_тижня" link="" type="text">7.0</data>
     </Node>
-    <Node guid="A30A0D2CD60E" nodeName="Internet Freedom Fund" nclass="ПРОЕКТИ" shape="circle" xPos="0" yPos="600" color="13421772">
+    <Node guid="A1C1B49BAB09" nodeName="Internet Freedom Fund" nclass="Проєкти" shape="circle" xPos="0" yPos="600" color="13421772">
       <data tclass="с" link="" type="text">Internet Freedom Fund</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Інший грант міжнародної організації (p20)</data>
@@ -314,27 +292,16 @@
       <data tclass="Organizator" link="" type="text">Open Technology Fund</data>
       <data tclass="Documents_required_to_be_prepared" link="" type="text">['Concept note', 'Full proposal if invited']</data>
       <data tclass="Link" link="https://www.opentech.fund/funds/internet-freedom-fund/" type="link">https://www.opentech.fund/funds/internet-freedom-fund/</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">No data</data>
       <data tclass="Image" link="https://www.opentech.fund/wp-content/uploads/2022/01/otf-logo.png" type="image">https://www.opentech.fund/wp-content/uploads/2022/01/otf-logo.png</data>
       <data tclass="Номер_тижня" link="" type="text">7.0</data>
     </Node>
-    <Node guid="BD15DF8AF7EE" nodeName="Nansen EDU - Call for Applications 2025" nclass="ПРОЕКТИ" shape="circle" xPos="300" yPos="600" color="13421772">
+    <Node guid="E6579B3961A7" nodeName="Nansen EDU - Call for Applications 2025" nclass="Проєкти" shape="circle" xPos="300" yPos="600" color="13421772">
       <data tclass="с" link="" type="text">Nansen EDU - Call for Applications 2025</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Інший грант міжнародної організації (p20)</data>
       <data tclass="Section" link="" type="text">Education, Computer Sciences, Humanities, Social sciences, Natural sciences, Life sciences</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Зміцнення здатності українських вищих навчальних закладів пропонувати якісну освіту</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Покращення доступу до висококваліфікованих фахівців для державного та приватного секторів</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Зміцнення довгострокової співпраці між норвезькими та українськими вищими навчальними закладами</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Посилене лідерство, адміністративний потенціал</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Покращена здатність до міжнародної співпраці</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Посилена викладацька, інноваційна та дослідницька компетентність</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Нові/вдосконалені навчальні програми в пріоритетних галузях</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Покращення цифрового викладання</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Посилена докторська освіта</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Служби психосоціальної підтримки</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Освіта для поранених, демобілізованих, ВПО</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Програми безперервної освіти</data>
+      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Зміцнення здатності українських вищих навчальних закладів пропонувати якісну освіту; Покращення доступу до висококваліфікованих фахівців для державного та приватного секторів; Зміцнення довгострокової співпраці між норвезькими та українськими вищими навчальними закладами; Посилене лідерство, адміністративний потенціал; Покращена здатність до міжнародної співпраці; Посилена викладацька, інноваційна та дослідницька компетентність; Нові/вдосконалені навчальні програми в пріоритетних галузях; Покращення цифрового викладання; Посилена докторська освіта; Служби психосоціальної підтримки; Освіта для поранених, демобілізованих, ВПО; Програми безперервної освіти</data>
       <data tclass="Who_can_sumbit" link="" type="text">Scienfitic institutions, Higher educational institutions</data>
       <data tclass="Organizator" link="" type="text">Directorate for Higher Education and Skills</data>
       <data tclass="Co-Organizator" link="" type="text">Ministry of Foreign Affairs Norway</data>
@@ -343,11 +310,11 @@
       <data tclass="Last_deccision_deadline" link="" type="text">05.01.2026</data>
       <data tclass="Documents_required_to_be_prepared" link="" type="text">[Project description (using HK-dir template), Declaration of participation, Letters of commitment from all project partners, CV of project coordinator (max 4 pages)]</data>
       <data tclass="Link" link="https://hkdir.no/en/grants-and-open-calls/nansen-edu-call-for-applications-2025" type="link">https://hkdir.no/en/grants-and-open-calls/nansen-edu-call-for-applications-2025</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Archive</data>
       <data tclass="Image" link="https://chaszmin.com.ua/wp-content/webp-express/webp-images/uploads/2025/12/584775666_1147941.jpg.webp" type="image">https://chaszmin.com.ua/wp-content/webp-express/webp-images/uploads/2025/12/584775666_1147941.jpg.webp</data>
       <data tclass="Номер_тижня" link="" type="text">7.0</data>
     </Node>
-    <Node guid="CB7BD3CB5941" nodeName="Call for proposals – Ulam NAWA 2026" nclass="ПРОЕКТИ" shape="circle" xPos="600" yPos="600" color="13421772">
+    <Node guid="90D160B00282" nodeName="Call for proposals – Ulam NAWA 2026" nclass="Проєкти" shape="circle" xPos="600" yPos="600" color="13421772">
       <data tclass="с" link="" type="text">Call for proposals – Ulam NAWA 2026</data>
       <data tclass="Type" link="" type="text">Individual</data>
       <data tclass="Type_attestation" link="" type="text">Інший грант міжнародної організації (p20)</data>
@@ -361,12 +328,12 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Application form in English via NAWA ICT system</data>
       <data tclass="Link" link="https://nawa.gov.pl/en/nawa/news/call-for-proposals-ulam-nawa-2026" type="link">https://nawa.gov.pl/en/nawa/news/call-for-proposals-ulam-nawa-2026</data>
       <data tclass="Link_info" link="" type="text">Call for Proposals and Programme Regulations</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Actual</data>
       <data tclass="Image" link="https://nawa.gov.pl/images/rozszerzenia/szablony/siteb3/logo-komputer-en.png" type="image">https://nawa.gov.pl/images/rozszerzenia/szablony/siteb3/logo-komputer-en.png</data>
       <data tclass="Номер_тижня" link="" type="text">8.0</data>
     </Node>
-    <Node guid="30DBD653FD22" nodeName="МОН (p18)" nclass="Type_attestation" shape="circle" xPos="900" yPos="600" color="13421772"/>
-    <Node guid="CA96E4E54C8A" nodeName="Додатковий конкурс науково-технічних (експериментальних) розробок за державним замовленням 2025" nclass="ПРОЕКТИ" shape="circle" xPos="1200" yPos="600" color="13421772">
+    <Node guid="B29B42623A93" nodeName="МОН (p18)" nclass="Type_attestation" shape="circle" xPos="900" yPos="600" color="13421772"/>
+    <Node guid="C2B697D25E08" nodeName="Додатковий конкурс науково-технічних (експериментальних) розробок за державним замовленням 2025" nclass="Проєкти" shape="circle" xPos="1200" yPos="600" color="13421772">
       <data tclass="с" link="" type="text">Додатковий конкурс науково-технічних (експериментальних) розробок за державним замовленням 2025</data>
       <data tclass="code" link="" type="text">1393</data>
       <data tclass="Type" link="" type="text">Collective</data>
@@ -381,9 +348,9 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Заявка, Технічне завдання, Гарантійний лист (співфінансування)</data>
       <data tclass="Link" link="https://nauka.gov.ua/information/dz2025-2/" type="link"/>
       <data tclass="Link_info" link="" type="text">Наказ МОН №1393 від 24.10.2025</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Archive</data>
     </Node>
-    <Node guid="AC078BE6D230" nodeName="Оголошено конкурс на здобуття премій Президента України для молодих вчених у 2026 році" nclass="ПРОЕКТИ" shape="circle" xPos="0" yPos="750" color="13421772">
+    <Node guid="D633CD08C252" nodeName="Оголошено конкурс на здобуття премій Президента України для молодих вчених у 2026 році" nclass="Проєкти" shape="circle" xPos="0" yPos="750" color="13421772">
       <data tclass="с" link="" type="text">Оголошено конкурс на здобуття премій Президента України для молодих вчених у 2026 році</data>
       <data tclass="Type" link="" type="text">Individual</data>
       <data tclass="Type_attestation" link="" type="text">МОН (p18)</data>
@@ -396,11 +363,11 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Повний пакет оригінальних документів за інструкцією (витяг з протоколу, рекомендації, відомості про автора, список публікацій з копіями ключових робіт, інформація про дослідницьку діяльність)</data>
       <data tclass="Link" link="https://www.nas.gov.ua/news_molod/ogolosheno-konkurs-na-zdobuttya-premiy-prezidenta-ukrani-dlya-molodih-vchenih-u-2026-roci" type="link">https://www.nas.gov.ua/news_molod/ogolosheno-konkurs-na-zdobuttya-premiy-prezidenta-ukrani-dlya-molodih-vchenih-u-2026-roci</data>
       <data tclass="Link_info" link="" type="text">Лист НАН України від 07.01.2026 №9к/35-8 щодо оголошення конкурсу</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Archive</data>
       <data tclass="Image" link="https://www.nas.gov.ua/storage/editor/fotos/320x200/9bbbce7e1c0a5354266892ca33f0ccb0_1768311514.jpg" type="image">https://www.nas.gov.ua/storage/editor/fotos/320x200/9bbbce7e1c0a5354266892ca33f0ccb0_1768311514.jpg</data>
       <data tclass="Номер_тижня" link="" type="text">6.0</data>
     </Node>
-    <Node guid="4D43BCE12139" nodeName="Конкурс з визначення проєктів з утвердження української національної та громадянської ідентичності, розроблених інститутами громадянського суспільства, для реалізації яких надається фінансова підтримка у 2026 році" nclass="ПРОЕКТИ" shape="circle" xPos="300" yPos="750" color="13421772">
+    <Node guid="A3073322AD93" nodeName="Конкурс з визначення проєктів з утвердження української національної та громадянської ідентичності, розроблених інститутами громадянського суспільства, для реалізації яких надається фінансова підтримка у 2026 році" nclass="Проєкти" shape="circle" xPos="300" yPos="750" color="13421772">
       <data tclass="с" link="" type="text">Конкурс з визначення проєктів з утвердження української національної та громадянської ідентичності, розроблених інститутами громадянського суспільства, для реалізації яких надається фінансова підтримка у 2026 році</data>
       <data tclass="code" link="" type="text">632913e0-eafc-11f0-83ef-b5baf251d231</data>
       <data tclass="Type" link="" type="text">Collective</data>
@@ -414,11 +381,11 @@
       <data tclass="Submition_opening" link="" type="text">01.06.2026</data>
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Конкурсна пропозиція, опис програми (проєкту, заходу), кошторис витрат, супровідні документи (заява про включення до складу Конкурсної комісії для відбору)</data>
       <data tclass="Link" link="https://grants.vzaemo.diia.gov.ua/contests/632913e0-eafc-11f0-83ef-b5baf251d231" type="link">https://grants.vzaemo.diia.gov.ua/contests/632913e0-eafc-11f0-83ef-b5baf251d231</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Archive</data>
       <data tclass="Image" link="https://krkut.gov.ua/wp-content/uploads/2026/02/%D0%BA%D0%BE%D0%BD%D0%BA%D1%83%D1%80%D1%81-%D0%B7-%D0%B2%D0%B8%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%BD%D1%8F-%D0%BF%D1%80%D0%BE%D1%94%D0%BA%D1%82%D1%96%D0%B2.png" type="image">https://krkut.gov.ua/wp-content/uploads/2026/02/%D0%BA%D0%BE%D0%BD%D0%BA%D1%83%D1%80%D1%81-%D0%B7-%D0%B2%D0%B8%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%BD%D1%8F-%D0%BF%D1%80%D0%BE%D1%94%D0%BA%D1%82%D1%96%D0%B2.png</data>
       <data tclass="Номер_тижня" link="" type="text">7.0</data>
     </Node>
-    <Node guid="F0EDE63D9C00" nodeName="Стипендія Верховної Ради України імені Бориса Патона для молодих учених на 2027 рік" nclass="ПРОЕКТИ" shape="circle" xPos="600" yPos="750" color="13421772">
+    <Node guid="ADA910739127" nodeName="Стипендія Верховної Ради України імені Бориса Патона для молодих учених на 2027 рік" nclass="Проєкти" shape="circle" xPos="600" yPos="750" color="13421772">
       <data tclass="с" link="" type="text">Стипендія Верховної Ради України імені Бориса Патона для молодих учених на 2027 рік</data>
       <data tclass="Type" link="" type="text">Individual</data>
       <data tclass="Type_attestation" link="" type="text">МОН (p18)</data>
@@ -431,11 +398,11 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">[Клопотання до Комітету Верховної Ради України з питань освіти, науки та інновацій з комплектом документів номінанта у двох примірниках, електронна копія на флеш-накопичувачі, супровідний лист]</data>
       <data tclass="Link" link="https://mon.gov.ua/news/rozpochato-podannia-dokumentiv-na-zdobuttia-stypendii-verkhovnoi-rady-ukrainy-imeni-borysa-patona-dlia-molodykh-uchenykh-na-2027-rik" type="link">https://mon.gov.ua/news/rozpochato-podannia-dokumentiv-na-zdobuttia-stypendii-verkhovnoi-rady-ukrainy-imeni-borysa-patona-dlia-molodykh-uchenykh-na-2027-rik</data>
       <data tclass="Link_info" link="" type="text">Розпочато подання документів на здобуття стипендії Верховної Ради України імені Бориса Патона для молодих учених на 2027 рік</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Actual</data>
       <data tclass="Image" link="https://mon.gov.ua/static-objects/mon/resources/resize/820_360_0_0_auto/img_e89290eda09c1aeac8b7b06f2b1cd8c5.png" type="image">https://mon.gov.ua/static-objects/mon/resources/resize/820_360_0_0_auto/img_e89290eda09c1aeac8b7b06f2b1cd8c5.png</data>
       <data tclass="Номер_тижня" link="" type="text">9.0</data>
     </Node>
-    <Node guid="7DF54935A3E7" nodeName="Конкурс спільних українсько-австрійських науково-дослідних проєктів 2026" nclass="ПРОЕКТИ" shape="circle" xPos="900" yPos="750" color="13421772">
+    <Node guid="97DD41558CE3" nodeName="Конкурс спільних українсько-австрійських науково-дослідних проєктів 2026" nclass="Проєкти" shape="circle" xPos="900" yPos="750" color="13421772">
       <data tclass="с" link="" type="text">Конкурс спільних українсько-австрійських науково-дослідних проєктів 2026</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">МОН (p18)</data>
@@ -448,12 +415,12 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Форма заявки (українською та англійською), Супровідний лист, Лист-підтвердження від австрійського партнера, Документ про відсутність інформації з обмеженим доступом, CV керівників, Довідка про перетин кордону</data>
       <data tclass="Link" link="https://nauka.gov.ua/information/uav2026/" type="link">https://nauka.gov.ua/information/uav2026/</data>
       <data tclass="Link_info" link="" type="text">Оголошення конкурсу</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
-      <data tclass="Image" link="https://mon.gov.ua/static-objects/mon/resources/resize/820_360_0_0_auto/img_7bc2036b8931abe2eea64890f2baa3d1.png" type="image">https://mon.gov.ua/static-objects/mon/resources/resize/820_360_0_0_auto/img_7bc2036b8931abe2eea64890f2baa3d1.png</data>
+      <data tclass="Status" link="" type="text">Actual</data>
+      <data tclass="Image" link="https://scontent.fiev24-1.fna.fbcdn.net/v/t39.30808-6/650348037_122191310294530236_5597066472423760506_n.jpg?stp=dst-jpg_s640x640_tt6&amp;_nc_cat=105&amp;ccb=1-7&amp;_nc_sid=13d280&amp;_nc_ohc=nqc2PdHF8mMQ7kNvwEeEL8d&amp;_nc_oc=AdoFo8SN5fzQE2PRvHa3eNhx5-OFuSarfB787O_ZTiGJOGmzJHCvW7h8mYcrYvSHW-s&amp;_nc_zt=23&amp;_nc_ht=scontent.fiev24-1.fna&amp;_nc_gid=GYRc4CkoPDOYkuS44GM8rw&amp;_nc_ss=7a30f&amp;oh=00_AfxK2e_OFMiIpCSMaXu733AVyOa2K5l53KG6tQ4N8Sx2AA&amp;oe=69C5D54C" type="image">https://scontent.fiev24-1.fna.fbcdn.net/v/t39.30808-6/650348037_122191310294530236_5597066472423760506_n.jpg?stp=dst-jpg_s640x640_tt6&amp;_nc_cat=105&amp;ccb=1-7&amp;_nc_sid=13d280&amp;_nc_ohc=nqc2PdHF8mMQ7kNvwEeEL8d&amp;_nc_oc=AdoFo8SN5fzQE2PRvHa3eNhx5-OFuSarfB787O_ZTiGJOGmzJHCvW7h8mYcrYvSHW-s&amp;_nc_zt=23&amp;_nc_ht=scontent.fiev24-1.fna&amp;_nc_gid=GYRc4CkoPDOYkuS44GM8rw&amp;_nc_ss=7a30f&amp;oh=00_AfxK2e_OFMiIpCSMaXu733AVyOa2K5l53KG6tQ4N8Sx2AA&amp;oe=69C5D54C</data>
       <data tclass="Номер_тижня" link="" type="text">12.0</data>
     </Node>
-    <Node guid="71E97DD85AAD" nodeName="Digital Europe Programme" nclass="Type_attestation" shape="circle" xPos="1200" yPos="750" color="13421772"/>
-    <Node guid="1E633A81626F" nodeName="ELEVATE: European League of Advanced Digital Skills Academies" nclass="ПРОЕКТИ" shape="circle" xPos="0" yPos="900" color="13421772">
+    <Node guid="D1CFBD4C1F8E" nodeName="Digital Europe Programme" nclass="Type_attestation" shape="circle" xPos="1200" yPos="750" color="13421772"/>
+    <Node guid="2BF241A775DD" nodeName="ELEVATE: European League of Advanced Digital Skills Academies" nclass="Проєкти" shape="circle" xPos="0" yPos="900" color="13421772">
       <data tclass="с" link="" type="text">ELEVATE: European League of Advanced Digital Skills Academies</data>
       <data tclass="code" link="" type="text">DIGITAL-2026-SKILLS-09-LEAGUE-OF-ACADEMIES</data>
       <data tclass="Type" link="" type="text">Collective</data>
@@ -469,11 +436,11 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Standard application form (DEP)</data>
       <data tclass="Link" link="https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/DIGITAL-2026-SKILLS-09-LEAGUE-OF-ACADEMIES" type="link">https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/DIGITAL-2026-SKILLS-09-LEAGUE-OF-ACADEMIES</data>
       <data tclass="Link_info" link="" type="text">ELEVATE: European League of Advanced Digital Skills Academies</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Archive</data>
       <data tclass="Image" link="https://blog.inerciadigital.com/wp-content/uploads/2025/11/6.png" type="image">https://blog.inerciadigital.com/wp-content/uploads/2025/11/6.png</data>
     </Node>
-    <Node guid="FE97AFECAE6E" nodeName="NATO (p15)" nclass="Type_attestation" shape="circle" xPos="300" yPos="900" color="13421772"/>
-    <Node guid="558669BAAA7C" nodeName="NATO SCIENCE FOR PEACE AND SECURITY CALL FOR PROPOSALS 2026-1" nclass="ПРОЕКТИ" shape="circle" xPos="600" yPos="900" color="13421772">
+    <Node guid="374FDA5684DB" nodeName="NATO (p15)" nclass="Type_attestation" shape="circle" xPos="300" yPos="900" color="13421772"/>
+    <Node guid="7A2CC3C5D3D4" nodeName="NATO SCIENCE FOR PEACE AND SECURITY CALL FOR PROPOSALS 2026-1" nclass="Проєкти" shape="circle" xPos="600" yPos="900" color="13421772">
       <data tclass="с" link="" type="text">NATO SCIENCE FOR PEACE AND SECURITY CALL FOR PROPOSALS 2026-1</data>
       <data tclass="code" link="" type="text">2026-1</data>
       <data tclass="Type" link="" type="text">Collective</data>
@@ -488,11 +455,11 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">SPS Events Budget, SPS Events Acceptance of Funds, SPS Events Cooperation Agreement, 5-page concept note, SPS MYP Acceptance of Funds, SPS MYP Preliminary Agreement for Joint Research, Project Schedule, End-user commitment, Brief overview of institutions, SPS MYP Detailed Budget, SPS MYP Agreement for Joint Research, SPS MYP Sample Intellectual Property Rights (IPR) Agreement</data>
       <data tclass="Link" link="https://natosps.grantplatform.com/" type="link">https://natosps.grantplatform.com/</data>
       <data tclass="Link_info" link="https://www.nato.int/en/about-us/organization/nato-structure/science-for-peace-and-security-hub/sps-call-for-proposals-2026-1" type="link">https://www.nato.int/en/about-us/organization/nato-structure/science-for-peace-and-security-hub/sps-call-for-proposals-2026-1</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Archive</data>
       <data tclass="Image" link="https://westernbalkans-infohub.eu/wp-content/uploads/2023/09/WBIHLogo.png" type="image">https://westernbalkans-infohub.eu/wp-content/uploads/2023/09/WBIHLogo.png</data>
     </Node>
-    <Node guid="7352F4DE5616" nodeName="Horizon Europe (p15)" nclass="Type_attestation" shape="circle" xPos="900" yPos="900" color="13421772"/>
-    <Node guid="DBF8AB269AB4" nodeName="NGI TALER: Privacy-preserving digital payments" nclass="ПРОЕКТИ" shape="circle" xPos="1200" yPos="900" color="13421772">
+    <Node guid="1F4D5F16F290" nodeName="Horizon Europe (p15)" nclass="Type_attestation" shape="circle" xPos="900" yPos="900" color="13421772"/>
+    <Node guid="C4A7854EA7F9" nodeName="NGI TALER: Privacy-preserving digital payments" nclass="Проєкти" shape="circle" xPos="1200" yPos="900" color="13421772">
       <data tclass="с" link="" type="text">NGI TALER: Privacy-preserving digital payments</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Horizon Europe (p15)</data>
@@ -507,13 +474,11 @@
       <data tclass="Submition_opening" link="" type="text">12.01.2025</data>
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Project proposal (including description, milestones, budget, team details, alignment with NGI TALER goals), CVs of key participants, any supporting documents as per guide for applicants</data>
       <data tclass="Link" link="https://nlnet.nl/taler/?referrer=grok.com" type="link">https://nlnet.nl/taler/</data>
-      <data tclass="Link_info" link="https://nlnet.nl/taler/guide.html" type="link"/>
-      <data tclass="Link_info" link="" type="text">FAQ: https://nlnet.nl/taler/faq.html</data>
-      <data tclass="Link_info" link="" type="text">Submit: https://nlnet.nl/propose/</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Link_info" link="https://nlnet.nl/taler/guide.html; FAQ: https://nlnet.nl/taler/faq.html; Submit: https://nlnet.nl/propose/" type="link"/>
+      <data tclass="Status" link="" type="text">Archive</data>
       <data tclass="Image" link="https://ngi.eu/wp-content/uploads/2024/01/NGITaler-thegem-blog-timeline-large.jpg" type="image">https://ngi.eu/wp-content/uploads/2024/01/NGITaler-thegem-blog-timeline-large.jpg</data>
     </Node>
-    <Node guid="0DF5F5073BBD" nodeName="Спільний конкурс LUKE" nclass="ПРОЕКТИ" shape="circle" xPos="0" yPos="1050" color="13421772">
+    <Node guid="C8EB5604A73D" nodeName="Спільний конкурс LUKE" nclass="Проєкти" shape="circle" xPos="0" yPos="1050" color="13421772">
       <data tclass="с" link="" type="text">Спільний конкурс LUKE</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Horizon Europe (p15)</data>
@@ -528,19 +493,16 @@
       <data tclass="Submition_opening" link="" type="text">1/30/2026</data>
       <data tclass="Link" link="https://horizon-europe.org.ua/uk/luke/news/spilnyj-konkurs-luke-poperednye-ogoloshennya/?referrer=grok.com" type="link">https://horizon-europe.org.ua/uk/luke/news/spilnyj-konkurs-luke-poperednye-ogoloshennya/</data>
       <data tclass="Link_info" link="" type="text">Спільний конкурс LUKE: Попереднє оголошення</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Actual</data>
       <data tclass="Image" link="https://nrfu.org.ua/wp-content/uploads/2025/12/luke_4_ua.png" type="image">https://nrfu.org.ua/wp-content/uploads/2025/12/luke_4_ua.png</data>
     </Node>
-    <Node guid="4305BEF76E5D" nodeName="Research infrastructures as accelerators of the integration of Ukraine in the European Research Area" nclass="ПРОЕКТИ" shape="circle" xPos="300" yPos="1050" color="13421772">
+    <Node guid="717CF46FD23D" nodeName="Research infrastructures as accelerators of the integration of Ukraine in the European Research Area" nclass="Проєкти" shape="circle" xPos="300" yPos="1050" color="13421772">
       <data tclass="с" link="" type="text">Research infrastructures as accelerators of the integration of Ukraine in the European Research Area</data>
       <data tclass="code" link="" type="text">HORIZON-INFRA-2026-DEV-01-05</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Horizon Europe (p15)</data>
       <data tclass="Section" link="" type="text">General</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Support the design of an early phase implementation plan of the roadmap of the development, reconstruction and reorientation of Ukraine’s RI capacity</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Foster collaboration and networking with Ukrainian research infrastructures, enabling joint research initiatives via remote fellowships, shared use of facilities, including possible short-term researcher exchanges, and the co-development of scientific methodologies</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Offer remote access for Ukrainian researchers to European RIs, supporting their participation in scientifically excellent projects across various fields</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Identify and align investment opportunities, leveraging EU funding mechanisms to prioritise the development and reconstruction of Ukrainian research infrastructures</data>
+      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Support the design of an early phase implementation plan of the roadmap of the development, reconstruction and reorientation of Ukraine’s RI capacity; Foster collaboration and networking with Ukrainian research infrastructures, enabling joint research initiatives via remote fellowships, shared use of facilities, including possible short-term researcher exchanges, and the co-development of scientific methodologies; Offer remote access for Ukrainian researchers to European RIs, supporting their participation in scientifically excellent projects across various fields; Identify and align investment opportunities, leveraging EU funding mechanisms to prioritise the development and reconstruction of Ukrainian research infrastructures</data>
       <data tclass="Who_can_sumbit" link="" type="text">Higher educational institutions, Scienfitic institutions</data>
       <data tclass="Organizator" link="" type="text">Єврокомісія</data>
       <data tclass="In_terms_of_parent_program" link="" type="text">Horizon Europe</data>
@@ -549,19 +511,16 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Standard application form (HE RIA, IA), Detailed budget table (HE LS), Information on financial support to third parties (HE)</data>
       <data tclass="Link" link="https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-INFRA-2026-DEV-01-05" type="link">https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-INFRA-2026-DEV-01-05</data>
       <data tclass="Link_info" link="" type="text">Topic description</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Actual</data>
       <data tclass="Image" link="https://osvita.ua/doc/images/news/633/63377/8083-001_i.jpg" type="image">https://osvita.ua/doc/images/news/633/63377/8083-001_i.jpg</data>
       <data tclass="Номер_тижня" link="" type="text">9.0</data>
     </Node>
-    <Node guid="09E0AF5DE05C" nodeName="New European Bauhaus Prizes 2026" nclass="ПРОЕКТИ" shape="circle" xPos="600" yPos="1050" color="13421772">
+    <Node guid="7A60047000A0" nodeName="New European Bauhaus Prizes 2026" nclass="Проєкти" shape="circle" xPos="600" yPos="1050" color="13421772">
       <data tclass="с" link="" type="text">New European Bauhaus Prizes 2026</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Horizon Europe (p15)</data>
       <data tclass="Section" link="" type="text">General, Digital humanism, "Humanities", "Social sciences", "Natural sciences</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Prizes for innovative projects and ideas embodying sustainability, inclusivity, and beauty in categories: Enhancing Circularity, Sustainability, and Innovation</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Strengthening Local Democracy and Inclusion</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Arts, Culture, and Heritage as Drivers of Change</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Enablers for New European Bauhaus Transformation</data>
+      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Prizes for innovative projects and ideas embodying sustainability, inclusivity, and beauty in categories: Enhancing Circularity, Sustainability, and Innovation; Strengthening Local Democracy and Inclusion; Arts, Culture, and Heritage as Drivers of Change; Enablers for New European Bauhaus Transformation</data>
       <data tclass="Who_can_sumbit" link="" type="text">Individuals,Higher educational institutions,Other type of educational institutions, Scienfitic institutions</data>
       <data tclass="Acronym" link="" type="text">NEB</data>
       <data tclass="Organizator" link="" type="text">Єврокомісія</data>
@@ -572,23 +531,17 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Application form, project description, supporting documents</data>
       <data tclass="Link" link="https://prizes.new-european-bauhaus.europa.eu/about-prizes" type="link">https://prizes.new-european-bauhaus.europa.eu/about-prizes</data>
       <data tclass="Link_info" link="" type="text">The New European Bauhaus Prizes 2026</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Archive</data>
       <data tclass="Image" link="https://prizes.new-european-bauhaus.europa.eu/sites/default/files/2026-02/Bauhaus_web_-banner_prizes_0.jpg" type="image">https://prizes.new-european-bauhaus.europa.eu/sites/default/files/2026-02/Bauhaus_web_-banner_prizes_0.jpg</data>
       <data tclass="Номер_тижня" link="" type="text">9.0</data>
     </Node>
-    <Node guid="C92BB75D8ACE" nodeName="MSCA and Citizens 2027" nclass="ПРОЕКТИ" shape="circle" xPos="900" yPos="1050" color="13421772">
+    <Node guid="8AE6894DEDB4" nodeName="MSCA and Citizens 2027" nclass="Проєкти" shape="circle" xPos="900" yPos="1050" color="13421772">
       <data tclass="с" link="" type="text">MSCA and Citizens 2027</data>
       <data tclass="code" link="" type="text">HORIZON-MSCA-2027-CITIZENS-01-01</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Horizon Europe (p15)</data>
       <data tclass="Section" link="" type="text">General, Education, Humanities, Social sciences</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Європейська ніч дослідників + Дослідники в школах</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">популяризація науки</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">залучення громадян</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">STEAM</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">комунікація досліджень</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">інклюзивність</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">гендерний баланс</data>
+      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Європейська ніч дослідників + Дослідники в школах; популяризація науки; залучення громадян; STEAM; комунікація досліджень; інклюзивність; гендерний баланс</data>
       <data tclass="Who_can_sumbit" link="" type="text">Higher educational institutions, Individuals, Scienfitic institutions</data>
       <data tclass="Acronym" link="" type="text">MSCA Citizens</data>
       <data tclass="Organizator" link="" type="text">Єврокомісія</data>
@@ -598,11 +551,11 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Форма заявки (HE CSA), Part B, бюджет, опис заходів, план комунікації тощо</data>
       <data tclass="Link" link="https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-MSCA-2027-CITIZENS-01-01" type="link">https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-MSCA-2027-CITIZENS-01-01</data>
       <data tclass="Link_info" link="" type="text">Офіційний портал Funding &amp; Tenders</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
-      <data tclass="Image" link="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgpse4snTHIMpX-4NNtrMgY0rhSQBKRQrLTg&amp;s" type="link">https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgpse4snTHIMpX-4NNtrMgY0rhSQBKRQrLTg&amp;s</data>
+      <data tclass="Status" link="" type="text">Actual</data>
+      <data tclass="Image" link="https://horizoneuropeproject.ng/wp-content/uploads/2023/06/Ufuk-Avrupa-1.png" type="image">https://horizoneuropeproject.ng/wp-content/uploads/2023/06/Ufuk-Avrupa-1.png</data>
       <data tclass="Номер_тижня" link="" type="text">12.0</data>
     </Node>
-    <Node guid="4A3B60627204" nodeName="Access to research infrastructures, their resources and services: large-scale pilots for more integrated scheme across (sub)domains" nclass="ПРОЕКТИ" shape="circle" xPos="1200" yPos="1050" color="13421772">
+    <Node guid="B3FEE7F74BF3" nodeName="Access to research infrastructures, their resources and services: large-scale pilots for more integrated scheme across (sub)domains" nclass="Проєкти" shape="circle" xPos="1200" yPos="1050" color="13421772">
       <data tclass="с" link="" type="text">Access to research infrastructures, their resources and services: large-scale pilots for more integrated scheme across (sub)domains</data>
       <data tclass="code" link="" type="text">HORIZON-INFRA-2027-SERV-01-01</data>
       <data tclass="Type" link="" type="text">Collective</data>
@@ -618,11 +571,11 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Стандартна форма заявки HE RIA (B2 частинам), детальний опис доступу, список установок, план співпраці з іншими діями</data>
       <data tclass="Link" link="https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-INFRA-2027-SERV-01-01" type="link">https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-INFRA-2027-SERV-01-01</data>
       <data tclass="Link_info" link="" type="text">Funding &amp; Tenders Portal</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Actual</data>
       <data tclass="Image" link="https://www.acceligence.cy/wp-content/uploads/2023/09/HORIZON-EUROPE.jpg" type="image">https://www.acceligence.cy/wp-content/uploads/2023/09/HORIZON-EUROPE.jpg</data>
       <data tclass="Номер_тижня" link="" type="text">12.0</data>
     </Node>
-    <Node guid="EAC28EA7BF3C" nodeName="Strengthening the human capital managing research infrastructures, including in international context" nclass="ПРОЕКТИ" shape="circle" xPos="0" yPos="1200" color="13421772">
+    <Node guid="2021DA990E61" nodeName="Strengthening the human capital managing research infrastructures, including in international context" nclass="Проєкти" shape="circle" xPos="0" yPos="1200" color="13421772">
       <data tclass="с" link="" type="text">Strengthening the human capital managing research infrastructures, including in international context</data>
       <data tclass="code" link="" type="text">HORIZON-INFRA-2026-DEV-01-04</data>
       <data tclass="Type" link="" type="text">Collective</data>
@@ -638,21 +591,17 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Стандартна форма заявки HE-CSA, опис проєкту (Part B), бюджет (lump sum), CV ключових осіб, опис співпраці з університетами та ESFRI/ERIC, план сталості навчання</data>
       <data tclass="Link" link="https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-INFRA-2026-DEV-01-04" type="link">https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-INFRA-2026-DEV-01-04</data>
       <data tclass="Link_info" link="" type="text">Офіційна сторінка теми на Порталі фінансування та тендерів</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Actual</data>
       <data tclass="Image" link="https://epws.org/wp-content/uploads/2018/05/horizon-europe.jpg" type="image">https://epws.org/wp-content/uploads/2018/05/horizon-europe.jpg</data>
       <data tclass="Номер_тижня" link="" type="text">12.0</data>
     </Node>
-    <Node guid="DBD1D5BEC2E6" nodeName="R&amp;D for the next generation of scientific instrumentation, tools, methods, digitalisation and solutions for research infrastructure upgrades" nclass="ПРОЕКТИ" shape="circle" xPos="300" yPos="1200" color="13421772">
+    <Node guid="4DD62685967C" nodeName="R&amp;D for the next generation of scientific instrumentation, tools, methods, digitalisation and solutions for research infrastructure upgrades" nclass="Проєкти" shape="circle" xPos="300" yPos="1200" color="13421772">
       <data tclass="с" link="" type="text">R&amp;D for the next generation of scientific instrumentation, tools, methods, digitalisation and solutions for research infrastructure upgrades</data>
       <data tclass="code" link="" type="text">HORIZON-INFRA-2026-TECH-01-01</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Horizon Europe (p15)</data>
       <data tclass="Section" link="" type="text">General, Natural sciences, Life sciences, Computer Sciences</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Розробка нових наукових приладів, інструментів, методів, цифровізації та рішень для модернізації дослідницьких інфраструктур</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">екологізація та стійкість ДІ</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">співпраця з промисловістю та інноваційна екосистема</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">підвищення TRL</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">PCP (докомерційні закупівлі) за потреби</data>
+      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Розробка нових наукових приладів, інструментів, методів, цифровізації та рішень для модернізації дослідницьких інфраструктур; екологізація та стійкість ДІ; співпраця з промисловістю та інноваційна екосистема; підвищення TRL; PCP (докомерційні закупівлі) за потреби</data>
       <data tclass="Who_can_sumbit" link="" type="text">Higher educational institutions, Scienfitic institutions</data>
       <data tclass="Acronym" link="" type="text">HORIZON-INFRA-2026-TECH-01-01</data>
       <data tclass="Organizator" link="" type="text">Єврокомісія</data>
@@ -662,48 +611,37 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Стандартна форма заявки HE RIA, детальний опис проекту, бюджет, план впровадження, пояснення доповнювальності з попередніми проєктами (2022 та 2024 TECH-01-01)</data>
       <data tclass="Link" link="https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-INFRA-2026-TECH-01-01" type="link">https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-INFRA-2026-TECH-01-01</data>
       <data tclass="Link_info" link="" type="text">Офіційна сторінка теми на порталі Funding &amp; Tenders</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Actual</data>
       <data tclass="Image" link="https://international.lnu.edu.ua/wp-content/uploads/2025/01/horizon-europe.png" type="image">https://international.lnu.edu.ua/wp-content/uploads/2025/01/horizon-europe.png</data>
       <data tclass="Номер_тижня" link="" type="text">12.0</data>
     </Node>
-    <Node guid="3E60961E1767" nodeName="Connecting research infrastructures and a wider user community across the European Research Area through access to advanced research infrastructure services" nclass="ПРОЕКТИ" shape="circle" xPos="600" yPos="1200" color="13421772">
+    <Node guid="B411282F5EEF" nodeName="Connecting research infrastructures and a wider user community across the European Research Area through access to advanced research infrastructure services" nclass="Проєкти" shape="circle" xPos="600" yPos="1200" color="13421772">
       <data tclass="с" link="" type="text">Connecting research infrastructures and a wider user community across the European Research Area through access to advanced research infrastructure services</data>
       <data tclass="code" link="" type="text">HORIZON-INFRA-2027-SERV-01-03</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Horizon Europe (p15)</data>
       <data tclass="Section" link="" type="text">General</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Транснаціональний/віртуальний доступ до послуг передових RI</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">networking</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">outreach для early-stage researchers</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">інтеграція в ERA та EOSC</data>
+      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Транснаціональний/віртуальний доступ до послуг передових RI; networking; outreach для early-stage researchers; інтеграція в ERA та EOSC</data>
       <data tclass="Who_can_sumbit" link="" type="text">Scienfitic institutions</data>
       <data tclass="Acronym" link="" type="text">HORIZON-INFRA-2027-SERV-01-03</data>
       <data tclass="Organizator" link="" type="text">Єврокомісія</data>
       <data tclass="In_terms_of_parent_program" link="" type="text">Horizon Europe</data>
       <data tclass="Last_submition_deadline" link="" type="text">6/15/2027</data>
       <data tclass="Submition_opening" link="" type="text">03.09.2027</data>
-      <data tclass="Documents_required_to_be_prepared" link="" type="text">Стандартна форма заявки HE RIA (100 сторінок)</data>
-      <data tclass="Documents_required_to_be_prepared" link="" type="text">список послуг/установок</data>
-      <data tclass="Documents_required_to_be_prepared" link="" type="text">план доступу</data>
-      <data tclass="Documents_required_to_be_prepared" link="" type="text">заходи outreach та FSTP (якщо застосовується)</data>
+      <data tclass="Documents_required_to_be_prepared" link="" type="text">Стандартна форма заявки HE RIA (100 сторінок); список послуг/установок; план доступу; заходи outreach та FSTP (якщо застосовується)</data>
       <data tclass="Link" link="https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-INFRA-2027-SERV-01-03" type="link">https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-INFRA-2027-SERV-01-03</data>
       <data tclass="Link_info" link="" type="text">Оголошення теми на Funding &amp; Tenders Portal</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Actual</data>
       <data tclass="Image" link="https://pbs.twimg.com/profile_images/2026615532263264256/R99hBAmc_400x400.jpg" type="image">https://pbs.twimg.com/profile_images/2026615532263264256/R99hBAmc_400x400.jpg</data>
       <data tclass="Номер_тижня" link="" type="text">12.0</data>
     </Node>
-    <Node guid="9100B275CA30" nodeName="Trusted frameworks for secure and efficient data sharing in EOSC (EOSC Partnership)" nclass="ПРОЕКТИ" shape="circle" xPos="900" yPos="1200" color="13421772">
+    <Node guid="745F9F86A90F" nodeName="Trusted frameworks for secure and efficient data sharing in EOSC (EOSC Partnership)" nclass="Проєкти" shape="circle" xPos="900" yPos="1200" color="13421772">
       <data tclass="с" link="" type="text">Trusted frameworks for secure and efficient data sharing in EOSC (EOSC Partnership)</data>
       <data tclass="code" link="" type="text">HORIZON-INFRA-2026-01-EOSC-02</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Horizon Europe (p15)</data>
       <data tclass="Section" link="" type="text">General</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Розробка рамок суверенітету дослідницьких даних</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">інструменти provenance</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">шаблони угод та гайдлайни</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">governance</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">рекомендації щодо центру підтримки</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">аналіз категорій даних та ризиків</data>
+      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Розробка рамок суверенітету дослідницьких даних; інструменти provenance; шаблони угод та гайдлайни; governance; рекомендації щодо центру підтримки; аналіз категорій даних та ризиків</data>
       <data tclass="Who_can_sumbit" link="" type="text">Scienfitic institutions, Higher educational institutions</data>
       <data tclass="Acronym" link="" type="text">HORIZON-INFRA-2026-01-EOSC-02</data>
       <data tclass="Organizator" link="" type="text">Єврокомісія</data>
@@ -713,18 +651,17 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Стандартна форма заявки HE CSA</data>
       <data tclass="Link" link="https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-INFRA-2026-01-EOSC-02" type="link">https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-INFRA-2026-01-EOSC-02</data>
       <data tclass="Link_info" link="" type="text">Офіційна сторінка теми</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Actual</data>
       <data tclass="Image" link="https://snd.se/sites/default/files/inline-images/eosc_logo_2024_2_0.png" type="image">https://snd.se/sites/default/files/inline-images/eosc_logo_2024_2_0.png</data>
       <data tclass="Номер_тижня" link="" type="text">12.0</data>
     </Node>
-    <Node guid="E7A9F75A2430" nodeName="Uptake of FAIR data management practices and of EOSC by research communities and research infrastructures (EOSC Partnership)" nclass="ПРОЕКТИ" shape="circle" xPos="1200" yPos="1200" color="13421772">
+    <Node guid="0AC85DD9217B" nodeName="Uptake of FAIR data management practices and of EOSC by research communities and research infrastructures (EOSC Partnership)" nclass="Проєкти" shape="circle" xPos="1200" yPos="1200" color="13421772">
       <data tclass="с" link="" type="text">Uptake of FAIR data management practices and of EOSC by research communities and research infrastructures (EOSC Partnership)</data>
       <data tclass="code" link="" type="text">HORIZON-INFRA-2026-01-EOSC-01</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Horizon Europe (p15)</data>
       <data tclass="Section" link="" type="text">General</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">1. Прискорення впровадження FAIR та відкритих наукових проєктів через cascading grants</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">2. Підтримка інтеграції тематичних дослідницьких спільнот та інфраструктур у Федерацію EOSC (тренінги, мережування, сталий розвиток послуг)</data>
+      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">1. Прискорення впровадження FAIR та відкритих наукових проєктів через cascading grants; 2. Підтримка інтеграції тематичних дослідницьких спільнот та інфраструктур у Федерацію EOSC (тренінги, мережування, сталий розвиток послуг)</data>
       <data tclass="Who_can_sumbit" link="" type="text">Scienfitic institutions, Higher educational institutions</data>
       <data tclass="Acronym" link="" type="text">HORIZON-INFRA-2026-01-EOSC-01</data>
       <data tclass="Organizator" link="" type="text">Єврокомісія</data>
@@ -734,23 +671,18 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Стандартна форма заявки (HE RIA, IA)</data>
       <data tclass="Link" link="https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-INFRA-2026-01-EOSC-01" type="link">https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-INFRA-2026-01-EOSC-01</data>
       <data tclass="Link_info" link="" type="text">Опис теми на Порталі фінансування та тендерів ЄС</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
-      <data tclass="Image" link="https://research-and-innovation.ec.europa.eu/sites/default/files/styles/page_header_background/public/2023-02/ec_rtd_he-pillar1-research-infrastructures.jpg?itok=Hu9rZnk3" type="image">https://research-and-innovation.ec.europa.eu/sites/default/files/styles/page_header_background/public/2023-02/ec_rtd_he-pillar1-research-infrastructures.jpg?itok=Hu9rZnk3</data>
+      <data tclass="Status" link="" type="text">Actual</data>
+      <data tclass="Image" link="https://openaccessbelgium.wordpress.com/wp-content/uploads/2021/02/eoscznel.png" type="image">https://openaccessbelgium.wordpress.com/wp-content/uploads/2021/02/eoscznel.png</data>
       <data tclass="Номер_тижня" link="" type="text">12.0</data>
     </Node>
-    <Node guid="291857CF3BE3" nodeName="Creative Europe Erasmus+ (p20)" nclass="Type_attestation" shape="circle" xPos="0" yPos="1350" color="13421772"/>
-    <Node guid="29CD792E7F59" nodeName="NEWS - Media Literacy" nclass="ПРОЕКТИ" shape="circle" xPos="300" yPos="1350" color="13421772">
+    <Node guid="33E6369EC009" nodeName="Creative Europe Erasmus+ (p20)" nclass="Type_attestation" shape="circle" xPos="0" yPos="1350" color="13421772"/>
+    <Node guid="13BCB8482B7E" nodeName="NEWS - Media Literacy" nclass="Проєкти" shape="circle" xPos="300" yPos="1350" color="13421772">
       <data tclass="с" link="" type="text">NEWS - Media Literacy</data>
       <data tclass="code" link="" type="text">CREA-CROSS-2026-MEDIALITERACY</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Creative Europe Erasmus+ (p20)</data>
       <data tclass="Section" link="" type="text">Education, Humanities, Social sciences</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">creating or scaling up cross-border collaborations to deliver projects that implement best practices across national, cultural and linguistic borders</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">developing and deploying media literacy tools and initiatives, taking into account the needs of specific target groups</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">assisting media literacy professionals in adapting their practices to rapidly evolving media formats and changing media consumption patterns</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Provide solutions that enable citizens to develop a critical approach to the media, and to recognise and appropriately react to disinformation, information manipulation techniques, and other challenges in the online media environment</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Build on and scale up best practices from innovative media literacy projects that take into account a changing media ecosystem, crossing cultural, national or linguistic borders, and strengthening collaboration between different regions of Europe</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Consider the role of media literacy for citizen inclusiveness, civic engagement and societal resilience, including resilience against attempts to interfere with citizens’ free choice and participation in democratic processes.</data>
+      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">creating or scaling up cross-border collaborations to deliver projects that implement best practices across national, cultural and linguistic borders; developing and deploying media literacy tools and initiatives, taking into account the needs of specific target groups; assisting media literacy professionals in adapting their practices to rapidly evolving media formats and changing media consumption patterns; Provide solutions that enable citizens to develop a critical approach to the media, and to recognise and appropriately react to disinformation, information manipulation techniques, and other challenges in the online media environment; Build on and scale up best practices from innovative media literacy projects that take into account a changing media ecosystem, crossing cultural, national or linguistic borders, and strengthening collaboration between different regions of Europe; Consider the role of media literacy for citizen inclusiveness, civic engagement and societal resilience, including resilience against attempts to interfere with citizens’ free choice and participation in democratic processes.</data>
       <data tclass="Who_can_sumbit" link="" type="text">Scienfitic institutions, Higher educational institutions, Other type of educational institutions</data>
       <data tclass="Acronym" link="" type="text">CREA</data>
       <data tclass="Organizator" link="" type="text">European Commission</data>
@@ -762,10 +694,10 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Application form (CREA MEDIA), Part B (description of the action - max 50 pages), CV, transcripts/diplomas, Research Objective, Personal Statement, Writing Sample (optional), Invitation (optional), Recommendations, Data processing consent, Passport copy, TOEFL/IELTS results</data>
       <data tclass="Link" link="https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/CREA-CROSS-2026-MEDIALITERACY?referrer=grok.com" type="link">https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/CREA-CROSS-2026-MEDIALITERACY</data>
       <data tclass="Link_info" link="" type="text">Call document</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Archive</data>
       <data tclass="Image" link="https://kreatywna-europa.eu/wp-content/uploads/2022/02/MEDIA-Literacy-2026.png" type="image">https://kreatywna-europa.eu/wp-content/uploads/2022/02/MEDIA-Literacy-2026.png</data>
     </Node>
-    <Node guid="828601FC0E2F" nodeName="READY Track 2 – Safeguarding Heritage Cities, Sites, Buildings, Living Traditions and Practices in the face of Disasters, Extreme Weather Events and Complex Emergencies" nclass="ПРОЕКТИ" shape="circle" xPos="600" yPos="1350" color="13421772">
+    <Node guid="C19C0AD201F1" nodeName="READY Track 2 – Safeguarding Heritage Cities, Sites, Buildings, Living Traditions and Practices in the face of Disasters, Extreme Weather Events and Complex Emergencies" nclass="Проєкти" shape="circle" xPos="600" yPos="1350" color="13421772">
       <data tclass="с" link="" type="text">READY Track 2 – Safeguarding Heritage Cities, Sites, Buildings, Living Traditions and Practices in the face of Disasters, Extreme Weather Events and Complex Emergencies</data>
       <data tclass="Type" link="" type="text">General</data>
       <data tclass="Type_attestation" link="" type="text">Creative Europe Erasmus+ (p20)</data>
@@ -785,14 +717,13 @@
       <data tclass="Image" link="https://whc.unesco.org/uploads/thumbs/organization_284-1200-630-20240507120422.jpg" type="image">https://whc.unesco.org/uploads/thumbs/organization_284-1200-630-20240507120422.jpg</data>
       <data tclass="Номер_тижня" link="" type="text">10.0</data>
     </Node>
-    <Node guid="FD44F2A5886B" nodeName="Creative Innovation Lab (CREA-CROSS-2026-INNOVLAB)" nclass="ПРОЕКТИ" shape="circle" xPos="900" yPos="1350" color="13421772">
+    <Node guid="16AC694DA2E1" nodeName="Creative Innovation Lab (CREA-CROSS-2026-INNOVLAB)" nclass="Проєкти" shape="circle" xPos="900" yPos="1350" color="13421772">
       <data tclass="с" link="" type="text">Creative Innovation Lab (CREA-CROSS-2026-INNOVLAB)</data>
       <data tclass="code" link="" type="text">CREA-CROSS-2026-INNOVLAB</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Creative Europe Erasmus+ (p20)</data>
       <data tclass="Section" link="" type="text">General</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Design, development and/or spread of innovative tools, models or solutions in audiovisual (compulsory) + at least one of music/books/museums sectors</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Virtual Worlds, AI/big data/blockchain, greener practices (Green Deal)</data>
+      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Design, development and/or spread of innovative tools, models or solutions in audiovisual (compulsory) + at least one of music/books/museums sectors; Virtual Worlds, AI/big data/blockchain, greener practices (Green Deal)</data>
       <data tclass="Who_can_sumbit" link="" type="text">Приватні та державні установи, Технологічні компанії, Культурні та креативні організації, Бізнес-інкубатори та акселератори</data>
       <data tclass="Acronym" link="" type="text">CREA-CROSS-2026-INNOVLAB</data>
       <data tclass="Organizator" link="" type="text">Єврокомісія</data>
@@ -807,14 +738,13 @@
       <data tclass="Image" link="https://ced.mk/sites/default/files/alfa/img/2-inovacii-foto.jpg" type="image">https://ced.mk/sites/default/files/alfa/img/2-inovacii-foto.jpg</data>
       <data tclass="Номер_тижня" link="" type="text">12.0</data>
     </Node>
-    <Node guid="6E8803A224B4" nodeName="European Cooperation Projects Small Scale" nclass="ПРОЕКТИ" shape="circle" xPos="1200" yPos="1350" color="13421772">
+    <Node guid="0FE306BBB587" nodeName="European Cooperation Projects Small Scale" nclass="Проєкти" shape="circle" xPos="1200" yPos="1350" color="13421772">
       <data tclass="с" link="" type="text">European Cooperation Projects Small Scale</data>
       <data tclass="code" link="" type="text">CREA-CULT-2026-COOP-1</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">Creative Europe Erasmus+ (p20)</data>
       <data tclass="Section" link="" type="text">Humanities</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Транснаціональне створення та поширення європейських творів</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Інновації в культурних та креативних секторах (розбудова потенціалу, нові практики, інклюзія, цифровізація)</data>
+      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Транснаціональне створення та поширення європейських творів; Інновації в культурних та креативних секторах (розбудова потенціалу, нові практики, інклюзія, цифровізація)</data>
       <data tclass="Who_can_sumbit" link="" type="text">Other type of educational institutions, Кандидати наук, "Організації культурного та креативного секторів (будь-якого розміру, включаючи мікро та малі)"</data>
       <data tclass="Acronym" link="" type="text">CREA-CULT-2026-COOP-1</data>
       <data tclass="Organizator" link="" type="text">Єврокомісія</data>
@@ -825,12 +755,12 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">1. Частина B (Форма заявки – шаблон з порталу) 2. Детальна бюджетна таблиця (CREA LSII)</data>
       <data tclass="Link" link="https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/CREA-CULT-2026-COOP-1?isExactMatch=true&amp;status=31094502&amp;frameworkProgramme=43251814&amp;callIdentifier=CREA-CULT-2026-COOP&amp;order=DESC&amp;pageNumber=1&amp;pageSize=50&amp;sortBy=startDate" type="link">https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/CREA-CULT-2026-COOP-1?isExactMatch=true&amp;status=31094502&amp;frameworkProgramme=43251814&amp;callIdentifier=CREA-CULT-2026-COOP&amp;order=DESC&amp;pageNumber=1&amp;pageSize=50&amp;sortBy=startDate</data>
       <data tclass="Link_info" link="" type="text">Офіційна сторінка конкурсу на Порталі фінансування та тендерів ЄС</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Actual</data>
       <data tclass="Image" link="https://www.eacea.ec.europa.eu/sites/default/files/2026-03/26_EACEA_Website-23MARCH.jpg" type="image">https://www.eacea.ec.europa.eu/sites/default/files/2026-03/26_EACEA_Website-23MARCH.jpg</data>
       <data tclass="Номер_тижня" link="" type="text">12.0</data>
     </Node>
-    <Node guid="638C6E9BB726" nodeName="НФДУ (p18)" nclass="Type_attestation" shape="circle" xPos="0" yPos="1500" color="13421772"/>
-    <Node guid="D58D8C4E0AEF" nodeName="Премія Верховної Ради України імені Ігоря Юхновського" nclass="ПРОЕКТИ" shape="circle" xPos="300" yPos="1500" color="13421772">
+    <Node guid="3166BFCF76B9" nodeName="НФДУ (p18)" nclass="Type_attestation" shape="circle" xPos="0" yPos="1500" color="13421772"/>
+    <Node guid="B78F75330BDA" nodeName="Премія Верховної Ради України імені Ігоря Юхновського" nclass="Проєкти" shape="circle" xPos="300" yPos="1500" color="13421772">
       <data tclass="с" link="" type="text">Премія Верховної Ради України імені Ігоря Юхновського</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Type_attestation" link="" type="text">НФДУ (p18)</data>
@@ -845,12 +775,12 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Витяг з протоколу вченої ради, довідка про творчий внесок кожного співавтора, список публікацій, копії ключових робіт, рекомендації, відомості про автора (співавторів)</data>
       <data tclass="Link" link="https://nrfu.org.ua/news/ogoloshennya-konkursu-na-prysudzhennya-premiyi-verhovnoyi-rady-ukrayiny-imeni-igorya-yuhnovskogo/" type="link">https://nrfu.org.ua/news/ogoloshennya-konkursu-na-prysudzhennya-premiyi-verhovnoyi-rady-ukrayiny-imeni-igorya-yuhnovskogo/</data>
       <data tclass="Link_info" link="" type="text">Оголошення конкурсу</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Archive</data>
       <data tclass="Image" link="https://nrfu.org.ua/wp-content/themes/mytheme/assets/images/logo.png" type="image">https://nrfu.org.ua/wp-content/themes/mytheme/assets/images/logo.png</data>
       <data tclass="Номер_тижня" link="" type="text">6.0</data>
     </Node>
-    <Node guid="59CFCA1C44A9" nodeName="Fulbright (p20)" nclass="Type_attestation" shape="circle" xPos="600" yPos="1500" color="13421772"/>
-    <Node guid="AADD3B0CD58F" nodeName="Fulbright Research and Development Program" nclass="ПРОЕКТИ" shape="circle" xPos="900" yPos="1500" color="13421772">
+    <Node guid="0F91A60CFEBC" nodeName="Fulbright (p20)" nclass="Type_attestation" shape="circle" xPos="600" yPos="1500" color="13421772"/>
+    <Node guid="EF0E50C03692" nodeName="Fulbright Research and Development Program" nclass="Проєкти" shape="circle" xPos="900" yPos="1500" color="13421772">
       <data tclass="с" link="" type="text">Fulbright Research and Development Program</data>
       <data tclass="Type" link="" type="text">Individual</data>
       <data tclass="Type_attestation" link="" type="text">Fulbright (p20)</data>
@@ -866,18 +796,18 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Анкета, обов'язкові додаткові форми, три рекомендаційні листи, копії всіх документів про вищу освіту (дипломи з додатками) та копії документів про наукові ступені та звання (дипломи, атестати тощо), портфоліо (для кандидатів з творчих напрямків), лист-запрошення з американської інституції (за наявності, не є обов’язковим документом), обов'язкова додаткова форма: Згода на обробку персональних даних</data>
       <data tclass="Link" link="https://fulbright.org.ua/uk/fulbright-research-and-development-program/" type="link">https://fulbright.org.ua/uk/fulbright-research-and-development-program/</data>
       <data tclass="Link_info" link="https://apply.iie.org/apply/?sr=a37e5d77-21e2-4453-aab6-8d499eb2cffc" type="link">https://apply.iie.org/apply/?sr=a37e5d77-21e2-4453-aab6-8d499eb2cffc</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Actual</data>
       <data tclass="Image" link="https://fulbright.org.ua/images/Logo_FLB_white.png" type="image">https://fulbright.org.ua/images/Logo_FLB_white.png</data>
       <data tclass="Номер_тижня" link="" type="text">8.0</data>
     </Node>
-    <Node guid="6CF696A60874" nodeName="(empty)" nclass="Type_attestation" shape="circle" xPos="1200" yPos="1500" color="13421772"/>
-    <Node guid="3337E12CEBBB" nodeName="Call for Proposals: Knowledge and innovation for supporting teacher professional development, agency, and well-being" nclass="ПРОЕКТИ" shape="circle" xPos="0" yPos="1650" color="13421772">
+    <Node guid="14B79AD611A2" nodeName="(empty)" nclass="Type_attestation" shape="circle" xPos="1200" yPos="1500" color="13421772"/>
+    <Node guid="3BD088BA5B30" nodeName="Call for Proposals: Knowledge and innovation for supporting teacher professional development, agency, and well-being" nclass="Проєкти" shape="circle" xPos="0" yPos="1650" color="13421772">
       <data tclass="с" link="" type="text">Call for Proposals: Knowledge and innovation for supporting teacher professional development, agency, and well-being</data>
       <data tclass="Section" link="" type="text">General</data>
       <data tclass="Organizator" link="" type="text">International Development Research Centre</data>
       <data tclass="Status" link="" type="text">No data</data>
     </Node>
-    <Node guid="D6FE2FF4482D" nodeName="Accelerating Research through International Network-to-Network Collaborations" nclass="ПРОЕКТИ" shape="circle" xPos="300" yPos="1650" color="13421772">
+    <Node guid="B03DBC314491" nodeName="Accelerating Research through International Network-to-Network Collaborations" nclass="Проєкти" shape="circle" xPos="300" yPos="1650" color="13421772">
       <data tclass="с" link="" type="text">Accelerating Research through International Network-to-Network Collaborations</data>
       <data tclass="Section" link="" type="text">General</data>
       <data tclass="Acronym" link="" type="text">AccellNet</data>
@@ -886,88 +816,88 @@
       <data tclass="Link" link="https://new.nsf.gov/funding/opportunities/accelerating-research-through-international" type="link">https://new.nsf.gov/funding/opportunities/accelerating-research-through-international</data>
       <data tclass="Status" link="" type="text">Archive</data>
     </Node>
-    <Node guid="A6E1A8A0EB2F" nodeName="International Multilateral Partnerships for Resilient Education and Science System in Ukraine" nclass="ПРОЕКТИ" shape="circle" xPos="600" yPos="1650" color="13421772">
+    <Node guid="0F01881CEC5D" nodeName="International Multilateral Partnerships for Resilient Education and Science System in Ukraine" nclass="Проєкти" shape="circle" xPos="600" yPos="1650" color="13421772">
       <data tclass="с" link="" type="text">International Multilateral Partnerships for Resilient Education and Science System in Ukraine</data>
       <data tclass="Section" link="" type="text">Education</data>
       <data tclass="Acronym" link="" type="text">IMPRESS-U</data>
       <data tclass="Organizator" link="" type="text">National Foundation of Science</data>
       <data tclass="Status" link="" type="text">No data</data>
     </Node>
-    <Node guid="A15E58EAB13A" nodeName="Research Grants on Education: Large" nclass="ПРОЕКТИ" shape="circle" xPos="900" yPos="1650" color="13421772">
+    <Node guid="C49F8C425CFC" nodeName="Research Grants on Education: Large" nclass="Проєкти" shape="circle" xPos="900" yPos="1650" color="13421772">
       <data tclass="с" link="" type="text">Research Grants on Education: Large</data>
       <data tclass="Section" link="" type="text">Education</data>
       <data tclass="Organizator" link="" type="text">Spencer foundation</data>
       <data tclass="Status" link="" type="text">No data</data>
     </Node>
-    <Node guid="4802071847C8" nodeName="Research Grants on Education: Small" nclass="ПРОЕКТИ" shape="circle" xPos="1200" yPos="1650" color="13421772">
+    <Node guid="39446F9D941D" nodeName="Research Grants on Education: Small" nclass="Проєкти" shape="circle" xPos="1200" yPos="1650" color="13421772">
       <data tclass="с" link="" type="text">Research Grants on Education: Small</data>
       <data tclass="Section" link="" type="text">Education</data>
       <data tclass="Organizator" link="" type="text">Spencer foundation</data>
       <data tclass="Status" link="" type="text">No data</data>
     </Node>
-    <Node guid="0FF093537F55" nodeName="Erasmus + Jean Monnet Chair" nclass="ПРОЕКТИ" shape="circle" xPos="0" yPos="1800" color="13421772">
+    <Node guid="1ABA2CA9C5E9" nodeName="Erasmus + Jean Monnet Chair" nclass="Проєкти" shape="circle" xPos="0" yPos="1800" color="13421772">
       <data tclass="с" link="" type="text">Erasmus + Jean Monnet Chair</data>
       <data tclass="Section" link="" type="text">Education</data>
       <data tclass="Organizator" link="" type="text">Єврокомісія</data>
       <data tclass="Status" link="" type="text">No data</data>
     </Node>
-    <Node guid="CD4FA4481984" nodeName="Erasmus + Jean Monnet Module" nclass="ПРОЕКТИ" shape="circle" xPos="300" yPos="1800" color="13421772">
+    <Node guid="B78F9D2FE4FD" nodeName="Erasmus + Jean Monnet Module" nclass="Проєкти" shape="circle" xPos="300" yPos="1800" color="13421772">
       <data tclass="с" link="" type="text">Erasmus + Jean Monnet Module</data>
       <data tclass="Section" link="" type="text">Education</data>
       <data tclass="Organizator" link="" type="text">Єврокомісія</data>
       <data tclass="Status" link="" type="text">No data</data>
     </Node>
-    <Node guid="A191E68661D1" nodeName="Erasmus + Jean Monnet Center of Excelence" nclass="ПРОЕКТИ" shape="circle" xPos="600" yPos="1800" color="13421772">
+    <Node guid="6807BF660DD6" nodeName="Erasmus + Jean Monnet Center of Excelence" nclass="Проєкти" shape="circle" xPos="600" yPos="1800" color="13421772">
       <data tclass="с" link="" type="text">Erasmus + Jean Monnet Center of Excelence</data>
       <data tclass="Section" link="" type="text">Education</data>
       <data tclass="Organizator" link="" type="text">Єврокомісія</data>
       <data tclass="Status" link="" type="text">No data</data>
     </Node>
-    <Node guid="68352A7977A3" nodeName="Jean Monnet Support to Associations" nclass="ПРОЕКТИ" shape="circle" xPos="900" yPos="1800" color="13421772">
+    <Node guid="EB714C4CD692" nodeName="Jean Monnet Support to Associations" nclass="Проєкти" shape="circle" xPos="900" yPos="1800" color="13421772">
       <data tclass="с" link="" type="text">Jean Monnet Support to Associations</data>
       <data tclass="Section" link="" type="text">Education</data>
       <data tclass="Organizator" link="" type="text">Єврокомісія</data>
       <data tclass="Status" link="" type="text">No data</data>
     </Node>
-    <Node guid="B84ED2148572" nodeName="Гранти НАН України дослідницьким лабораторіям/групам молодих вчених НАН України для проведення досліджень за пріоритетними напрямами розвиту науки і техніки" nclass="ПРОЕКТИ" shape="circle" xPos="1200" yPos="1800" color="13421772">
+    <Node guid="42284EC6141C" nodeName="Гранти НАН України дослідницьким лабораторіям/групам молодих вчених НАН України для проведення досліджень за пріоритетними напрямами розвиту науки і техніки" nclass="Проєкти" shape="circle" xPos="1200" yPos="1800" color="13421772">
       <data tclass="с" link="" type="text">Гранти НАН України дослідницьким лабораторіям/групам молодих вчених НАН України для проведення досліджень за пріоритетними напрямами розвиту науки і техніки</data>
       <data tclass="Section" link="" type="text">General</data>
       <data tclass="Organizator" link="" type="text">Національний фонд досліджень України</data>
       <data tclass="Status" link="" type="text">No data</data>
     </Node>
-    <Node guid="D1865E4AAB23" nodeName="&quot;Конкурс прикладних досліджень з розроблення наукових засад державної політики у сферах освіти і науки, інноваційної діяльності в зазначених сферах&quot;" nclass="ПРОЕКТИ" shape="circle" xPos="0" yPos="1950" color="13421772">
+    <Node guid="74448D17CD96" nodeName="&quot;Конкурс прикладних досліджень з розроблення наукових засад державної політики у сферах освіти і науки, інноваційної діяльності в зазначених сферах&quot;" nclass="Проєкти" shape="circle" xPos="0" yPos="1950" color="13421772">
       <data tclass="с" link="" type="text">"Конкурс прикладних досліджень з розроблення наукових засад державної політики у сферах освіти і науки, інноваційної діяльності в зазначених сферах"</data>
       <data tclass="Section" link="" type="text">General</data>
       <data tclass="Organizator" link="" type="text">Національний фонд досліджень України</data>
       <data tclass="Status" link="" type="text">No data</data>
     </Node>
-    <Node guid="924674AAAA50" nodeName="Science and Innovation Fund for Ukraine" nclass="ПРОЕКТИ" shape="circle" xPos="300" yPos="1950" color="13421772">
+    <Node guid="45E20A986295" nodeName="Science and Innovation Fund for Ukraine" nclass="Проєкти" shape="circle" xPos="300" yPos="1950" color="13421772">
       <data tclass="с" link="" type="text">Science and Innovation Fund for Ukraine</data>
       <data tclass="Section" link="" type="text">General</data>
       <data tclass="Organizator" link="" type="text">National Academy of Sciences (USA)</data>
       <data tclass="Link" link="https://www.nationalacademies.org/news/2024/04/u-s-nas-launches-new-fund-to-build-long-term-ukrainian-science-and-innovation-enterprise" type="link">https://www.nationalacademies.org/news/2024/04/u-s-nas-launches-new-fund-to-build-long-term-ukrainian-science-and-innovation-enterprise</data>
       <data tclass="Status" link="" type="text">No data</data>
     </Node>
-    <Node guid="505960F7971A" nodeName="Da Vinci" nclass="ПРОЕКТИ" shape="circle" xPos="600" yPos="1950" color="13421772">
+    <Node guid="3E85D514C482" nodeName="Da Vinci" nclass="Проєкти" shape="circle" xPos="600" yPos="1950" color="13421772">
       <data tclass="с" link="" type="text">Da Vinci</data>
       <data tclass="Section" link="" type="text">Education, Computer Sciences</data>
       <data tclass="Organizator" link="" type="text">KSE Foundation</data>
       <data tclass="Status" link="" type="text">No data</data>
     </Node>
-    <Node guid="D3EDA91665E0" nodeName="EU4CSOs Emergency Actions" nclass="ПРОЕКТИ" shape="circle" xPos="900" yPos="1950" color="13421772">
+    <Node guid="CDBA72CE37AB" nodeName="EU4CSOs Emergency Actions" nclass="Проєкти" shape="circle" xPos="900" yPos="1950" color="13421772">
       <data tclass="с" link="" type="text">EU4CSOs Emergency Actions</data>
       <data tclass="Section" link="" type="text">General</data>
       <data tclass="Organizator" link="" type="text">БО «Мережа 100 відсотків життя Рівне»</data>
       <data tclass="Link" link="https://gurt.org.ua/news/informator/80922/" type="link">https://gurt.org.ua/news/informator/80922/</data>
       <data tclass="Status" link="" type="text">No data</data>
     </Node>
-    <Node guid="2767CFF66D28" nodeName="FCL (Фонд місцевого співробітництва)" nclass="ПРОЕКТИ" shape="circle" xPos="1200" yPos="1950" color="13421772">
+    <Node guid="A05AA9F9CDC4" nodeName="FCL (Фонд місцевого співробітництва)" nclass="Проєкти" shape="circle" xPos="1200" yPos="1950" color="13421772">
       <data tclass="с" link="" type="text">FCL (Фонд місцевого співробітництва)</data>
       <data tclass="Section" link="" type="text">General</data>
       <data tclass="Organizator" link="" type="text">Посольство Фінляндії</data>
       <data tclass="Status" link="" type="text">No data</data>
     </Node>
-    <Node guid="3A62726E38FF" nodeName="Залучіть дослідника з України до поточного дослідницького проєкту" nclass="ПРОЕКТИ" shape="circle" xPos="0" yPos="2100" color="13421772">
+    <Node guid="F9E3387617A7" nodeName="Залучіть дослідника з України до поточного дослідницького проєкту" nclass="Проєкти" shape="circle" xPos="0" yPos="2100" color="13421772">
       <data tclass="с" link="" type="text">Залучіть дослідника з України до поточного дослідницького проєкту</data>
       <data tclass="Section" link="" type="text">General</data>
       <data tclass="Acronym" link="" type="text">RCN</data>
@@ -977,7 +907,7 @@
       <data tclass="Link_info" link="https://nrfu.org.ua/news/rcn-ogoloshuye-pro-zapusk-inicziatyvy-pidtrymky-ukrayinskyh-naukovcziv-u-partnerstvi-z-nfdu/" type="link">https://nrfu.org.ua/news/rcn-ogoloshuye-pro-zapusk-inicziatyvy-pidtrymky-ukrayinskyh-naukovcziv-u-partnerstvi-z-nfdu/</data>
       <data tclass="Status" link="" type="text">No data</data>
     </Node>
-    <Node guid="60F85A3E6D68" nodeName="European Researchers' Night and Researchers at Schools 2026-2027" nclass="ПРОЕКТИ" shape="circle" xPos="300" yPos="2100" color="13421772">
+    <Node guid="6991199CEC61" nodeName="European Researchers' Night and Researchers at Schools 2026-2027" nclass="Проєкти" shape="circle" xPos="300" yPos="2100" color="13421772">
       <data tclass="с" link="" type="text">European Researchers' Night and Researchers at Schools 2026-2027</data>
       <data tclass="code" link="" type="text">HORIZON-MSCA-2025-CITIZENS-01</data>
       <data tclass="Section" link="" type="text">Education</data>
@@ -989,7 +919,7 @@
       <data tclass="Link_info" link="" type="text">EU Funding &amp; Tenders Portal</data>
       <data tclass="Status" link="" type="text">Archive</data>
     </Node>
-    <Node guid="D421CF1D51A5" nodeName="Конкурс на здобуття стипендій імені академіка НАН України Б.Є. Патона для молодих вчених Національної академії наук України – кандидатів наук (докторів філософії) і докторів наук" nclass="ПРОЕКТИ" shape="circle" xPos="600" yPos="2100" color="13421772">
+    <Node guid="5DAE9D7A4365" nodeName="Конкурс на здобуття стипендій імені академіка НАН України Б.Є. Патона для молодих вчених Національної академії наук України – кандидатів наук (докторів філософії) і докторів наук" nclass="Проєкти" shape="circle" xPos="600" yPos="2100" color="13421772">
       <data tclass="с" link="" type="text">Конкурс на здобуття стипендій імені академіка НАН України Б.Є. Патона для молодих вчених Національної академії наук України – кандидатів наук (докторів філософії) і докторів наук</data>
       <data tclass="Type" link="" type="text">Individual</data>
       <data tclass="Section" link="" type="text">General</data>
@@ -1006,7 +936,7 @@
       <data tclass="Link" link="https://www.nas.gov.ua/news/ogoloshuyetsya-konkurs-na-zdobuttya-stipendiy-imeni-akademika-nan-ukrani-bye-patona-dlya-molodih-vchenih-nacionalno-akademi-nauk-ukrani--kandidativ-nauk-doktoriv-filosofi-i-doktoriv-nauk" type="link"/>
       <data tclass="Status" link="" type="text">Archive</data>
     </Node>
-    <Node guid="DF6BDBECAB0C" nodeName="Digital Humanism Fellowship" nclass="ПРОЕКТИ" shape="circle" xPos="900" yPos="2100" color="13421772">
+    <Node guid="F7974641CABE" nodeName="Digital Humanism Fellowship" nclass="Проєкти" shape="circle" xPos="900" yPos="2100" color="13421772">
       <data tclass="с" link="" type="text">Digital Humanism Fellowship</data>
       <data tclass="Type" link="" type="text">Individual</data>
       <data tclass="Section" link="" type="text">Digital humanism, Humanities, Social sciences</data>
@@ -1016,13 +946,14 @@
       <data tclass="Last_submition_deadline" link="" type="text">9/21/2025</data>
       <data tclass="Documents_required_to_be_prepared" link="" type="text">1. Filled application form, resume including list of publications, description of research project (up to 550 characters), 
 2. Project proposal (up to 7500 characters, including goal, methods, scientific field, and execution plan), 
-2. motivation letter, two recommendation letters</data>
-      <data tclass="Documents_required_to_be_prepared" link="" type="text">all documents in English and PDF format, file names in Latin alphabet</data>
+2. motivation letter, two recommendation letters; 
+
+all documents in English and PDF format, file names in Latin alphabet</data>
       <data tclass="Link" link="https://civi.iwm.at/form/app/DH-2025-2026-Spring" type="link"/>
       <data tclass="Link_info" link="" type="text">Online application form for the fellowship</data>
       <data tclass="Status" link="" type="text">Archive</data>
     </Node>
-    <Node guid="208324DE724A" nodeName="Call for Applications for the Virtual Ukraine Institute for Advanced Study" nclass="ПРОЕКТИ" shape="circle" xPos="1200" yPos="2100" color="13421772">
+    <Node guid="B099008DD8F3" nodeName="Call for Applications for the Virtual Ukraine Institute for Advanced Study" nclass="Проєкти" shape="circle" xPos="1200" yPos="2100" color="13421772">
       <data tclass="с" link="" type="text">Call for Applications for the Virtual Ukraine Institute for Advanced Study</data>
       <data tclass="Type" link="" type="text">Individual</data>
       <data tclass="Section" link="" type="text">Natural sciences, Life sciences, Social sciences, Humanities</data>
@@ -1038,7 +969,7 @@
       <data tclass="Link_info" link="https://www.vuias.org/" type="link">https://www.vuias.org</data>
       <data tclass="Status" link="" type="text">Archive</data>
     </Node>
-    <Node guid="10B7D7BEFBC8" nodeName="Конкурс спільних українсько-словацьких науково-дослідних проєктів для реалізації у 2026-2027 рр." nclass="ПРОЕКТИ" shape="circle" xPos="0" yPos="2250" color="13421772">
+    <Node guid="81C239BFA74F" nodeName="Конкурс спільних українсько-словацьких науково-дослідних проєктів для реалізації у 2026-2027 рр." nclass="Проєкти" shape="circle" xPos="0" yPos="2250" color="13421772">
       <data tclass="с" link="" type="text">Конкурс спільних українсько-словацьких науково-дослідних проєктів для реалізації у 2026-2027 рр.</data>
       <data tclass="Type" link="" type="text">Mutual</data>
       <data tclass="Section" link="" type="text">General</data>
@@ -1053,7 +984,7 @@
       <data tclass="Link_info" link="" type="text">Оголошення конкурсу</data>
       <data tclass="Status" link="" type="text">Archive</data>
     </Node>
-    <Node guid="420F5875A422" nodeName="Про проведення у 2025 році конкурсного відбору проєктів фундаментальних наукових досліджень, прикладних наукових досліджень, виконавцями яких є працівники закладів вищої освіти та наукових установ, що належать до сфери управління МОН, а також працівники наукових установ НАН України, які беруть участь у проведенні комплексних міжвідомчих досліджень" nclass="ПРОЕКТИ" shape="circle" xPos="300" yPos="2250" color="13421772">
+    <Node guid="07C45D4C2551" nodeName="Про проведення у 2025 році конкурсного відбору проєктів фундаментальних наукових досліджень, прикладних наукових досліджень, виконавцями яких є працівники закладів вищої освіти та наукових установ, що належать до сфери управління МОН, а також працівники наукових установ НАН України, які беруть участь у проведенні комплексних міжвідомчих досліджень" nclass="Проєкти" shape="circle" xPos="300" yPos="2250" color="13421772">
       <data tclass="с" link="" type="text">Про проведення у 2025 році конкурсного відбору проєктів фундаментальних наукових досліджень, прикладних наукових досліджень, виконавцями яких є працівники закладів вищої освіти та наукових установ, що належать до сфери управління МОН, а також працівники наукових установ НАН України, які беруть участь у проведенні комплексних міжвідомчих досліджень</data>
       <data tclass="code" link="" type="text">1487</data>
       <data tclass="Type" link="" type="text">Collective</data>
@@ -1070,7 +1001,7 @@
       <data tclass="Link_info" link="" type="text">Наказ МОН №1487 від 14.09.2025</data>
       <data tclass="Status" link="" type="text">Archive</data>
     </Node>
-    <Node guid="9D2F51A78BF8" nodeName="TÜBİTAK оголошує конкурс на отримання Міжнародної стипендії для дослідників-початківців" nclass="ПРОЕКТИ" shape="circle" xPos="600" yPos="2250" color="13421772">
+    <Node guid="0BE4DFFCCFF2" nodeName="TÜBİTAK оголошує конкурс на отримання Міжнародної стипендії для дослідників-початківців" nclass="Проєкти" shape="circle" xPos="600" yPos="2250" color="13421772">
       <data tclass="с" link="" type="text">TÜBİTAK оголошує конкурс на отримання Міжнародної стипендії для дослідників-початківців</data>
       <data tclass="Type" link="" type="text">Individual</data>
       <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">General</data>
@@ -1081,7 +1012,7 @@
       <data tclass="Link" link="https://www.nas.gov.ua/news/tbitak-ogoloshuye-konkurs-na-otrimannya-mizhnarodno-stipendi-dlya-doslidnikiv-pochatkivciv" type="link"/>
       <data tclass="Status" link="" type="text">Archive</data>
     </Node>
-    <Node guid="FD8532A639D1" nodeName="Контрольний список для перевірки заявки на конкурси кластеру 3 програми «Горизонт Європа»" nclass="ПРОЕКТИ" shape="circle" xPos="900" yPos="2250" color="13421772">
+    <Node guid="56368E764C99" nodeName="Контрольний список для перевірки заявки на конкурси кластеру 3 програми «Горизонт Європа»" nclass="Проєкти" shape="circle" xPos="900" yPos="2250" color="13421772">
       <data tclass="с" link="" type="text">Контрольний список для перевірки заявки на конкурси кластеру 3 програми «Горизонт Європа»</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Section" link="" type="text">Civil security for society</data>
@@ -1093,9 +1024,9 @@
       <data tclass="Last_submition_deadline" link="" type="text">10/30/2025</data>
       <data tclass="Link" link="https://forms.gle/XrmRUDsUtWLkGyuKA" type="link"/>
       <data tclass="Link_info" link="https://ms.nauka.gov.ua/events/zahodi-nkp-civilna-bezpeka-dlya-suspilstva/kontrolnij-spisok/" type="link"/>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Archive</data>
     </Node>
-    <Node guid="291DED7E4D16" nodeName="UK–UA STEM PRO: Міжнародна програма навчання для викладачів і молодих науковців" nclass="ПРОЕКТИ" shape="circle" xPos="1200" yPos="2250" color="13421772">
+    <Node guid="760A7C5B9FE5" nodeName="UK–UA STEM PRO: Міжнародна програма навчання для викладачів і молодих науковців" nclass="Проєкти" shape="circle" xPos="1200" yPos="2250" color="13421772">
       <data tclass="с" link="" type="text">UK–UA STEM PRO: Міжнародна програма навчання для викладачів і молодих науковців</data>
       <data tclass="Type" link="" type="text">Individual</data>
       <data tclass="Section" link="" type="text">Education, Natural sciences, Life sciences</data>
@@ -1110,15 +1041,13 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Мотивація участі (до 200 слів), Проєктна ідея (до 200 слів), Сертифікат англійської мови (IELTS, TOEFL, BEC, Aptis, Duolingo), Рекомендації, Витяг з протоколу, Відомості про кандидата, Список публікацій</data>
       <data tclass="Link" link="https://presidentfund.gov.ua/programs/ua-uk-stem-pro-programa-profesijnogo-rozvytku-stem-vykladachiv/" type="link"/>
       <data tclass="Link_info" link="" type="text">Опис UK-UA_STEM_PRO</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Archive</data>
     </Node>
-    <Node guid="07607034D6B4" nodeName="Recruit a Researcher from Ukraine for an Ongoing Researcher Project" nclass="ПРОЕКТИ" shape="circle" xPos="0" yPos="2400" color="13421772">
+    <Node guid="432FE7A07863" nodeName="Recruit a Researcher from Ukraine for an Ongoing Researcher Project" nclass="Проєкти" shape="circle" xPos="0" yPos="2400" color="13421772">
       <data tclass="с" link="" type="text">Recruit a Researcher from Ukraine for an Ongoing Researcher Project</data>
       <data tclass="Type" link="" type="text">Individual</data>
       <data tclass="Section" link="" type="text">Internationalisation</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Supporting Ukrainian researchers to contribute to ongoing Norwegian Researcher Projects</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">maintaining and developing Ukrainian research</data>
-      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">increasing international cooperation between Norwegian and Ukrainian research communities</data>
+      <data tclass="List_what_is_founding_directions_of_foundings" link="" type="text">Supporting Ukrainian researchers to contribute to ongoing Norwegian Researcher Projects; maintaining and developing Ukrainian research; increasing international cooperation between Norwegian and Ukrainian research communities</data>
       <data tclass="Who_can_sumbit" link="" type="text">Scienfitic institutions, Higher educational institutions</data>
       <data tclass="Organizator" link="" type="text">The Research Council of Norway (RCN)</data>
       <data tclass="Co-Organizator" link="" type="text">National Research Foundation of Ukraine (NRFU)</data>
@@ -1127,9 +1056,9 @@
       <data tclass="Submition_opening" link="" type="text">01.10.2025</data>
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Project description, CV of Ukrainian researcher, Letter of support, Official certificate of employment, Copy of PhD diploma</data>
       <data tclass="Link" link="https://www.forskningsradet.no/en/call-for-proposals/2025/recruit-researcher-ukraine-researcher-project/" type="link"/>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Archive</data>
     </Node>
-    <Node guid="1B8DC634BEB2" nodeName="VUIAS Fellowships in Ukraine" nclass="ПРОЕКТИ" shape="circle" xPos="300" yPos="2400" color="13421772">
+    <Node guid="EF348C72444D" nodeName="VUIAS Fellowships in Ukraine" nclass="Проєкти" shape="circle" xPos="300" yPos="2400" color="13421772">
       <data tclass="с" link="" type="text">VUIAS Fellowships in Ukraine</data>
       <data tclass="Type" link="" type="text">Individual</data>
       <data tclass="Section" link="" type="text">General, Humanities, Social sciences, Natural sciences, Life sciences</data>
@@ -1143,9 +1072,9 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Application in English: CV, research project proposal, recommendations</data>
       <data tclass="Link" link="https://vuias.org/call" type="link"/>
       <data tclass="Link_info" link="" type="text">Call for Applications for the Virtual Ukraine Institute for Advanced Study</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Archive</data>
     </Node>
-    <Node guid="B7CA271066D9" nodeName="Future Ukraine: Research Grants for Ukrainian Master´s students and researchers" nclass="ПРОЕКТИ" shape="circle" xPos="600" yPos="2400" color="13421772">
+    <Node guid="DF53BF10C603" nodeName="Future Ukraine: Research Grants for Ukrainian Master´s students and researchers" nclass="Проєкти" shape="circle" xPos="600" yPos="2400" color="13421772">
       <data tclass="с" link="" type="text">Future Ukraine: Research Grants for Ukrainian Master´s students and researchers</data>
       <data tclass="Type" link="" type="text">Individual</data>
       <data tclass="Section" link="" type="text">General</data>
@@ -1157,9 +1086,9 @@
       <data tclass="Submition_opening" link="" type="text">10/15/2025</data>
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Online application form, full curriculum vitae in tabular form (max. 3 pages), list of published publications (max. 10 pages) if available, research proposal and presentation of previous research work (max. 5 pages total), schedule of planned research work (work plan), confirmation of supervision by academic host in Germany, last university degree certificate with final grade(s) or doctoral degree certificate, other documents supporting application (e.g., certificates of employment, proof of internships or voluntary work), proof of knowledge of research language (German, English or other), current proof of affiliation with Ukrainian higher education institution, proof of Ukrainian citizenship (passport copy) or for third-country nationals: permanent residence permit in Ukraine, German or English translations of documents in other languages</data>
       <data tclass="Link" link="https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/?detail=57650857" type="link"/>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Archive</data>
     </Node>
-    <Node guid="0BDB3018A955" nodeName="NWO Hop-On Call for Researchers Based in Ukraine 2025" nclass="ПРОЕКТИ" shape="circle" xPos="900" yPos="2400" color="13421772">
+    <Node guid="1596F149D182" nodeName="NWO Hop-On Call for Researchers Based in Ukraine 2025" nclass="Проєкти" shape="circle" xPos="900" yPos="2400" color="13421772">
       <data tclass="с" link="" type="text">NWO Hop-On Call for Researchers Based in Ukraine 2025</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Section" link="" type="text">General</data>
@@ -1174,9 +1103,9 @@
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Application form, CV of the Ukraine-based research partner (in English), A letter of support from the head of the beneficiary Ukrainian institution (in English, on letterhead), A scan-copy of the PhD/Doctoral diploma of the Ukraine-based research partner, An official certificate verifying the Ukraine-based research partners’ position and the main place of employment (in Ukrainian)</data>
       <data tclass="Link" link="https://www.nwo.nl/en/calls/nwo-hop-on-call-for-proposals-for-researchers-based-in-ukraine-2025" type="link"/>
       <data tclass="Link_info" link="" type="text">Call for proposals</data>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Actual</data>
     </Node>
-    <Node guid="515339F47400" nodeName="AI for Science &amp; Safety Nodes" nclass="ПРОЕКТИ" shape="circle" xPos="1200" yPos="2400" color="13421772">
+    <Node guid="0E2473FDCD29" nodeName="AI for Science &amp; Safety Nodes" nclass="Проєкти" shape="circle" xPos="1200" yPos="2400" color="13421772">
       <data tclass="с" link="" type="text">AI for Science &amp; Safety Nodes</data>
       <data tclass="Type" link="" type="text">Collective</data>
       <data tclass="Section" link="" type="text">General, Computer Sciences, Digital humanism</data>
@@ -1187,97 +1116,97 @@
       <data tclass="Last_deccision_deadline" link="" type="text">2/28/2026</data>
       <data tclass="Documents_required_to_be_prepared" link="" type="text">Application form (including project description, budget, compute needs, team details)</data>
       <data tclass="Link" link="https://foresight.org/grants/grants-ai-for-science-safety/, https://airtable.com/appyVXc5SMPAvIKpP/pagzBRWeiG3HjH6Qn/form" type="link"/>
-      <data tclass="Status" link="" type="text">Closes soon</data>
+      <data tclass="Status" link="" type="text">Archive</data>
       <data tclass="Image" link="https://foresight.org/wp-content/uploads/2025/11/VW-Thumbnails-AI-Nodes-for-Science-Safety.jpg" type="image">https://foresight.org/wp-content/uploads/2025/11/VW-Thumbnails-AI-Nodes-for-Science-Safety.jpg</data>
     </Node>
   </Nodes>
   <Edges>
-    <Edge guid="830F8BEA7B43" group="" node1="УКФ (p18)" node2="ПРОЕКТИ" bilateral=""/>
-    <Edge guid="C2D8327CA099" group="" node1="Грантова програма «Стипендії» УКФ" node2="УКФ (p18)" bilateral=""/>
-    <Edge guid="9C4EA7820992" group="" node1="Erasmus+ (p20)" node2="ПРОЕКТИ" bilateral=""/>
-    <Edge guid="AAFF2D7B8CF4" group="" node1="ПРОГРАМА ЄС ЕРАЗМУС+" node2="Erasmus+ (p20)" bilateral=""/>
-    <Edge guid="3D3160BC7419" group="" node1="Erasmus Mundus Joint Masters" node2="Erasmus+ (p20)" bilateral=""/>
-    <Edge guid="94075AB88812" group="" node1="Aurora Call for Incentive Research and Education Collaboration" node2="Erasmus+ (p20)" bilateral=""/>
-    <Edge guid="40460E34FCB1" group="" node1="Інший грант міжнародної організації (p20)" node2="ПРОЕКТИ" bilateral=""/>
-    <Edge guid="452E91BF315F" group="" node1="Virtual Ukraine Institute for Advanced Study Fellowships in Ukraine" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
-    <Edge guid="164F41E47E90" group="" node1="SPOTLIGHT TAIWAN PROJECT" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
-    <Edge guid="93C314A0D735" group="" node1="Seed Fund for Research Excellence" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
-    <Edge guid="73B5C6B003F2" group="" node1="Deep Tech Accelerator: Hardware Edition" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
-    <Edge guid="5D42F2230124" group="" node1="Seed Fund for Research Excellence" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
-    <Edge guid="1589ED70590A" group="" node1="Startup EDGE: грантова програма для українських стартапів у сферах DeepTech, GreenTech та EdTech" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
-    <Edge guid="19A5DAE8F0A0" group="" node1="5th Call of the INNOGLOBO Programme" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
-    <Edge guid="274B489EF1CF" group="" node1="Open call for Network Projects applications" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
-    <Edge guid="8F0255ED8F36" group="" node1="Kirkland Research – стипендії на дослідницькі стажування в Польщі" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
-    <Edge guid="2B3F24EFEB7E" group="" node1="Safe Haven Fellowship" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
-    <Edge guid="9497E7963798" group="" node1="Видавничі ґранти Наукового Товариства імені Шевченка" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
-    <Edge guid="3ABE06870317" group="" node1="Visegrad+ Grants" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
-    <Edge guid="D5C9076B5BDA" group="" node1="EMEA Youth and Wellbeing Grant" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
-    <Edge guid="330069F31D13" group="" node1="Internet Freedom Fund" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
-    <Edge guid="F48163BF4B96" group="" node1="Nansen EDU - Call for Applications 2025" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
-    <Edge guid="C6F652CC1DDB" group="" node1="Call for proposals – Ulam NAWA 2026" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
-    <Edge guid="5327BC386508" group="" node1="МОН (p18)" node2="ПРОЕКТИ" bilateral=""/>
-    <Edge guid="CC271D268F16" group="" node1="Додатковий конкурс науково-технічних (експериментальних) розробок за державним замовленням 2025" node2="МОН (p18)" bilateral=""/>
-    <Edge guid="AAF9BB37C019" group="" node1="Оголошено конкурс на здобуття премій Президента України для молодих вчених у 2026 році" node2="МОН (p18)" bilateral=""/>
-    <Edge guid="490198A7013D" group="" node1="Конкурс з визначення проєктів з утвердження української національної та громадянської ідентичності, розроблених інститутами громадянського суспільства, для реалізації яких надається фінансова підтримка у 2026 році" node2="МОН (p18)" bilateral=""/>
-    <Edge guid="1814F6A14A13" group="" node1="Стипендія Верховної Ради України імені Бориса Патона для молодих учених на 2027 рік" node2="МОН (p18)" bilateral=""/>
-    <Edge guid="9C45BF30D0D7" group="" node1="Конкурс спільних українсько-австрійських науково-дослідних проєктів 2026" node2="МОН (p18)" bilateral=""/>
-    <Edge guid="DABEED5175BB" group="" node1="Digital Europe Programme" node2="ПРОЕКТИ" bilateral=""/>
-    <Edge guid="D827226861A7" group="" node1="ELEVATE: European League of Advanced Digital Skills Academies" node2="Digital Europe Programme" bilateral=""/>
-    <Edge guid="B237FB4AF106" group="" node1="NATO (p15)" node2="ПРОЕКТИ" bilateral=""/>
-    <Edge guid="56BD7EFAAAF0" group="" node1="NATO SCIENCE FOR PEACE AND SECURITY CALL FOR PROPOSALS 2026-1" node2="NATO (p15)" bilateral=""/>
-    <Edge guid="6007E502807D" group="" node1="Horizon Europe (p15)" node2="ПРОЕКТИ" bilateral=""/>
-    <Edge guid="C43C6763122A" group="" node1="NGI TALER: Privacy-preserving digital payments" node2="Horizon Europe (p15)" bilateral=""/>
-    <Edge guid="3B74167C57ED" group="" node1="Спільний конкурс LUKE" node2="Horizon Europe (p15)" bilateral=""/>
-    <Edge guid="999D8857A70E" group="" node1="Research infrastructures as accelerators of the integration of Ukraine in the European Research Area" node2="Horizon Europe (p15)" bilateral=""/>
-    <Edge guid="D561CB821708" group="" node1="New European Bauhaus Prizes 2026" node2="Horizon Europe (p15)" bilateral=""/>
-    <Edge guid="34758288F0DB" group="" node1="MSCA and Citizens 2027" node2="Horizon Europe (p15)" bilateral=""/>
-    <Edge guid="9973086E2D90" group="" node1="Access to research infrastructures, their resources and services: large-scale pilots for more integrated scheme across (sub)domains" node2="Horizon Europe (p15)" bilateral=""/>
-    <Edge guid="0724234E9FAF" group="" node1="Strengthening the human capital managing research infrastructures, including in international context" node2="Horizon Europe (p15)" bilateral=""/>
-    <Edge guid="988F8D854871" group="" node1="R&amp;D for the next generation of scientific instrumentation, tools, methods, digitalisation and solutions for research infrastructure upgrades" node2="Horizon Europe (p15)" bilateral=""/>
-    <Edge guid="32C58166CE66" group="" node1="Connecting research infrastructures and a wider user community across the European Research Area through access to advanced research infrastructure services" node2="Horizon Europe (p15)" bilateral=""/>
-    <Edge guid="A4F2FB12878C" group="" node1="Trusted frameworks for secure and efficient data sharing in EOSC (EOSC Partnership)" node2="Horizon Europe (p15)" bilateral=""/>
-    <Edge guid="E4AC2B49A55E" group="" node1="Uptake of FAIR data management practices and of EOSC by research communities and research infrastructures (EOSC Partnership)" node2="Horizon Europe (p15)" bilateral=""/>
-    <Edge guid="C0E7E6D3C0A4" group="" node1="Creative Europe Erasmus+ (p20)" node2="ПРОЕКТИ" bilateral=""/>
-    <Edge guid="E1359F49869C" group="" node1="NEWS - Media Literacy" node2="Creative Europe Erasmus+ (p20)" bilateral=""/>
-    <Edge guid="659B43DC3688" group="" node1="READY Track 2 – Safeguarding Heritage Cities, Sites, Buildings, Living Traditions and Practices in the face of Disasters, Extreme Weather Events and Complex Emergencies" node2="Creative Europe Erasmus+ (p20)" bilateral=""/>
-    <Edge guid="DB478E0F9722" group="" node1="Creative Innovation Lab (CREA-CROSS-2026-INNOVLAB)" node2="Creative Europe Erasmus+ (p20)" bilateral=""/>
-    <Edge guid="CD2F061DDE7E" group="" node1="European Cooperation Projects Small Scale" node2="Creative Europe Erasmus+ (p20)" bilateral=""/>
-    <Edge guid="FEC83FE41AC3" group="" node1="НФДУ (p18)" node2="ПРОЕКТИ" bilateral=""/>
-    <Edge guid="874335A95D3C" group="" node1="Премія Верховної Ради України імені Ігоря Юхновського" node2="НФДУ (p18)" bilateral=""/>
-    <Edge guid="6076BEFB9061" group="" node1="Fulbright (p20)" node2="ПРОЕКТИ" bilateral=""/>
-    <Edge guid="074C50033D4A" group="" node1="Fulbright Research and Development Program" node2="Fulbright (p20)" bilateral=""/>
-    <Edge guid="B3586FB3286A" group="" node1="(empty)" node2="ПРОЕКТИ" bilateral=""/>
-    <Edge guid="F077FC4BE85F" group="" node1="Call for Proposals: Knowledge and innovation for supporting teacher professional development, agency, and well-being" node2="(empty)" bilateral=""/>
-    <Edge guid="9A2C5F47E0C2" group="" node1="Accelerating Research through International Network-to-Network Collaborations" node2="(empty)" bilateral=""/>
-    <Edge guid="7E00100C0490" group="" node1="International Multilateral Partnerships for Resilient Education and Science System in Ukraine" node2="(empty)" bilateral=""/>
-    <Edge guid="297723421910" group="" node1="Research Grants on Education: Large" node2="(empty)" bilateral=""/>
-    <Edge guid="E3B3CE97442F" group="" node1="Research Grants on Education: Small" node2="(empty)" bilateral=""/>
-    <Edge guid="573350825CA2" group="" node1="Erasmus + Jean Monnet Chair" node2="(empty)" bilateral=""/>
-    <Edge guid="9ADE83D5A932" group="" node1="Erasmus + Jean Monnet Module" node2="(empty)" bilateral=""/>
-    <Edge guid="747C87C64FFA" group="" node1="Erasmus + Jean Monnet Center of Excelence" node2="(empty)" bilateral=""/>
-    <Edge guid="8F98750619CF" group="" node1="Jean Monnet Support to Associations" node2="(empty)" bilateral=""/>
-    <Edge guid="7E7A2E8BADA3" group="" node1="Гранти НАН України дослідницьким лабораторіям/групам молодих вчених НАН України для проведення досліджень за пріоритетними напрямами розвиту науки і техніки" node2="(empty)" bilateral=""/>
-    <Edge guid="EDBCCAD68836" group="" node1="&quot;Конкурс прикладних досліджень з розроблення наукових засад державної політики у сферах освіти і науки, інноваційної діяльності в зазначених сферах&quot;" node2="(empty)" bilateral=""/>
-    <Edge guid="A844783E9B3A" group="" node1="Science and Innovation Fund for Ukraine" node2="(empty)" bilateral=""/>
-    <Edge guid="642F1533FF36" group="" node1="Da Vinci" node2="(empty)" bilateral=""/>
-    <Edge guid="D82A034E773C" group="" node1="EU4CSOs Emergency Actions" node2="(empty)" bilateral=""/>
-    <Edge guid="EAD4DE0339B9" group="" node1="FCL (Фонд місцевого співробітництва)" node2="(empty)" bilateral=""/>
-    <Edge guid="78003845F2E0" group="" node1="Залучіть дослідника з України до поточного дослідницького проєкту" node2="(empty)" bilateral=""/>
-    <Edge guid="E3DD17C2ABAF" group="" node1="European Researchers' Night and Researchers at Schools 2026-2027" node2="(empty)" bilateral=""/>
-    <Edge guid="D5ECE583B38C" group="" node1="Конкурс на здобуття стипендій імені академіка НАН України Б.Є. Патона для молодих вчених Національної академії наук України – кандидатів наук (докторів філософії) і докторів наук" node2="(empty)" bilateral=""/>
-    <Edge guid="B2005B4B4BBF" group="" node1="Digital Humanism Fellowship" node2="(empty)" bilateral=""/>
-    <Edge guid="0C422174E657" group="" node1="Call for Applications for the Virtual Ukraine Institute for Advanced Study" node2="(empty)" bilateral=""/>
-    <Edge guid="4F58DE842A41" group="" node1="Конкурс спільних українсько-словацьких науково-дослідних проєктів для реалізації у 2026-2027 рр." node2="(empty)" bilateral=""/>
-    <Edge guid="0C1A5D9D7440" group="" node1="Fulbright Research and Development Program" node2="(empty)" bilateral=""/>
-    <Edge guid="98F07ADD18D1" group="" node1="Про проведення у 2025 році конкурсного відбору проєктів фундаментальних наукових досліджень, прикладних наукових досліджень, виконавцями яких є працівники закладів вищої освіти та наукових установ, що належать до сфери управління МОН, а також працівники наукових установ НАН України, які беруть участь у проведенні комплексних міжвідомчих досліджень" node2="(empty)" bilateral=""/>
-    <Edge guid="46067FB48A41" group="" node1="TÜBİTAK оголошує конкурс на отримання Міжнародної стипендії для дослідників-початківців" node2="(empty)" bilateral=""/>
-    <Edge guid="EE025376A9AE" group="" node1="Контрольний список для перевірки заявки на конкурси кластеру 3 програми «Горизонт Європа»" node2="(empty)" bilateral=""/>
-    <Edge guid="A0DBC66D9E76" group="" node1="UK–UA STEM PRO: Міжнародна програма навчання для викладачів і молодих науковців" node2="(empty)" bilateral=""/>
-    <Edge guid="AAF7FFD9D95B" group="" node1="Recruit a Researcher from Ukraine for an Ongoing Researcher Project" node2="(empty)" bilateral=""/>
-    <Edge guid="BDD8B2C43E8F" group="" node1="VUIAS Fellowships in Ukraine" node2="(empty)" bilateral=""/>
-    <Edge guid="2AD55A34D951" group="" node1="Future Ukraine: Research Grants for Ukrainian Master´s students and researchers" node2="(empty)" bilateral=""/>
-    <Edge guid="305B3928D27C" group="" node1="NWO Hop-On Call for Researchers Based in Ukraine 2025" node2="(empty)" bilateral=""/>
-    <Edge guid="BC69152CE3D7" group="" node1="AI for Science &amp; Safety Nodes" node2="(empty)" bilateral=""/>
+    <Edge guid="3921E0829A04" group="" node1="УКФ (p18)" node2="Проєкти" bilateral=""/>
+    <Edge guid="35661D77932F" group="" node1="Грантова програма «Стипендії» УКФ" node2="УКФ (p18)" bilateral=""/>
+    <Edge guid="48566FA19729" group="" node1="Erasmus+ (p20)" node2="Проєкти" bilateral=""/>
+    <Edge guid="88B7C14BE50F" group="" node1="ПРОГРАМА ЄС ЕРАЗМУС+" node2="Erasmus+ (p20)" bilateral=""/>
+    <Edge guid="82E90B50EEC5" group="" node1="Erasmus Mundus Joint Masters" node2="Erasmus+ (p20)" bilateral=""/>
+    <Edge guid="27EC2C9B38E4" group="" node1="Aurora Call for Incentive Research and Education Collaboration" node2="Erasmus+ (p20)" bilateral=""/>
+    <Edge guid="FE4DE0B1F9BC" group="" node1="Інший грант міжнародної організації (p20)" node2="Проєкти" bilateral=""/>
+    <Edge guid="1F2E0A4EB9E7" group="" node1="Virtual Ukraine Institute for Advanced Study Fellowships in Ukraine" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
+    <Edge guid="0B4B25BC2B31" group="" node1="SPOTLIGHT TAIWAN PROJECT" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
+    <Edge guid="D1F9F6A0F780" group="" node1="Seed Fund for Research Excellence" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
+    <Edge guid="507F21F97DC6" group="" node1="Deep Tech Accelerator: Hardware Edition" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
+    <Edge guid="B4178D3EAA74" group="" node1="Seed Fund for Research Excellence" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
+    <Edge guid="0C6FB2CA4326" group="" node1="Startup EDGE: грантова програма для українських стартапів у сферах DeepTech, GreenTech та EdTech" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
+    <Edge guid="BDC88D06B4CD" group="" node1="5th Call of the INNOGLOBO Programme" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
+    <Edge guid="EB8B47481635" group="" node1="Open call for Network Projects applications" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
+    <Edge guid="87BAC5108A42" group="" node1="Kirkland Research – стипендії на дослідницькі стажування в Польщі" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
+    <Edge guid="27489E991DE4" group="" node1="Safe Haven Fellowship" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
+    <Edge guid="8EEC0792306B" group="" node1="Видавничі ґранти Наукового Товариства імені Шевченка" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
+    <Edge guid="F55C2D18998A" group="" node1="Visegrad+ Grants" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
+    <Edge guid="C0760BE512E3" group="" node1="EMEA Youth and Wellbeing Grant" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
+    <Edge guid="723DDF746E96" group="" node1="Internet Freedom Fund" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
+    <Edge guid="14937104A0BE" group="" node1="Nansen EDU - Call for Applications 2025" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
+    <Edge guid="99826B033FBE" group="" node1="Call for proposals – Ulam NAWA 2026" node2="Інший грант міжнародної організації (p20)" bilateral=""/>
+    <Edge guid="A69DE998C99A" group="" node1="МОН (p18)" node2="Проєкти" bilateral=""/>
+    <Edge guid="51433C961039" group="" node1="Додатковий конкурс науково-технічних (експериментальних) розробок за державним замовленням 2025" node2="МОН (p18)" bilateral=""/>
+    <Edge guid="45A998C91E33" group="" node1="Оголошено конкурс на здобуття премій Президента України для молодих вчених у 2026 році" node2="МОН (p18)" bilateral=""/>
+    <Edge guid="87E9BA4967A9" group="" node1="Конкурс з визначення проєктів з утвердження української національної та громадянської ідентичності, розроблених інститутами громадянського суспільства, для реалізації яких надається фінансова підтримка у 2026 році" node2="МОН (p18)" bilateral=""/>
+    <Edge guid="DEBEF1BA7878" group="" node1="Стипендія Верховної Ради України імені Бориса Патона для молодих учених на 2027 рік" node2="МОН (p18)" bilateral=""/>
+    <Edge guid="BD381D909F03" group="" node1="Конкурс спільних українсько-австрійських науково-дослідних проєктів 2026" node2="МОН (p18)" bilateral=""/>
+    <Edge guid="36FF6E8B6073" group="" node1="Digital Europe Programme" node2="Проєкти" bilateral=""/>
+    <Edge guid="66A836C94ABE" group="" node1="ELEVATE: European League of Advanced Digital Skills Academies" node2="Digital Europe Programme" bilateral=""/>
+    <Edge guid="6B31EEE3DA60" group="" node1="NATO (p15)" node2="Проєкти" bilateral=""/>
+    <Edge guid="F96CC905FBED" group="" node1="NATO SCIENCE FOR PEACE AND SECURITY CALL FOR PROPOSALS 2026-1" node2="NATO (p15)" bilateral=""/>
+    <Edge guid="D50D7FF56816" group="" node1="Horizon Europe (p15)" node2="Проєкти" bilateral=""/>
+    <Edge guid="6FAE21A0CB71" group="" node1="NGI TALER: Privacy-preserving digital payments" node2="Horizon Europe (p15)" bilateral=""/>
+    <Edge guid="681F3725BFA3" group="" node1="Спільний конкурс LUKE" node2="Horizon Europe (p15)" bilateral=""/>
+    <Edge guid="E6C90D82A91A" group="" node1="Research infrastructures as accelerators of the integration of Ukraine in the European Research Area" node2="Horizon Europe (p15)" bilateral=""/>
+    <Edge guid="07F1A0E1559A" group="" node1="New European Bauhaus Prizes 2026" node2="Horizon Europe (p15)" bilateral=""/>
+    <Edge guid="9E1EAE425AAA" group="" node1="MSCA and Citizens 2027" node2="Horizon Europe (p15)" bilateral=""/>
+    <Edge guid="80AB0BEE1E5F" group="" node1="Access to research infrastructures, their resources and services: large-scale pilots for more integrated scheme across (sub)domains" node2="Horizon Europe (p15)" bilateral=""/>
+    <Edge guid="B8E84A6BB724" group="" node1="Strengthening the human capital managing research infrastructures, including in international context" node2="Horizon Europe (p15)" bilateral=""/>
+    <Edge guid="0799C6CAC40A" group="" node1="R&amp;D for the next generation of scientific instrumentation, tools, methods, digitalisation and solutions for research infrastructure upgrades" node2="Horizon Europe (p15)" bilateral=""/>
+    <Edge guid="160418F6A2B5" group="" node1="Connecting research infrastructures and a wider user community across the European Research Area through access to advanced research infrastructure services" node2="Horizon Europe (p15)" bilateral=""/>
+    <Edge guid="FF574961CE98" group="" node1="Trusted frameworks for secure and efficient data sharing in EOSC (EOSC Partnership)" node2="Horizon Europe (p15)" bilateral=""/>
+    <Edge guid="4A7A50AC9787" group="" node1="Uptake of FAIR data management practices and of EOSC by research communities and research infrastructures (EOSC Partnership)" node2="Horizon Europe (p15)" bilateral=""/>
+    <Edge guid="C3292698A71D" group="" node1="Creative Europe Erasmus+ (p20)" node2="Проєкти" bilateral=""/>
+    <Edge guid="F69F5251878C" group="" node1="NEWS - Media Literacy" node2="Creative Europe Erasmus+ (p20)" bilateral=""/>
+    <Edge guid="23A418DF214B" group="" node1="READY Track 2 – Safeguarding Heritage Cities, Sites, Buildings, Living Traditions and Practices in the face of Disasters, Extreme Weather Events and Complex Emergencies" node2="Creative Europe Erasmus+ (p20)" bilateral=""/>
+    <Edge guid="F942B709569F" group="" node1="Creative Innovation Lab (CREA-CROSS-2026-INNOVLAB)" node2="Creative Europe Erasmus+ (p20)" bilateral=""/>
+    <Edge guid="52262D2CEC9A" group="" node1="European Cooperation Projects Small Scale" node2="Creative Europe Erasmus+ (p20)" bilateral=""/>
+    <Edge guid="AD73EAA6F89F" group="" node1="НФДУ (p18)" node2="Проєкти" bilateral=""/>
+    <Edge guid="091055D77F60" group="" node1="Премія Верховної Ради України імені Ігоря Юхновського" node2="НФДУ (p18)" bilateral=""/>
+    <Edge guid="DF738846AC58" group="" node1="Fulbright (p20)" node2="Проєкти" bilateral=""/>
+    <Edge guid="3A66CF57AC52" group="" node1="Fulbright Research and Development Program" node2="Fulbright (p20)" bilateral=""/>
+    <Edge guid="07211DF1FFD9" group="" node1="(empty)" node2="Проєкти" bilateral=""/>
+    <Edge guid="7C22E6FCE7D8" group="" node1="Call for Proposals: Knowledge and innovation for supporting teacher professional development, agency, and well-being" node2="(empty)" bilateral=""/>
+    <Edge guid="DE651F31AAA3" group="" node1="Accelerating Research through International Network-to-Network Collaborations" node2="(empty)" bilateral=""/>
+    <Edge guid="66B72F3F937C" group="" node1="International Multilateral Partnerships for Resilient Education and Science System in Ukraine" node2="(empty)" bilateral=""/>
+    <Edge guid="0F7D138E0B33" group="" node1="Research Grants on Education: Large" node2="(empty)" bilateral=""/>
+    <Edge guid="CF8E88454788" group="" node1="Research Grants on Education: Small" node2="(empty)" bilateral=""/>
+    <Edge guid="4C3DD5A26BC2" group="" node1="Erasmus + Jean Monnet Chair" node2="(empty)" bilateral=""/>
+    <Edge guid="AC3E6CE52743" group="" node1="Erasmus + Jean Monnet Module" node2="(empty)" bilateral=""/>
+    <Edge guid="16A02945F810" group="" node1="Erasmus + Jean Monnet Center of Excelence" node2="(empty)" bilateral=""/>
+    <Edge guid="7995F4514CB9" group="" node1="Jean Monnet Support to Associations" node2="(empty)" bilateral=""/>
+    <Edge guid="9B2EE5023F65" group="" node1="Гранти НАН України дослідницьким лабораторіям/групам молодих вчених НАН України для проведення досліджень за пріоритетними напрямами розвиту науки і техніки" node2="(empty)" bilateral=""/>
+    <Edge guid="08786068A91D" group="" node1="&quot;Конкурс прикладних досліджень з розроблення наукових засад державної політики у сферах освіти і науки, інноваційної діяльності в зазначених сферах&quot;" node2="(empty)" bilateral=""/>
+    <Edge guid="C61A81A3B0C4" group="" node1="Science and Innovation Fund for Ukraine" node2="(empty)" bilateral=""/>
+    <Edge guid="8648BD2FFDA4" group="" node1="Da Vinci" node2="(empty)" bilateral=""/>
+    <Edge guid="9E68B167AE0D" group="" node1="EU4CSOs Emergency Actions" node2="(empty)" bilateral=""/>
+    <Edge guid="B2FA3BC25D26" group="" node1="FCL (Фонд місцевого співробітництва)" node2="(empty)" bilateral=""/>
+    <Edge guid="AC772CC08CAE" group="" node1="Залучіть дослідника з України до поточного дослідницького проєкту" node2="(empty)" bilateral=""/>
+    <Edge guid="8923F416958F" group="" node1="European Researchers' Night and Researchers at Schools 2026-2027" node2="(empty)" bilateral=""/>
+    <Edge guid="0ED8246BC9BA" group="" node1="Конкурс на здобуття стипендій імені академіка НАН України Б.Є. Патона для молодих вчених Національної академії наук України – кандидатів наук (докторів філософії) і докторів наук" node2="(empty)" bilateral=""/>
+    <Edge guid="E4942B0DA5B3" group="" node1="Digital Humanism Fellowship" node2="(empty)" bilateral=""/>
+    <Edge guid="D87F8EDE3B4B" group="" node1="Call for Applications for the Virtual Ukraine Institute for Advanced Study" node2="(empty)" bilateral=""/>
+    <Edge guid="F4DE1D419B0B" group="" node1="Конкурс спільних українсько-словацьких науково-дослідних проєктів для реалізації у 2026-2027 рр." node2="(empty)" bilateral=""/>
+    <Edge guid="F89CD87E5440" group="" node1="Fulbright Research and Development Program" node2="(empty)" bilateral=""/>
+    <Edge guid="BE94CC41838E" group="" node1="Про проведення у 2025 році конкурсного відбору проєктів фундаментальних наукових досліджень, прикладних наукових досліджень, виконавцями яких є працівники закладів вищої освіти та наукових установ, що належать до сфери управління МОН, а також працівники наукових установ НАН України, які беруть участь у проведенні комплексних міжвідомчих досліджень" node2="(empty)" bilateral=""/>
+    <Edge guid="A76441C66E0C" group="" node1="TÜBİTAK оголошує конкурс на отримання Міжнародної стипендії для дослідників-початківців" node2="(empty)" bilateral=""/>
+    <Edge guid="0ACDFA4C52D0" group="" node1="Контрольний список для перевірки заявки на конкурси кластеру 3 програми «Горизонт Європа»" node2="(empty)" bilateral=""/>
+    <Edge guid="1D69606DF0DE" group="" node1="UK–UA STEM PRO: Міжнародна програма навчання для викладачів і молодих науковців" node2="(empty)" bilateral=""/>
+    <Edge guid="64376E61E056" group="" node1="Recruit a Researcher from Ukraine for an Ongoing Researcher Project" node2="(empty)" bilateral=""/>
+    <Edge guid="9B7DF05A959E" group="" node1="VUIAS Fellowships in Ukraine" node2="(empty)" bilateral=""/>
+    <Edge guid="DCFE4BE4ACC8" group="" node1="Future Ukraine: Research Grants for Ukrainian Master´s students and researchers" node2="(empty)" bilateral=""/>
+    <Edge guid="96922A644850" group="" node1="NWO Hop-On Call for Researchers Based in Ukraine 2025" node2="(empty)" bilateral=""/>
+    <Edge guid="B857E5C89B25" group="" node1="AI for Science &amp; Safety Nodes" node2="(empty)" bilateral=""/>
   </Edges>
   <Groups/>
 </Graph>
