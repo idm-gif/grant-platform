@@ -43,12 +43,6 @@
       search_placeholder: 'Пошук проєктів... / Search projects...',
       all_filters: 'Всі фільтри',
       apply_filters: 'Застосувати',
-<<<<<<< HEAD
-=======
-      date_from: 'Від',
-      date_to: 'До',
-      date_filter: 'Фільтр за датами',
->>>>>>> e6b25d27228d4838652f6309195f9f30de0ee536
       view_full_page: 'Переглянути повну сторінку',
       copy_link: 'Копіювати посилання',
       link_copied: 'Посилання скопійовано!',
@@ -96,12 +90,6 @@
       search_placeholder: 'Search projects...',
       all_filters: 'All Filters',
       apply_filters: 'Apply',
-<<<<<<< HEAD
-=======
-      date_from: 'From',
-      date_to: 'To',
-      date_filter: 'Date filter',
->>>>>>> e6b25d27228d4838652f6309195f9f30de0ee536
       view_full_page: 'View Full Page',
       copy_link: 'Copy Link',
       link_copied: 'Link copied!',
@@ -124,7 +112,6 @@
   var filteredProjects = [];
   var groups = {};
   var activeFilters = { program: [], section: [], type: [], applicant: [], status: [] };
-  var dateFilter = { from: null, to: null };
   var showArchived = false;
   var viewMode = 'program';
   var searchQuery = '';
@@ -342,42 +329,10 @@
       weekNumber: getVal('\u041d\u043e\u043c\u0435\u0440_\u0442\u0438\u0436\u043d\u044f'),  // 'Номер_тижня'
       isArchived: /^(archive|archived|closed)$/i.test(status),
       _deadlineParsed: parseDate(getVal('Last_submition_deadline')),
-      _openingParsed: parseDate(getVal('Submition_opening')),
-      _allDates: [],  // populated below
       _group: '',
       _nodeName: '',
       _guid: ''
     };
-
-    // Auto-detect all date fields from raw data
-    var dateFieldLabels = {
-      'Last_submition_deadline': 'deadline',
-      'Submition_opening': 'submission_opening'
-    };
-    var rawKeys = Object.keys(raw);
-    rawKeys.forEach(function (key) {
-      var v = raw[key];
-      var text = '';
-      if (Array.isArray(v)) {
-        text = v.map(function (x) { return typeof x === 'object' ? x.text : x; }).join(', ');
-      } else if (typeof v === 'object') {
-        text = v.text || '';
-      } else {
-        text = String(v);
-      }
-      var parsed = parseDate(text.trim());
-      if (parsed && !isNaN(parsed.getTime())) {
-        var labelKey = dateFieldLabels[key] || key.replace(/_/g, ' ');
-        p._allDates.push({ key: key, label: labelKey, raw: text.trim(), parsed: parsed });
-      }
-    });
-    // Sort dates chronologically
-    p._allDates.sort(function (a, b) { return a.parsed.getTime() - b.parsed.getTime(); });
-    // Earliest date for range filtering
-    p._earliestDate = p._allDates.length ? p._allDates[0].parsed : null;
-    p._latestDate = p._allDates.length ? p._allDates[p._allDates.length - 1].parsed : null;
-
-    return p;
   }
 
   /* ---------- Filter Options ---------- */
@@ -454,19 +409,6 @@
       if (activeFilters.type.length && activeFilters.type.indexOf(p.type) < 0) return false;
       if (activeFilters.applicant.length && !p.whoCanSubmitList.some(function (a) { return activeFilters.applicant.indexOf(a) >= 0; })) return false;
       if (activeFilters.status.length && activeFilters.status.indexOf(p.status) < 0) return false;
-
-      // Date range filter: check if ANY date on the project falls within range
-      if (dateFilter.from || dateFilter.to) {
-        var hasDateInRange = false;
-        if (!p._allDates.length) return false;
-        for (var di = 0; di < p._allDates.length; di++) {
-          var dt = p._allDates[di].parsed.getTime();
-          var afterFrom = !dateFilter.from || dt >= dateFilter.from.getTime();
-          var beforeTo = !dateFilter.to || dt <= dateFilter.to.getTime() + 86400000 - 1;
-          if (afterFrom && beforeTo) { hasDateInRange = true; break; }
-        }
-        if (!hasDateInRange) return false;
-      }
 
       return true;
     });
@@ -633,23 +575,6 @@
       }
     }
 
-    // Build date chips for card
-    var dateChips = '';
-    var calIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>';
-    if (p._allDates.length) {
-      p._allDates.forEach(function (d) {
-        var isDeadline = d.key === 'Last_submition_deadline';
-        var labelKey = d.label;
-        // Use i18n for known labels, otherwise use raw label
-        var displayLabel = (I18N[lang] || I18N.ua)[labelKey] || labelKey;
-        dateChips += '<span class="proj-date' + (isDeadline ? ' proj-date-deadline' : '') + '">'
-          + calIcon + ' '
-          + '<span class="proj-date-label">' + esc(displayLabel) + ':</span> '
-          + '<span class="proj-date-value">' + fmtDate(d.raw) + '</span>'
-          + '</span>';
-      });
-    }
-
     return '<div class="proj-card' + cls + '" data-project="' + esc(p._nodeName) + '">'
       + img
       + '<div class="proj-card-body">'
@@ -659,8 +584,10 @@
       + '</div>'
       + '<div class="proj-card-title">' + esc(p.name) + '</div>'
       + '<div class="proj-card-desc">' + esc(desc) + '</div>'
-      + (dateChips ? '<div class="proj-card-dates">' + dateChips + '</div>' : '')
       + '<div class="proj-card-meta">'
+      + (p.deadline
+          ? '<span class="proj-card-meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> ' + t('deadline') + ': ' + fmtDate(p.deadline) + '</span>'
+          : '<span></span>')
       + '<span class="proj-card-meta-item">' + typeIcon + ' ' + esc(p.type) + '</span>'
       + '</div></div></div>';
   }
@@ -768,21 +695,13 @@
 
     html += '</div><div>';
 
-    // All dates section
-    if (p._allDates.length) {
-      html += '<div class="proj-modal-dates-box">';
-      p._allDates.forEach(function (d) {
-        var isDeadline = d.key === 'Last_submition_deadline';
-        var displayLabel = (I18N[lang] || I18N.ua)[d.label] || d.label;
-        html += '<div class="proj-date-row' + (isDeadline ? ' proj-date-deadline' : '') + '">'
-          + '<span class="proj-date-label">' + esc(displayLabel) + '</span>'
-          + '<span class="proj-date-value">' + fmtDate(d.raw) + '</span>'
-          + '</div>';
-      });
-      if (p.weekNumber) {
-        html += '<div class="proj-modal-deadline-sub" style="margin-top:4px">Week ' + esc(p.weekNumber) + '</div>';
-      }
-      html += '</div>';
+    // Deadline box
+    if (p.deadline) {
+      html += '<div class="proj-modal-deadline-box">'
+        + '<div class="proj-modal-deadline-label">' + t('submission_deadline') + '</div>'
+        + '<div class="proj-modal-deadline-date">' + fmtDate(p.deadline) + '</div>'
+        + (p.weekNumber ? '<div class="proj-modal-deadline-sub">Week ' + p.weekNumber + '</div>' : '')
+        + '</div>';
     }
 
     // Documents
@@ -975,21 +894,18 @@
     // Right column — dates, links, extra data
     html += '<div class="proj-detail-col">';
 
-    // All dates section
-    if (p._allDates.length) {
-      html += '<div class="proj-modal-dates-box">';
-      p._allDates.forEach(function (d) {
-        var isDeadline = d.key === 'Last_submition_deadline';
-        var displayLabel = (I18N[lang] || I18N.ua)[d.label] || d.label;
-        html += '<div class="proj-date-row' + (isDeadline ? ' proj-date-deadline' : '') + '">'
-          + '<span class="proj-date-label">' + esc(displayLabel) + '</span>'
-          + '<span class="proj-date-value">' + fmtDate(d.raw) + '</span>'
-          + '</div>';
-      });
-      if (p.weekNumber) {
-        html += '<div class="proj-modal-deadline-sub" style="margin-top:4px">Week ' + esc(p.weekNumber) + '</div>';
-      }
-      html += '</div>';
+    // Deadline box
+    if (p.deadline) {
+      html += '<div class="proj-modal-deadline-box">'
+        + '<div class="proj-modal-deadline-label">' + t('submission_deadline') + '</div>'
+        + '<div class="proj-modal-deadline-date">' + fmtDate(p.deadline) + '</div>'
+        + (p.weekNumber ? '<div class="proj-modal-deadline-sub">Week ' + p.weekNumber + '</div>' : '')
+        + '</div>';
+    }
+
+    // Submission opening date
+    if (p.submissionOpening) {
+      html += '<div style="margin-top:14px">' + mSec(t('submission_opening'), fmtDate(p.submissionOpening)) + '</div>';
     }
 
     // Quick links
@@ -1263,42 +1179,6 @@
     var clearBtn = byId('btn-sidebar-clear');
     var sidebarArchive = byId('sidebar-toggle-archived');
 
-<<<<<<< HEAD
-=======
-    var sidebarDateFrom = byId('sidebar-date-from');
-    var sidebarDateTo = byId('sidebar-date-to');
-    var inlineDateFrom = byId('inline-date-from');
-    var inlineDateTo = byId('inline-date-to');
-
-    function syncDateInputs(source) {
-      var fromVal = source === 'sidebar' ? (sidebarDateFrom ? sidebarDateFrom.value : '') : (inlineDateFrom ? inlineDateFrom.value : '');
-      var toVal = source === 'sidebar' ? (sidebarDateTo ? sidebarDateTo.value : '') : (inlineDateTo ? inlineDateTo.value : '');
-      dateFilter.from = fromVal ? new Date(fromVal) : null;
-      dateFilter.to = toVal ? new Date(toVal) : null;
-      // Sync both sets
-      if (sidebarDateFrom) sidebarDateFrom.value = fromVal;
-      if (sidebarDateTo) sidebarDateTo.value = toVal;
-      if (inlineDateFrom) inlineDateFrom.value = fromVal;
-      if (inlineDateTo) inlineDateTo.value = toVal;
-    }
-
-    // Inline date filter events
-    if (inlineDateFrom) {
-      inlineDateFrom.addEventListener('change', function () { syncDateInputs('inline'); applyFilters(); });
-    }
-    if (inlineDateTo) {
-      inlineDateTo.addEventListener('change', function () { syncDateInputs('inline'); applyFilters(); });
-    }
-
-    // Sidebar date filter events
-    if (sidebarDateFrom) {
-      sidebarDateFrom.addEventListener('change', function () { syncDateInputs('sidebar'); });
-    }
-    if (sidebarDateTo) {
-      sidebarDateTo.addEventListener('change', function () { syncDateInputs('sidebar'); });
-    }
-
->>>>>>> e6b25d27228d4838652f6309195f9f30de0ee536
     function openSidebar() {
       if (sidebar) sidebar.classList.add('open');
       if (overlay) overlay.classList.add('open');
@@ -1348,16 +1228,6 @@
         if (sidebarArchive) sidebarArchive.checked = false;
         var mainToggle = byId('toggle-archived');
         if (mainToggle) mainToggle.checked = false;
-<<<<<<< HEAD
-=======
-        // Reset dates
-        dateFilter.from = null;
-        dateFilter.to = null;
-        if (sidebarDateFrom) sidebarDateFrom.value = '';
-        if (sidebarDateTo) sidebarDateTo.value = '';
-        if (inlineDateFrom) inlineDateFrom.value = '';
-        if (inlineDateTo) inlineDateTo.value = '';
->>>>>>> e6b25d27228d4838652f6309195f9f30de0ee536
         applyFilters();
       });
     }
