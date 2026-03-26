@@ -374,106 +374,85 @@
   gap: 20px;
 }
 
-<<<<<<< HEAD
-=======
 /* ---------- Date Display ---------- */
-.proj-date {
-  display: inline-flex; align-items: center; gap: 4px;
-  font-size: 0.72rem; font-weight: 600;
-  color: var(--accent-blue);
-  letter-spacing: 0.2px;
-}
-.proj-date-label {
-  color: var(--text-muted); font-weight: 500;
-  text-transform: uppercase; font-size: 0.65rem;
-  letter-spacing: 0.4px;
-}
-.proj-date-value {
-  font-family: 'Inter', monospace;
-  font-size: 0.78rem; font-weight: 700;
-  letter-spacing: 0.5px;
-}
-.proj-date-deadline .proj-date-value {
-  color: var(--accent-rose);
-}
-.proj-card-dates {
-  display: flex; flex-wrap: wrap; gap: 8px;
-  margin-bottom: 10px; padding-bottom: 8px;
-  border-bottom: 1px solid var(--border-glass);
-}
 
-/* Modal/Detail dates box */
-.proj-modal-dates-box {
-  background: var(--bg-card);
-  border: 1px solid var(--border-glass);
-  border-radius: var(--radius-md);
-  padding: 16px;
-  margin-bottom: 14px;
+/* Date chips shown inside project cards */
+.proj-card-dates {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-top: 10px; padding-top: 10px;
+  border-top: 1px solid var(--border-glass);
+}
+.proj-date-chip {
+  display: inline-flex; flex-direction: column; align-items: flex-start; gap: 1px;
+  padding: 5px 10px; border-radius: var(--radius-sm);
+  background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2);
+}
+.proj-date-chip.is-deadline {
+  background: rgba(244,63,94,0.08); border-color: rgba(244,63,94,0.2);
+}
+.proj-date-chip-label {
+  font-size: 0.6rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted);
+}
+.proj-date-chip-value {
+  font-size: 0.9rem; font-weight: 700;
+  font-family: inherit; color: var(--accent-blue); letter-spacing: 0.2px;
+}
+.proj-date-chip.is-deadline .proj-date-chip-value { color: var(--accent-rose); }
+
+/* Unified dates box for modal and detail page */
+.proj-dates-box {
+  background: var(--bg-card); border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 14px;
+}
+.proj-dates-box-title {
+  font-size: 0.68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  color: var(--text-muted); margin-bottom: 10px;
 }
 .proj-date-row {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.04); gap: 8px;
 }
 .proj-date-row:last-of-type { border-bottom: none; }
-.proj-date-row .proj-date-label {
+.proj-date-row-label {
   font-size: 0.72rem; font-weight: 600;
-  color: var(--text-muted); text-transform: uppercase;
-  letter-spacing: 0.4px;
+  text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-muted); flex-shrink: 0;
 }
-.proj-date-row .proj-date-value {
-  font-family: 'Inter', monospace;
-  font-size: 0.88rem; font-weight: 700;
-  color: var(--accent-blue); letter-spacing: 0.5px;
+.proj-date-row-value {
+  font-size: 0.9rem; font-weight: 700;
+  font-family: inherit; color: var(--accent-blue);
+  letter-spacing: 0.3px; text-align: right;
 }
-.proj-date-row.proj-date-deadline .proj-date-value {
-  color: var(--accent-rose);
-  font-size: 1rem;
-}
-.proj-date-row.proj-date-deadline .proj-date-label {
-  color: var(--accent-rose);
-}
+.proj-date-row.is-deadline .proj-date-row-value { color: var(--accent-rose); font-size: 1rem; }
+.proj-date-row.is-deadline .proj-date-row-label { color: var(--accent-rose); }
 
-/* ---------- Date Filter Inputs ---------- */
-.proj-date-filter-row {
-  display: flex; gap: 10px;
-}
-.proj-date-input-wrap {
-  flex: 1; display: flex; flex-direction: column; gap: 4px;
-}
-.proj-date-input-wrap label {
+/* Date filter inputs (filter bar dropdown + sidebar) */
+.proj-date-filter-section { padding: 4px 0; }
+.proj-date-filter-field { margin-bottom: 14px; }
+.proj-date-filter-field:last-child { margin-bottom: 0; }
+.proj-date-filter-field-label {
   font-size: 0.7rem; font-weight: 600;
-  color: var(--text-muted); text-transform: uppercase;
-  letter-spacing: 0.4px;
+  text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-muted); margin-bottom: 6px;
+}
+.proj-date-filter-row { display: flex; gap: 8px; }
+.proj-date-input-wrap { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+.proj-date-input-wrap label {
+  font-size: 0.65rem; font-weight: 600; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.4px;
 }
 .proj-date-input {
-  padding: 8px 10px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border-glass);
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  font-family: inherit; font-size: 0.82rem;
-  outline: none; transition: var(--transition);
-  color-scheme: dark;
+  padding: 7px 8px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border-glass); background: var(--bg-primary);
+  color: var(--text-primary); font-family: inherit; font-size: 0.8rem;
+  outline: none; transition: var(--transition); color-scheme: dark; width: 100%;
+  box-sizing: border-box;
 }
 .proj-date-input:focus {
-  border-color: rgba(59,130,246,0.4);
-  box-shadow: 0 0 0 2px rgba(59,130,246,0.1);
+  border-color: rgba(59,130,246,0.4); box-shadow: 0 0 0 2px rgba(59,130,246,0.1);
 }
+#panel-date { min-width: 300px; padding: 14px; }
 
-/* Inline date filter in filter bar */
-.proj-date-filter-inline {
-  display: flex; align-items: center; gap: 6px;
-  color: var(--text-muted);
-}
-.proj-date-filter-inline .proj-date-input {
-  width: 130px; padding: 7px 8px; font-size: 0.78rem;
-}
-.proj-date-sep {
-  color: var(--text-muted); font-size: 0.8rem;
-}
-
->>>>>>> de95b80eddd8354ced159439b0912a2fc573d0db
 /* ---------- Filter Sidebar ---------- */
 .proj-filters-toggle-btn {
   border: 1px solid rgba(139,92,246,0.3) !important;
