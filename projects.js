@@ -58,7 +58,12 @@
       date_from: 'Від',
       date_to: 'До',
       dates_title: 'Дати',
-      clear_date: 'Скинути'
+      clear_date: 'Скинути',
+      view_calendar: 'Календар',
+      cal_month: 'Місяць',
+      cal_week: 'Тиждень',
+      cal_add_gcal: 'Додати до Google Calendar',
+      cal_overflow_more: 'ще'
     },
     en: {
       filter_program: 'Grant Program',
@@ -110,7 +115,12 @@
       date_from: 'From',
       date_to: 'To',
       dates_title: 'Dates',
-      clear_date: 'Clear'
+      clear_date: 'Clear',
+      view_calendar: 'Calendar',
+      cal_month: 'Month',
+      cal_week: 'Week',
+      cal_add_gcal: 'Add to Google Calendar',
+      cal_overflow_more: 'more'
     }
   };
 
@@ -142,6 +152,11 @@
   var viewMode = 'program';
   var searchQuery = '';
   var collapsedGroups = {};
+
+  /* Calendar state */
+  var calendarDate = new Date();
+  var calendarMode = 'month'; // 'month' | 'week'
+  var calendarDateTypes = {}; // { fieldKey: boolean } — which date fields to show
 
   /* ---------- Helpers ---------- */
   function esc(s) {
@@ -176,6 +191,85 @@
     var dd = ('0' + d.getDate()).slice(-2);
     var mm = ('0' + (d.getMonth() + 1)).slice(-2);
     return dd + '.' + mm + '.' + d.getFullYear();
+  }
+
+  /* ---------- Calendar Helpers ---------- */
+  function dateKey(d) {
+    var mm = ('0' + (d.getMonth() + 1)).slice(-2);
+    var dd = ('0' + d.getDate()).slice(-2);
+    return d.getFullYear() + '-' + mm + '-' + dd;
+  }
+
+  function getWeekStart(d) {
+    var day = d.getDay(); // 0=Sun
+    var diff = (day === 0) ? -6 : 1 - day; // Monday-first
+    var start = new Date(d.getFullYear(), d.getMonth(), d.getDate() + diff);
+    return start;
+  }
+
+  function initCalendarDateTypes() {
+    detectedDateFields.forEach(function (f) {
+      if (calendarDateTypes[f.key] === undefined) {
+        calendarDateTypes[f.key] = true;
+      }
+    });
+  }
+
+  function buildDateMap(projs) {
+    var map = {};
+    projs.forEach(function (p) {
+      detectedDateFields.forEach(function (f) {
+        if (!calendarDateTypes[f.key]) return;
+        var v = p._raw[f.key];
+        if (!v) return;
+        var text = (typeof v === 'object' && !Array.isArray(v)) ? (v.text || '') : (Array.isArray(v) ? '' : String(v));
+        text = text.trim();
+        if (!text) return;
+        var parsed = parseDate(text);
+        if (!parsed) return;
+        var key = dateKey(parsed);
+        if (!map[key]) map[key] = [];
+        map[key].push({ project: p, dateType: f.key, isDeadline: /deadline/i.test(f.key), label: getDateFieldLabel(f.key), formatted: fmtDate(text), parsed: parsed });
+      });
+    });
+    return map;
+  }
+
+  function getCalendarTitle() {
+    var months_ua = ['Січень','Лютий','Березень','Квітень','Травень','Червень','Липень','Серпень','Вересень','Жовтень','Листопад','Грудень'];
+    var months_en = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    var months = lang === 'ua' ? months_ua : months_en;
+    if (calendarMode === 'month') {
+      return months[calendarDate.getMonth()] + ' ' + calendarDate.getFullYear();
+    }
+    var ws = getWeekStart(calendarDate);
+    var we = new Date(ws.getFullYear(), ws.getMonth(), ws.getDate() + 6);
+    var fmt = function (d) { return ('0' + d.getDate()).slice(-2) + '.' + ('0' + (d.getMonth() + 1)).slice(-2); };
+    return fmt(ws) + ' – ' + fmt(we) + '.' + we.getFullYear();
+  }
+
+  /* ---------- Google Calendar URL Builder ---------- */
+  function gcalDateStr(jsDate) {
+    return '' + jsDate.getFullYear() + ('0' + (jsDate.getMonth() + 1)).slice(-2) + ('0' + jsDate.getDate()).slice(-2);
+  }
+
+  function makeGCalUrl(p, dateEntry) {
+    var start = dateEntry.parsed;
+    if (!start) return '#';
+    var end = new Date(start.getFullYear(), start.getMonth(), start.getDate() + 1);
+    var title = dateEntry.isDeadline ? ('\uD83D\uDCC5 \u0414\u0415\u0414\u041B\u0410\u0419\u041D: ' + p.name) : ('\uD83D\uDDD3\uFE0F ' + p.name);
+    var details = [];
+    if (p._group && p._group !== '(empty)') details.push('\u041F\u0440\u043E\u0433\u0440\u0430\u043C\u0430: ' + p._group);
+    if (p.type) details.push('\u0422\u0438\u043F: ' + p.type);
+    if (p.organizer) details.push('\u041E\u0440\u0433\u0430\u043D\u0456\u0437\u0430\u0442\u043E\u0440: ' + p.organizer);
+    if (p.link) details.push('\u041F\u043E\u0434\u0430\u0442\u0438 \u0437\u0430\u044F\u0432\u043A\u0443: ' + p.link);
+    if (p.linkInfo && p.linkInfo.indexOf('http') === 0) details.push('\u0414\u0435\u0442\u0430\u043B\u044C\u043D\u0456\u0448\u0435: ' + p.linkInfo);
+    var url = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+      + '&text=' + encodeURIComponent(title)
+      + '&dates=' + gcalDateStr(start) + '/' + gcalDateStr(end);
+    if (details.length) url += '&details=' + encodeURIComponent(details.join('\n'));
+    if (p.organizer) url += '&location=' + encodeURIComponent(p.organizer);
+    return url;
   }
 
   function hashStr(s) {
@@ -550,6 +644,7 @@
     fillDropdown('panel-status', Object.keys(sets.status).sort(), 'status');
 
     detectDateFields();
+    initCalendarDateTypes();
   }
 
   function fillDropdown(panelId, items, filterKey) {
@@ -735,10 +830,167 @@
     }
   }
 
+  /* ---------- Calendar Rendering ---------- */
+  function renderCalendar() {
+    var c = byId('projects-container');
+    if (!c) return;
+    initCalendarDateTypes();
+    var dateMap = buildDateMap(filteredProjects);
+    var html = renderCalendarHeader();
+    html += calendarMode === 'month' ? renderMonthCalendar(dateMap) : renderWeekCalendar(dateMap);
+    c.innerHTML = html;
+    bindCalendarEvents();
+  }
+
+  function renderCalendarHeader() {
+    var monthActive = calendarMode === 'month' ? ' active' : '';
+    var weekActive  = calendarMode === 'week'  ? ' active' : '';
+
+    var togglesHtml = '';
+    detectedDateFields.forEach(function (f) {
+      var on = calendarDateTypes[f.key] !== false;
+      var cls = (on ? ' proj-cal-toggle-on' : '') + (/deadline/i.test(f.key) ? ' proj-cal-toggle-deadline' : ' proj-cal-toggle-event');
+      togglesHtml += '<button class="proj-cal-toggle' + cls + '" data-cal-toggle="' + esc(f.key) + '">' + esc(getDateFieldLabel(f.key)) + '</button>';
+    });
+
+    return '<div class="proj-cal-header">'
+      + '<div class="proj-cal-mode-btns">'
+      + '<button class="proj-cal-mode-btn' + monthActive + '" data-calmode="month">' + t('cal_month') + '</button>'
+      + '<button class="proj-cal-mode-btn' + weekActive + '" data-calmode="week">' + t('cal_week') + '</button>'
+      + '</div>'
+      + '<div class="proj-cal-toggles">' + togglesHtml + '</div>'
+      + '<div class="proj-cal-nav">'
+      + '<button class="proj-cal-nav-btn" data-caldir="-1">&#8249;</button>'
+      + '<span class="proj-cal-title">' + esc(getCalendarTitle()) + '</span>'
+      + '<button class="proj-cal-nav-btn" data-caldir="1">&#8250;</button>'
+      + '</div>'
+      + '</div>';
+  }
+
+  function renderMonthCalendar(dateMap) {
+    var todayKey = dateKey(new Date());
+    var year  = calendarDate.getFullYear();
+    var month = calendarDate.getMonth();
+    var days_ua = ['Пн','Вт','Ср','Чт','Пт','Сб','Нд'];
+    var days_en = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    var dayHeaders = lang === 'ua' ? days_ua : days_en;
+
+    var html = '<div class="proj-cal-grid proj-cal-month">';
+    dayHeaders.forEach(function (d) { html += '<div class="proj-cal-day-header">' + d + '</div>'; });
+
+    var firstDow   = new Date(year, month, 1).getDay();
+    var startOffset = firstDow === 0 ? 6 : firstDow - 1;
+    var daysInMonth = new Date(year, month + 1, 0).getDate();
+    var endOffset   = (7 - ((startOffset + daysInMonth) % 7)) % 7;
+
+    for (var i = 0; i < startOffset; i++) html += '<div class="proj-cal-cell proj-cal-cell-empty"></div>';
+
+    for (var day = 1; day <= daysInMonth; day++) {
+      var key    = dateKey(new Date(year, month, day));
+      var isToday = key === todayKey;
+      var events  = dateMap[key] || [];
+      html += '<div class="proj-cal-cell' + (isToday ? ' proj-cal-today' : '') + '">';
+      html += '<div class="proj-cal-day-num' + (isToday ? ' proj-cal-today-num' : '') + '">' + day + '</div>';
+      var shown = Math.min(events.length, 3);
+      for (var ei = 0; ei < shown; ei++) html += calEventChip(events[ei]);
+      if (events.length > 3) html += '<div class="proj-cal-overflow">+' + (events.length - 3) + ' ' + t('cal_overflow_more') + '</div>';
+      html += '</div>';
+    }
+
+    for (var j = 0; j < endOffset; j++) html += '<div class="proj-cal-cell proj-cal-cell-empty"></div>';
+    html += '</div>';
+    return html;
+  }
+
+  function renderWeekCalendar(dateMap) {
+    var todayKey = dateKey(new Date());
+    var ws = getWeekStart(calendarDate);
+    var days_ua = ['Пн','Вт','Ср','Чт','Пт','Сб','Нд'];
+    var days_en = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    var dayNames = lang === 'ua' ? days_ua : days_en;
+
+    var html = '<div class="proj-cal-grid proj-cal-week">';
+
+    for (var i = 0; i < 7; i++) {
+      var d    = new Date(ws.getFullYear(), ws.getMonth(), ws.getDate() + i);
+      var key  = dateKey(d);
+      var isT  = key === todayKey;
+      html += '<div class="proj-cal-day-header' + (isT ? ' proj-cal-today-header' : '') + '">'
+        + dayNames[i] + '<br><span class="proj-cal-week-date">' + d.getDate() + '.' + ('0' + (d.getMonth() + 1)).slice(-2) + '</span></div>';
+    }
+    for (var j = 0; j < 7; j++) {
+      var d2   = new Date(ws.getFullYear(), ws.getMonth(), ws.getDate() + j);
+      var key2 = dateKey(d2);
+      var isT2 = key2 === todayKey;
+      var evts = dateMap[key2] || [];
+      html += '<div class="proj-cal-cell proj-cal-week-cell' + (isT2 ? ' proj-cal-today' : '') + '">';
+      evts.forEach(function (entry) { html += calEventChip(entry); });
+      html += '</div>';
+    }
+    html += '</div>';
+    return html;
+  }
+
+  function calEventChip(entry) {
+    var cls    = entry.isDeadline ? 'proj-cal-chip-deadline' : 'proj-cal-chip-event';
+    var prefix = entry.isDeadline ? '\uD83D\uDCC5' : '\uD83D\uDDD3\uFE0F';
+    var name   = entry.project.name || '';
+    return '<div class="proj-cal-chip ' + cls + '" '
+      + 'data-cal-project="' + esc(entry.project._nodeName) + '" '
+      + 'title="' + esc(name + ' — ' + entry.label + ': ' + entry.formatted) + '">'
+      + prefix + ' ' + esc(name) + '</div>';
+  }
+
+  function shiftCalendar(dir) {
+    if (calendarMode === 'month') {
+      calendarDate = new Date(calendarDate.getFullYear(), calendarDate.getMonth() + dir, 1);
+    } else {
+      calendarDate = new Date(calendarDate.getFullYear(), calendarDate.getMonth(), calendarDate.getDate() + dir * 7);
+    }
+    renderCalendar();
+  }
+
+  function bindCalendarEvents() {
+    qsa('[data-calmode]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        calendarMode = btn.getAttribute('data-calmode');
+        renderCalendar();
+      });
+    });
+    qsa('[data-caldir]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        shiftCalendar(parseInt(btn.getAttribute('data-caldir'), 10));
+      });
+    });
+    qsa('[data-cal-toggle]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var key = btn.getAttribute('data-cal-toggle');
+        var enabledCount = detectedDateFields.filter(function (f) { return calendarDateTypes[f.key] !== false; }).length;
+        if (calendarDateTypes[key] !== false && enabledCount <= 1) return; // guard: keep at least one on
+        calendarDateTypes[key] = !calendarDateTypes[key];
+        renderCalendar();
+      });
+    });
+    qsa('.proj-cal-chip').forEach(function (chip) {
+      chip.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var name = chip.getAttribute('data-cal-project');
+        for (var i = 0; i < allProjects.length; i++) {
+          if (allProjects[i]._nodeName === name) { openModal(allProjects[i]); return; }
+        }
+      });
+    });
+  }
+
   /* ---------- Rendering ---------- */
   function renderProjects() {
     var c = byId('projects-container');
     if (!c) return;
+
+    if (viewMode === 'calendar') {
+      renderCalendar();
+      return;
+    }
 
     if (!filteredProjects.length) {
       c.innerHTML = '<div class="proj-empty">'
@@ -836,6 +1088,8 @@
         datesHtml += '<span class="proj-date-chip' + (d.isDeadline ? ' is-deadline' : '') + '">'
           + '<span class="proj-date-chip-label">' + esc(d.label) + '</span>'
           + '<span class="proj-date-chip-value">' + esc(d.formatted) + '</span>'
+          + '<a class="proj-gcal-btn" href="' + esc(makeGCalUrl(p, d)) + '" target="_blank" rel="noopener" '
+          + 'title="' + esc(t('cal_add_gcal')) + '" onclick="event.stopPropagation()">&#128197;</a>'
           + '</span>';
       });
       datesHtml += '</div>';
@@ -968,7 +1222,10 @@
       modalDates.forEach(function (d) {
         html += '<div class="proj-date-row' + (d.isDeadline ? ' is-deadline' : '') + '">'
           + '<span class="proj-date-row-label">' + esc(d.label) + '</span>'
-          + '<span class="proj-date-row-value">' + esc(d.formatted) + '</span>'
+          + '<span class="proj-date-row-value" style="display:flex;align-items:center;gap:6px">'
+          + esc(d.formatted)
+          + '<a class="proj-gcal-btn" href="' + esc(makeGCalUrl(p, d)) + '" target="_blank" rel="noopener" title="' + esc(t('cal_add_gcal')) + '">&#128197;</a>'
+          + '</span>'
           + '</div>';
       });
       if (p.weekNumber) {
@@ -1175,7 +1432,10 @@
       detailDates.forEach(function (d) {
         html += '<div class="proj-date-row' + (d.isDeadline ? ' is-deadline' : '') + '">'
           + '<span class="proj-date-row-label">' + esc(d.label) + '</span>'
-          + '<span class="proj-date-row-value">' + esc(d.formatted) + '</span>'
+          + '<span class="proj-date-row-value" style="display:flex;align-items:center;gap:6px">'
+          + esc(d.formatted)
+          + '<a class="proj-gcal-btn" href="' + esc(makeGCalUrl(p, d)) + '" target="_blank" rel="noopener" title="' + esc(t('cal_add_gcal')) + '">&#128197;</a>'
+          + '</span>'
           + '</div>';
       });
       if (p.weekNumber) {
@@ -1394,24 +1654,19 @@
     }
 
     // View mode buttons
-    var btnProgram = byId('btn-view-program');
-    var btnAll = byId('btn-view-all');
-    if (btnProgram) {
-      btnProgram.addEventListener('click', function () {
-        viewMode = 'program';
-        btnProgram.classList.add('active');
-        if (btnAll) btnAll.classList.remove('active');
-        renderProjects();
-      });
+    var btnProgram  = byId('btn-view-program');
+    var btnAll      = byId('btn-view-all');
+    var btnCalendar = byId('btn-view-calendar');
+    function setViewMode(mode) {
+      viewMode = mode;
+      if (btnProgram)  btnProgram.classList.toggle('active',  mode === 'program');
+      if (btnAll)       btnAll.classList.toggle('active',      mode === 'all');
+      if (btnCalendar)  btnCalendar.classList.toggle('active', mode === 'calendar');
+      renderProjects();
     }
-    if (btnAll) {
-      btnAll.addEventListener('click', function () {
-        viewMode = 'all';
-        btnAll.classList.add('active');
-        if (btnProgram) btnProgram.classList.remove('active');
-        renderProjects();
-      });
-    }
+    if (btnProgram)  btnProgram.addEventListener('click',  function () { setViewMode('program'); });
+    if (btnAll)       btnAll.addEventListener('click',       function () { setViewMode('all'); });
+    if (btnCalendar)  btnCalendar.addEventListener('click',  function () { setViewMode('calendar'); });
 
     // Language switch
     qsa('.proj-lang-btn').forEach(function (btn) {
