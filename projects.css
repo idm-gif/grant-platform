@@ -147,6 +147,10 @@
 }
 .proj-page-title { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px; }
 .proj-counter { font-size: 0.85rem; color: var(--text-muted); margin-top: 2px; }
+
+/* View controls: list toggles + separate calendar button */
+.proj-view-controls { display: flex; align-items: center; gap: 8px; }
+
 .proj-view-toggle {
   display: flex; border-radius: var(--radius-sm);
   overflow: hidden; border: 1px solid var(--border-glass);
@@ -158,6 +162,17 @@
 }
 .proj-view-btn:not(:last-child) { border-right: 1px solid var(--border-glass); }
 .proj-view-btn.active { background: var(--gradient-accent); color: #fff; }
+
+/* Calendar view button — standalone, visually distinct */
+.proj-view-cal-btn {
+  border-radius: var(--radius-sm); border: 1px solid var(--border-glass);
+  background: var(--bg-glass);
+}
+.proj-view-cal-btn.active {
+  background: rgba(59,130,246,0.15) !important;
+  border-color: rgba(59,130,246,0.4) !important;
+  color: var(--accent-blue) !important;
+}
 
 /* ---------- Program Group ---------- */
 .proj-group { margin-bottom: 28px; }
@@ -637,6 +652,7 @@
 @media (max-width: 768px) {
   .proj-main { padding: 76px 12px 40px; }
   .proj-header-row { flex-direction: column; align-items: flex-start; }
+  .proj-view-controls { flex-wrap: wrap; }
   .proj-modal-grid { grid-template-columns: 1fr; }
   .proj-modal-top { flex-direction: column; }
   .proj-modal-img { width: 100%; height: 160px; }
@@ -650,6 +666,8 @@
   .proj-detail-grid { grid-template-columns: 1fr; }
   .proj-detail-link-bar { flex-direction: column; }
   .proj-detail-link-input { width: 100%; }
+  .proj-cal-header { flex-direction: column; align-items: flex-start; }
+  .proj-cal-title { min-width: unset; text-align: left; }
 }
 @media (max-width: 480px) {
   .proj-card-img { height: 140px; }
@@ -673,9 +691,9 @@
 /* ---------- Calendar Container ---------- */
 /* Class toggled by JS when calendar view is active */
 #projects-container.proj-cal-active {
-  border-top: 1px solid var(--border-glass);
-  padding-top: 24px;
-  margin-top: 4px;
+  border-top: 2px solid rgba(59,130,246,0.2);
+  padding-top: 28px;
+  margin-top: 0;
 }
 
 /* ---------- Calendar Header ---------- */
@@ -720,6 +738,14 @@
 }
 .proj-cal-toggle-deadline.proj-cal-toggle-on {
   background: rgba(245,158,11,0.2); border-color: rgba(245,158,11,0.55);
+}
+/* Rose/red for decision deadlines */
+.proj-cal-toggle-decision {
+  background: rgba(244,63,94,0.1); border-color: rgba(244,63,94,0.3);
+  color: var(--accent-rose);
+}
+.proj-cal-toggle-decision.proj-cal-toggle-on {
+  background: rgba(244,63,94,0.2); border-color: rgba(244,63,94,0.5);
 }
 .proj-cal-toggle:hover { opacity: 1; }
 

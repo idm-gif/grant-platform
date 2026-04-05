@@ -15,7 +15,7 @@
       filter_applicant: 'Хто може подати',
       filter_status: 'Статус',
       show_archived: 'Показати архівні',
-      view_by_program: 'По програмах',
+      view_grouped: 'Згруповано',
       view_all: 'Всі',
       showing: 'Показано',
       of: 'з',
@@ -59,7 +59,7 @@
       date_to: 'До',
       dates_title: 'Дати',
       clear_date: 'Скинути',
-      view_calendar: 'Календар',
+      view_calendar: '\uD83D\uDCC5 Календар',
       cal_month: 'Місяць',
       cal_week: 'Тиждень',
       cal_add_gcal: 'Додати до Google Calendar',
@@ -72,7 +72,7 @@
       filter_applicant: 'Who can apply',
       filter_status: 'Status',
       show_archived: 'Show archived',
-      view_by_program: 'By Program',
+      view_grouped: 'Grouped',
       view_all: 'All',
       showing: 'Showing',
       of: 'of',
@@ -116,7 +116,7 @@
       date_to: 'To',
       dates_title: 'Dates',
       clear_date: 'Clear',
-      view_calendar: 'Calendar',
+      view_calendar: '\uD83D\uDCC5 Calendar',
       cal_month: 'Month',
       cal_week: 'Week',
       cal_add_gcal: 'Add to Google Calendar',
@@ -148,6 +148,7 @@
   var activeFilters = { program: [], section: [], type: [], applicant: [], status: [] };
   var dateFilters = {};        // key -> { from: Date|null, to: Date|null, fromStr: '', toStr: '' }
   var detectedDateFields = []; // [{ key, label }] — auto-detected from XML data
+  var detectedGroupField = null; // auto-detected field used for grouping (e.g. 'Type_attestation')
   var showArchived = false;
   var viewMode = 'program';
   var searchQuery = '';
@@ -331,49 +332,72 @@
     xhr.send();
   }
 
+  /* Auto-detect which data field best serves as the grouping category.
+     Scans all project fields for one with good coverage (≥30% of projects)
+     and a manageable number of distinct values (2–30).
+     Prioritises known semantic fields in order. */
+  function detectGroupField() {
+    var priority = ['Type_attestation', 'Organizator', 'Section', 'type'];
+    var stats = {};
+    allProjects.forEach(function (p) {
+      Object.keys(p._raw || {}).forEach(function (key) {
+        var v = p._raw[key];
+        if (Array.isArray(v)) return;
+        var text = (typeof v === 'object' ? (v.text || '') : String(v)).trim();
+        if (!text || text.length > 120) return;
+        if (!stats[key]) stats[key] = { total: 0, values: {} };
+        stats[key].total++;
+        stats[key].values[text] = true;
+      });
+    });
+    var n = allProjects.length || 1;
+    for (var pi = 0; pi < priority.length; pi++) {
+      var key = priority[pi];
+      var s = stats[key];
+      if (!s) continue;
+      var uniq = Object.keys(s.values).length;
+      if (s.total / n >= 0.3 && uniq >= 2 && uniq <= 30) return key;
+    }
+    // Fallback: first non-priority field that qualifies
+    var keys = Object.keys(stats).filter(function (k) { return priority.indexOf(k) < 0; });
+    for (var ki = 0; ki < keys.length; ki++) {
+      var s2 = stats[keys[ki]];
+      var u2 = Object.keys(s2.values).length;
+      if (s2.total / n >= 0.3 && u2 >= 2 && u2 <= 30) return keys[ki];
+    }
+    return null;
+  }
+
   function parseGraph(doc) {
-    // 1. Group nodes (Type_attestation)
-    var groupMap = {};
-    qsa('Node[nclass="Type_attestation"]', doc).forEach(function (n) {
-      var name = n.getAttribute('nodeName');
-      groupMap[name] = { nodeName: name, projects: [] };
-    });
-
-    // 2. Project nodes — any nclass != Type_attestation, with data (skip root)
+    // 1. Project nodes — any node that has <data> children
     var projectEls = qsa('Node', doc).filter(function (n) {
-      var nc = n.getAttribute('nclass') || '';
-      return nc !== 'Type_attestation' && n.querySelector('data');
+      return !!n.querySelector('data');
     });
 
-    // 3. Build edge lookup: node1 -> [node2, ...]
-    var edgeMap = {};
-    qsa('Edge', doc).forEach(function (e) {
-      var n1 = e.getAttribute('node1');
-      var n2 = e.getAttribute('node2');
-      if (n1 && n2) {
-        if (!edgeMap[n1]) edgeMap[n1] = [];
-        edgeMap[n1].push(n2);
-      }
-    });
-
-    // 4. Parse each project
+    // 2. Parse each project node
     projectEls.forEach(function (el) {
       var p = parseProjectNode(el);
-      var nodeName = el.getAttribute('nodeName');
-      var guid = el.getAttribute('guid') || '';
-      var parents = edgeMap[nodeName] || [];
-      var group = null;
-      for (var i = 0; i < parents.length; i++) {
-        if (groupMap[parents[i]]) { group = parents[i]; break; }
-      }
-      p._group = group || '(empty)';
-      p._nodeName = nodeName;
-      p._guid = guid;
+      p._nodeName = el.getAttribute('nodeName');
+      p._guid     = el.getAttribute('guid') || '';
+      p._group    = '(empty)'; // will be set after detection
       allProjects.push(p);
     });
 
-    // 5. Assign to groups
-    if (!groupMap['(empty)']) groupMap['(empty)'] = { nodeName: '(empty)', projects: [] };
+    // 3. Auto-detect the grouping field, then assign _group
+    detectedGroupField = detectGroupField();
+    allProjects.forEach(function (p) {
+      if (detectedGroupField) {
+        var v = p._raw[detectedGroupField];
+        var text = '';
+        if (v && !Array.isArray(v)) {
+          text = (typeof v === 'object' ? (v.text || '') : String(v)).trim();
+        }
+        p._group = text || '(empty)';
+      }
+    });
+
+    // 4. Build groups map
+    var groupMap = { '(empty)': { nodeName: '(empty)', projects: [] } };
     allProjects.forEach(function (p) {
       if (!groupMap[p._group]) groupMap[p._group] = { nodeName: p._group, projects: [] };
       groupMap[p._group].projects.push(p);
@@ -653,6 +677,7 @@
 
     detectDateFields();
     initCalendarDateTypes();
+    updateGroupedBtnLabel();
   }
 
   function fillDropdown(panelId, items, filterKey) {
@@ -856,8 +881,8 @@
 
     var togglesHtml = '';
     detectedDateFields.forEach(function (f) {
-      var on = calendarDateTypes[f.key] !== false;
-      var cls = (on ? ' proj-cal-toggle-on' : '') + (/deadline/i.test(f.key) ? ' proj-cal-toggle-deadline' : ' proj-cal-toggle-event');
+      var on  = calendarDateTypes[f.key] !== false;
+      var cls = (on ? ' proj-cal-toggle-on' : '') + ' proj-cal-toggle-' + getDateColorClass(f.key);
       togglesHtml += '<button class="proj-cal-toggle' + cls + '" data-cal-toggle="' + esc(f.key) + '">' + esc(getDateFieldLabel(f.key)) + '</button>';
     });
 
@@ -1707,12 +1732,31 @@
     }
   }
 
+  /* Group field → human label mapping for the "Grouped" button */
+  var GROUP_FIELD_UI = {
+    ua: { Type_attestation: 'Програма', Organizator: 'Організатор', Section: 'Секція', type: 'Тип' },
+    en: { Type_attestation: 'Program',  Organizator: 'Organizer',   Section: 'Section', type: 'Type' }
+  };
+
+  function updateGroupedBtnLabel() {
+    var btn = byId('btn-view-program');
+    if (!btn) return;
+    var base = t('view_grouped');
+    if (detectedGroupField) {
+      var map = GROUP_FIELD_UI[lang] || GROUP_FIELD_UI.ua;
+      var sub = map[detectedGroupField] || detectedGroupField.replace(/_/g, ' ');
+      base += ' \u2014 ' + sub;
+    }
+    btn.textContent = base;
+  }
+
   function updateI18n() {
     qsa('[data-i18n]').forEach(function (el) {
       el.textContent = t(el.getAttribute('data-i18n'));
     });
     var si = byId('proj-search');
     if (si) si.placeholder = t('search_placeholder');
+    updateGroupedBtnLabel();
   }
 
   /* ---------- Filter Sidebar ---------- */
