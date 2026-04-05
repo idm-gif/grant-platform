@@ -313,8 +313,8 @@
           fillSidebarPanels();
           buildDateFilters();
           applyFilters();
-          // Check if URL has a project route on initial load
-          if (window.location.hash.indexOf('#project/') === 0) {
+          // Handle any hash route present on initial load
+          if (window.location.hash) {
             handleRoute();
           }
         } catch (e) {
@@ -1583,6 +1583,8 @@
   /* ---------- Hash Routing ---------- */
   function handleRoute() {
     var hash = window.location.hash;
+
+    // Project detail page: #project/<guid>
     if (hash.indexOf('#project/') === 0) {
       var projectId = decodeURIComponent(hash.substring(9));
       var proj = findProjectById(projectId);
@@ -1592,7 +1594,18 @@
         return;
       }
     }
-    // Default: show explorer
+
+    // View mode shortlink: #view/calendar  #view/all  (grouped = no hash)
+    if (hash.indexOf('#view/') === 0) {
+      var mode = hash.substring(6); // 'calendar' | 'all'
+      var allowed = { calendar: 1, all: 1, program: 1 };
+      if (allowed[mode] && window._projSetViewMode) {
+        window._projSetViewMode(mode, true /* skipHashUpdate */);
+        return;
+      }
+    }
+
+    // Default: show explorer (grouped view, no hash)
     var mainEl = qs('.proj-main');
     if (mainEl && mainEl._origHTML) {
       showExplorerView();
@@ -1693,16 +1706,24 @@
     var btnProgram  = byId('btn-view-program');
     var btnAll      = byId('btn-view-all');
     var btnCalendar = byId('btn-view-calendar');
-    function setViewMode(mode) {
+    function setViewMode(mode, skipHashUpdate) {
       viewMode = mode;
       if (btnProgram)  btnProgram.classList.toggle('active',  mode === 'program');
       if (btnAll)       btnAll.classList.toggle('active',      mode === 'all');
       if (btnCalendar)  btnCalendar.classList.toggle('active', mode === 'calendar');
+      // Keep a view fragment in the URL so Calendar (and others) can be bookmarked/shared
+      if (!skipHashUpdate) {
+        var frag = mode === 'program' ? '' : 'view/' + mode;
+        history.replaceState(null, '', window.location.pathname + (frag ? '#' + frag : ''));
+      }
       renderProjects();
     }
     if (btnProgram)  btnProgram.addEventListener('click',  function () { setViewMode('program'); });
     if (btnAll)       btnAll.addEventListener('click',       function () { setViewMode('all'); });
     if (btnCalendar)  btnCalendar.addEventListener('click',  function () { setViewMode('calendar'); });
+
+    // Expose setViewMode for use by handleRoute
+    window._projSetViewMode = setViewMode;
 
     // Language switch
     qsa('.proj-lang-btn').forEach(function (btn) {
@@ -1892,7 +1913,8 @@
   document.addEventListener('DOMContentLoaded', function () {
     initEvents();
     initSidebar();
-    loadData();
+    loadData(); // applyFilters() is called inside loadData → calls renderProjects()
+                // handleRoute() reads the hash AFTER data is ready (called from loadData callback)
     window.addEventListener('hashchange', handleRoute);
   });
 
