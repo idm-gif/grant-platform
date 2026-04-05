@@ -229,7 +229,7 @@
         if (!parsed) return;
         var key = dateKey(parsed);
         if (!map[key]) map[key] = [];
-        map[key].push({ project: p, dateType: f.key, isDeadline: /deadline/i.test(f.key), label: getDateFieldLabel(f.key), formatted: fmtDate(text), parsed: parsed });
+        map[key].push({ project: p, dateType: f.key, isDeadline: /deadline/i.test(f.key), colorClass: getDateColorClass(f.key), label: getDateFieldLabel(f.key), formatted: fmtDate(text), parsed: parsed });
       });
     });
     return map;
@@ -502,6 +502,13 @@
     return map[key] || key.replace(/_/g, ' ');
   }
 
+  // Returns CSS color key: 'event' (blue) | 'deadline' (amber) | 'decision' (rose)
+  function getDateColorClass(key) {
+    if (/deccision|decision/i.test(key)) return 'decision';
+    if (/deadline/i.test(key))           return 'deadline';
+    return 'event';
+  }
+
   function getProjectDates(p) {
     // Returns all date fields for this project that have a parseable value
     var result = [];
@@ -519,7 +526,8 @@
         raw: text,
         parsed: parsed,
         formatted: fmtDate(text),
-        isDeadline: /deadline/i.test(f.key)
+        isDeadline: /deadline/i.test(f.key),
+        colorClass: getDateColorClass(f.key)
       });
     });
     return result;
@@ -932,8 +940,9 @@
   }
 
   function calEventChip(entry) {
-    var cls    = entry.isDeadline ? 'proj-cal-chip-deadline' : 'proj-cal-chip-event';
-    var prefix = entry.isDeadline ? '\uD83D\uDCC5' : '\uD83D\uDDD3\uFE0F';
+    var colorMap = { event: 'proj-cal-chip-event', deadline: 'proj-cal-chip-deadline', decision: 'proj-cal-chip-decision' };
+    var cls    = colorMap[entry.colorClass] || 'proj-cal-chip-event';
+    var prefix = entry.colorClass === 'decision' ? '\uD83D\uDCCB' : (entry.isDeadline ? '\uD83D\uDCC5' : '\uD83D\uDDD3\uFE0F');
     var name   = entry.project.name || '';
     return '<div class="proj-cal-chip ' + cls + '" '
       + 'data-cal-project="' + esc(entry.project._nodeName) + '" '
@@ -986,6 +995,8 @@
   function renderProjects() {
     var c = byId('projects-container');
     if (!c) return;
+
+    c.classList.toggle('proj-cal-active', viewMode === 'calendar');
 
     if (viewMode === 'calendar') {
       renderCalendar();
@@ -1085,7 +1096,7 @@
     if (dates.length) {
       datesHtml = '<div class="proj-card-dates">';
       dates.forEach(function (d) {
-        datesHtml += '<span class="proj-date-chip' + (d.isDeadline ? ' is-deadline' : '') + '">'
+        datesHtml += '<span class="proj-date-chip proj-date-chip--' + d.colorClass + '">'
           + '<span class="proj-date-chip-label">' + esc(d.label) + '</span>'
           + '<span class="proj-date-chip-value">' + esc(d.formatted) + '</span>'
           + '<a class="proj-gcal-btn" href="' + esc(makeGCalUrl(p, d)) + '" target="_blank" rel="noopener" '
@@ -1220,7 +1231,7 @@
       html += '<div class="proj-dates-box">'
         + '<div class="proj-dates-box-title">' + t('dates_title') + '</div>';
       modalDates.forEach(function (d) {
-        html += '<div class="proj-date-row' + (d.isDeadline ? ' is-deadline' : '') + '">'
+        html += '<div class="proj-date-row proj-date-row--' + d.colorClass + '">'
           + '<span class="proj-date-row-label">' + esc(d.label) + '</span>'
           + '<span class="proj-date-row-value" style="display:flex;align-items:center;gap:6px">'
           + esc(d.formatted)
@@ -1275,7 +1286,7 @@
     if (fullPageBtn) {
       fullPageBtn.addEventListener('click', function () {
         overlay.classList.remove('visible');
-        window.location.hash = 'project/' + encodeURIComponent(p._nodeName);
+        window.location.hash = 'project/' + (p._guid || encodeURIComponent(p._nodeName));
       });
     }
 
@@ -1430,7 +1441,7 @@
       html += '<div class="proj-dates-box">'
         + '<div class="proj-dates-box-title">' + t('dates_title') + '</div>';
       detailDates.forEach(function (d) {
-        html += '<div class="proj-date-row' + (d.isDeadline ? ' is-deadline' : '') + '">'
+        html += '<div class="proj-date-row proj-date-row--' + d.colorClass + '">'
           + '<span class="proj-date-row-label">' + esc(d.label) + '</span>'
           + '<span class="proj-date-row-value" style="display:flex;align-items:center;gap:6px">'
           + esc(d.formatted)

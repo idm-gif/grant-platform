@@ -387,7 +387,14 @@
   padding: 5px 10px; border-radius: var(--radius-sm);
   background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2);
 }
-.proj-date-chip.is-deadline {
+/* Three-color system: event (blue) | deadline/submission (amber) | decision (rose) */
+.proj-date-chip--event {
+  background: rgba(59,130,246,0.08); border-color: rgba(59,130,246,0.2);
+}
+.proj-date-chip--deadline {
+  background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.25);
+}
+.proj-date-chip--decision {
   background: rgba(244,63,94,0.08); border-color: rgba(244,63,94,0.2);
 }
 .proj-date-chip-label {
@@ -398,7 +405,8 @@
   font-size: 0.9rem; font-weight: 700;
   font-family: inherit; color: var(--accent-blue); letter-spacing: 0.2px;
 }
-.proj-date-chip.is-deadline .proj-date-chip-value { color: var(--accent-rose); }
+.proj-date-chip--deadline .proj-date-chip-value { color: var(--accent-amber); }
+.proj-date-chip--decision .proj-date-chip-value { color: var(--accent-rose); }
 
 /* Unified dates box for modal and detail page */
 .proj-dates-box {
@@ -424,8 +432,11 @@
   font-family: inherit; color: var(--accent-blue);
   letter-spacing: 0.3px; text-align: right;
 }
-.proj-date-row.is-deadline .proj-date-row-value { color: var(--accent-rose); font-size: 1rem; }
-.proj-date-row.is-deadline .proj-date-row-label { color: var(--accent-rose); }
+/* Three-color variants for date rows */
+.proj-date-row--deadline .proj-date-row-value { color: var(--accent-amber); font-size: 1rem; }
+.proj-date-row--deadline .proj-date-row-label { color: var(--accent-amber); }
+.proj-date-row--decision .proj-date-row-value { color: var(--accent-rose); font-size: 1rem; }
+.proj-date-row--decision .proj-date-row-label { color: var(--accent-rose); }
 
 /* Date filter inputs (filter bar dropdown + sidebar) */
 .proj-date-filter-section { padding: 4px 0; }
@@ -659,6 +670,14 @@
 }
 .proj-gcal-btn:hover { opacity: 1; }
 
+/* ---------- Calendar Container ---------- */
+/* Class toggled by JS when calendar view is active */
+#projects-container.proj-cal-active {
+  border-top: 1px solid var(--border-glass);
+  padding-top: 24px;
+  margin-top: 4px;
+}
+
 /* ---------- Calendar Header ---------- */
 .proj-cal-header {
   display: flex; align-items: center; justify-content: space-between;
@@ -794,10 +813,15 @@
   background: rgba(59,130,246,0.18); color: var(--accent-blue);
   border-color: rgba(59,130,246,0.3);
 }
-/* Orange — deadline */
+/* Amber — submission deadline */
 .proj-cal-chip-deadline {
   background: rgba(245,158,11,0.18); color: var(--accent-amber);
   border-color: rgba(245,158,11,0.3);
+}
+/* Rose — decision deadline */
+.proj-cal-chip-decision {
+  background: rgba(244,63,94,0.15); color: var(--accent-rose);
+  border-color: rgba(244,63,94,0.3);
 }
 
 /* ---------- Responsive Calendar ---------- */
